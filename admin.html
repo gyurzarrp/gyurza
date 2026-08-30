@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GYURZA — Админ-панель</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #05080c;
+    color: #f5f8fb;
+    font-family: Arial, sans-serif;
+    padding: 25px;
+}
+
+.container {
+    width: min(800px, 100%);
+    margin: auto;
+}
+
+.card {
+    background: #0b1118;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin-bottom: 8px;
+}
+
+h2 {
+    margin-bottom: 18px;
+}
+
+p {
+    color: #8795a3;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #aebbc6;
+    font-size: 13px;
+    margin: 15px 0 7px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: #111a23;
+    color: white;
+    outline: none;
+    font: inherit;
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 18px;
+    margin-top: 18px;
+    background: #25baff;
+    color: #001018;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+.logout {
+    background: #202b35;
+    color: white;
+    margin-left: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.status {
+    margin-top: 15px;
+    color: #25baff;
+}
+
+.error {
+    color: #ff5c5c;
+}
+
+.small {
+    font-size: 12px;
+    color: #657583;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ВХОД -->
+
+    <div id="loginBox" class="card">
+
+        <h1>GYURZA ADMIN</h1>
+
+        <p>
+            Вход в панель управления сайтом
+        </p>
+
+        <label>Email</label>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="Email администратора"
+        >
+
+        <label>Пароль</label>
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Пароль"
+        >
+
+        <button onclick="login()">
+            ВОЙТИ
+        </button>
+
+        <div id="loginStatus" class="status"></div>
+
+    </div>
+
+
+    <!-- АДМИНКА -->
+
+    <div id="adminBox" class="hidden">
+
+        <div class="card">
+
+            <div class="top">
+
+                <div>
+
+                    <h1>
+                        Панель управления
+                    </h1>
+
+                    <p class="small">
+                        Управление сайтом GYURZA
+                    </p>
+
+                </div>
+
+                <button
+                    class="logout"
+                    onclick="logout()"
+                >
+                    Выйти
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ГЛАВНАЯ -->
+
+        <div class="card">
+
+            <h2>
+                🏠 Главная
+            </h2>
+
+            <label>
+                Заголовок
+            </label>
+
+            <input
+                id="mainTitle"
+                placeholder="Привет! Я Гюрза 👋"
+            >
+
+            <label>
+                Основной текст
+            </label>
+
+            <textarea
+                id="mainText"
+                placeholder="Текст главной страницы..."
+            ></textarea>
+
+            <label>
+                Telegram
+            </label>
+
+            <input
+                id="telegram"
+                placeholder="https://t.me/..."
+            >
+
+            <label>
+                TikTok
+            </label>
+
+            <input
+                id="tiktok"
+                placeholder="https://tiktok.com/@..."
+            >
+
+            <label>
+                YouTube
+            </label>
+
+            <input
+                id="youtube"
+                placeholder="https://www.youtube.com/@..."
+            >
+
+            <button onclick="saveMain()">
+                СОХРАНИТЬ ГЛАВНУЮ
+            </button>
+
+            <div
+                id="mainStatus"
+                class="status"
+            ></div>
+
+        </div>
+
+
+        <!-- НОВОСТИ -->
+
+        <div class="card">
+
+            <h2>
+                📰 Новости
+            </h2>
+
+            <label>
+                Текст новостей
+            </label>
+
+            <textarea
+                id="newsText"
+                placeholder="Напиши здесь новости..."
+            ></textarea>
+
+            <button onclick="saveNews()">
+                СОХРАНИТЬ НОВОСТИ
+            </button>
+
+            <div
+                id="newsStatus"
+                class="status"
+            ></div>
+
+        </div>
+
+
+        <!-- КОНКУРСЫ -->
+
+        <div class="card">
+
+            <h2>
+                🎁 Конкурсы
+            </h2>
+
+            <label>
+                Информация о конкурсах
+            </label>
+
+            <textarea
+                id="contestText"
+                placeholder="Напиши здесь информацию о конкурсе..."
+            ></textarea>
+
+            <button onclick="saveContests()">
+                СОХРАНИТЬ КОНКУРСЫ
+            </button>
+
+            <div
+                id="contestStatus"
+                class="status"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==================================
+   SUPABASE
+================================== */
+
+const SUPABASE_URL =
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==================================
+   ВХОД
+================================== */
+
+async function login() {
+
+    const email =
+        document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById("password")
+        .value;
+
+    const status =
+        document
+        .getElementById("loginStatus");
+
+    if (!email || !password) {
+
+        status.textContent =
+            "Введите email и пароль.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    status.textContent =
+        "Выполняется вход...";
+
+    status.className =
+        "status";
+
+    const { error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+        });
+
+    if (error) {
+
+        status.textContent =
+            "Ошибка входа: " +
+            error.message;
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    status.textContent = "";
+
+    showAdmin();
+
+}
+
+
+/* ==================================
+   ПОКАЗ АДМИНКИ
+================================== */
+
+async function showAdmin() {
+
+    const {
+        data: { session }
+    } =
+        await supabaseClient
+        .auth
+        .getSession();
+
+    if (!session) {
+        return;
+    }
+
+    document
+        .getElementById("loginBox")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("adminBox")
+        .classList
+        .remove("hidden");
+
+    loadData();
+
+}
+
+
+/* ==================================
+   ВЫХОД
+================================== */
+
+async function logout() {
+
+    await supabaseClient
+        .auth
+        .signOut();
+
+    location.reload();
+
+}
+
+
+/* ==================================
+   ЗАГРУЗКА ДАННЫХ
+================================== */
+
+async function loadData() {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+        .from("site_content")
+        .select("*");
+
+    if (error) {
+
+        alert(
+            "Ошибка загрузки: " +
+            error.message
+        );
+
+        return;
+    }
+
+    data.forEach(function(row) {
+
+        if (row.section === "main") {
+
+            try {
+
+                const main =
+                    JSON.parse(row.content);
+
+                document
+                    .getElementById("mainTitle")
+                    .value =
+                    main.title || "";
+
+                document
+                    .getElementById("mainText")
+                    .value =
+                    main.text || "";
+
+                document
+                    .getElementById("telegram")
+                    .value =
+                    main.telegram || "";
+
+                document
+                    .getElementById("tiktok")
+                    .value =
+                    main.tiktok || "";
+
+                document
+                    .getElementById("youtube")
+                    .value =
+                    main.youtube || "";
+
+            } catch {
+
+                document
+                    .getElementById("mainTitle")
+                    .value =
+                    row.content || "";
+
+            }
+
+        }
+
+
+        if (row.section === "news") {
+
+            document
+                .getElementById("newsText")
+                .value =
+                row.content || "";
+
+        }
+
+
+        if (row.section === "contests") {
+
+            document
+                .getElementById("contestText")
+                .value =
+                row.content || "";
+
+        }
+
+    });
+
+}
+
+
+/* ==================================
+   СОХРАНЕНИЕ ГЛАВНОЙ
+================================== */
+
+async function saveMain() {
+
+    const title =
+        document
+        .getElementById("mainTitle")
+        .value;
+
+    const text =
+        document
+        .getElementById("mainText")
+        .value;
+
+    const telegram =
+        document
+        .getElementById("telegram")
+        .value;
+
+    const tiktok =
+        document
+        .getElementById("tiktok")
+        .value;
+
+    const youtube =
+        document
+        .getElementById("youtube")
+        .value;
+
+    const content =
+        JSON.stringify({
+
+            title: title,
+
+            text: text,
+
+            telegram: telegram,
+
+            tiktok: tiktok,
+
+            youtube: youtube
+
+        });
+
+    const {
+        error
+    } =
+        await supabaseClient
+        .from("site_content")
+        .update({
+
+            content: content,
+
+            updated_at:
+                new Date().toISOString()
+
+        })
+        .eq(
+            "section",
+            "main"
+        );
+
+    const status =
+        document
+        .getElementById("mainStatus");
+
+    if (error) {
+
+        status.textContent =
+            "Ошибка: " +
+            error.message;
+
+        status.className =
+            "status error";
+
+    } else {
+
+        status.textContent =
+            "✓ Главная сохранена";
+
+        status.className =
+            "status";
+
+    }
+
+}
+
+
+/* ==================================
+   СОХРАНЕНИЕ НОВОСТЕЙ
+================================== */
+
+async function saveNews() {
+
+    const text =
+        document
+        .getElementById("newsText")
+        .value;
+
+    const {
+        error
+    } =
+        await supabaseClient
+        .from("site_content")
+        .update({
+
+            content: text,
+
+            updated_at:
+                new Date().toISOString()
+
+        })
+        .eq(
+            "section",
+            "news"
+        );
+
+    const status =
+        document
+        .getElementById("newsStatus");
+
+    if (error) {
+
+        status.textContent =
+            "Ошибка: " +
+            error.message;
+
+        status.className =
+            "status error";
+
+    } else {
+
+        status.textContent =
+            "✓ Новости сохранены";
+
+        status.className =
+            "status";
+
+    }
+
+}
+
+
+/* ==================================
+   СОХРАНЕНИЕ КОНКУРСОВ
+================================== */
+
+async function saveContests() {
+
+    const text =
+        document
+        .getElementById("contestText")
+        .value;
+
+    const {
+        error
+    } =
+        await supabaseClient
+        .from("site_content")
+        .update({
+
+            content: text,
+
+            updated_at:
+                new Date().toISOString()
+
+        })
+        .eq(
+            "section",
+            "contests"
+        );
+
+    const status =
+        document
+        .getElementById("contestStatus");
+
+    if (error) {
+
+        status.textContent =
+            "Ошибка: " +
+            error.message;
+
+        status.className =
+            "status error";
+
+    } else {
+
+        status.textContent =
+            "✓ Конкурсы сохранены";
+
+        status.className =
+            "status";
+
+    }
+
+}
+
+
+/* ==================================
+   ПРОВЕРКА СЕССИИ
+================================== */
+
+window.addEventListener(
+    "load",
+    async function() {
+
+        const {
+            data: { session }
+        } =
+            await supabaseClient
+            .auth
+            .getSession();
+
+        if (session) {
+
+            showAdmin();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
