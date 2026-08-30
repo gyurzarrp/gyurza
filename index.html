@@ -6,225 +6,243 @@
 
 <title>GYURZA — Official</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-    background:#05080c;
-    color:#f5f8fb;
-    font-family:Arial,sans-serif;
-    overflow-x:hidden;
+body {
+    background: #05080c;
+    color: #f5f8fb;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
-body::before{
-    content:"";
-    position:fixed;
-    width:600px;
-    height:600px;
-    top:-300px;
-    left:-250px;
-    background:rgba(0,174,255,.15);
-    filter:blur(170px);
-    pointer-events:none;
-    z-index:-1;
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    top: -300px;
+    left: -250px;
+    background: rgba(0,174,255,.15);
+    filter: blur(170px);
+    pointer-events: none;
+    z-index: -1;
 }
 
-header{
-    position:fixed;
-    top:18px;
-    left:50%;
-    transform:translateX(-50%);
+/* =========================
+   HEADER
+========================= */
 
-    width:min(1120px,92%);
-    min-height:66px;
+header {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    width: min(1120px, 92%);
+    min-height: 66px;
 
-    padding:0 10px 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    background:rgba(8,13,19,.90);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:18px;
+    padding: 0 10px 0 24px;
 
-    backdrop-filter:blur(20px);
+    background: rgba(8,13,19,.90);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
 
-    z-index:9999;
+    backdrop-filter: blur(20px);
+
+    z-index: 9999;
 }
 
-.logo{
-    color:white;
-    text-decoration:none;
-    font-size:20px;
-    font-weight:800;
-    letter-spacing:2px;
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
-.logo span{
-    color:#25baff;
+.logo span {
+    color: #25baff;
 }
 
-nav{
-    display:flex;
-    gap:4px;
+nav {
+    display: flex;
+    gap: 4px;
 }
 
-nav button{
-    border:0;
-    outline:0;
+nav button {
+    border: 0;
+    outline: 0;
 
-    color:#8795a3;
-    background:transparent;
+    color: #8795a3;
+    background: transparent;
 
-    font-size:10px;
-    font-weight:800;
+    font-size: 10px;
+    font-weight: 800;
 
-    padding:11px 13px;
+    padding: 11px 13px;
 
-    border-radius:10px;
+    border-radius: 10px;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    transition:.2s;
+    transition: .2s;
 }
 
-nav button:hover{
-    color:white;
+nav button:hover {
+    color: white;
 }
 
-nav button.active{
-    color:white;
-    background:rgba(37,186,255,.12);
+nav button.active {
+    color: white;
+    background: rgba(37,186,255,.12);
 }
 
-.container{
-    width:min(1120px,92%);
-    margin:auto;
-    padding-top:105px;
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+    width: min(1120px, 92%);
+    margin: auto;
+    padding-top: 105px;
 }
 
-/* РАЗДЕЛЫ */
+/* =========================
+   PAGE SYSTEM
+========================= */
 
-.page{
-    display:none;
-    min-height:calc(100vh - 145px);
+.page {
+    display: none;
+    min-height: calc(100vh - 145px);
 }
 
-.page.active{
-    display:flex;
+.page.active {
+    display: block;
 }
 
-/* ГЛАВНАЯ */
+/* =========================
+   HOME
+========================= */
 
-.home{
-    position:relative;
-    align-items:center;
-    overflow:hidden;
+.home {
+    position: relative;
+    min-height: calc(100vh - 145px);
 
-    padding:70px;
+    display: flex;
+    align-items: center;
 
-    border-radius:30px;
+    overflow: hidden;
+
+    padding: 70px;
+
+    border-radius: 30px;
 }
 
-.home-content{
-    position:relative;
-    z-index:2;
+.home-content {
+    position: relative;
+    z-index: 2;
 
-    width:65%;
+    width: 65%;
 }
 
-.badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
-    padding:9px 14px;
-    margin-bottom:25px;
+    padding: 9px 14px;
+    margin-bottom: 25px;
 
-    border-radius:50px;
+    border-radius: 50px;
 
-    background:rgba(37,186,255,.07);
-    border:1px solid rgba(37,186,255,.20);
+    background: rgba(37,186,255,.07);
+    border: 1px solid rgba(37,186,255,.20);
 
-    color:#69ceff;
+    color: #69ceff;
 
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:1.5px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
 }
 
-.badge-dot{
-    width:6px;
-    height:6px;
+.badge-dot {
+    width: 6px;
+    height: 6px;
 
-    border-radius:50%;
+    border-radius: 50%;
 
-    background:#25baff;
-    box-shadow:0 0 12px #25baff;
+    background: #25baff;
+    box-shadow: 0 0 12px #25baff;
 }
 
-h1{
-    font-size:clamp(48px,7vw,82px);
-    line-height:1;
-    letter-spacing:-4px;
-    margin-bottom:28px;
+h1 {
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 1;
+    letter-spacing: -4px;
+    margin-bottom: 28px;
 }
 
-.blue{
-    color:#25baff;
+.blue {
+    color: #25baff;
 }
 
-.home-text{
-    max-width:700px;
+.home-text {
+    max-width: 700px;
 
-    color:#aebbc6;
+    color: #aebbc6;
 
-    font-size:16px;
-    line-height:1.85;
+    font-size: 16px;
+    line-height: 1.85;
 }
 
-.home-text p{
-    margin-bottom:17px;
+.home-text p {
+    margin-bottom: 17px;
 }
 
-.home-text a{
-    color:#54c7ff;
-    font-weight:700;
-    text-decoration:none;
+.home-text a {
+    color: #54c7ff;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-.character{
-    position:absolute;
+.home-text a:hover {
+    text-decoration: underline;
+}
 
-    right:-40px;
-    bottom:0;
+.character {
+    position: absolute;
 
-    width:53%;
-    height:100%;
+    right: -40px;
+    bottom: 0;
 
-    object-fit:cover;
+    width: 53%;
+    height: 100%;
 
-    opacity:.85;
+    object-fit: cover;
 
-    mask-image:linear-gradient(
+    opacity: .85;
+
+    mask-image: linear-gradient(
         to right,
         transparent 0%,
         black 38%,
         black 100%
     );
 
-    -webkit-mask-image:linear-gradient(
+    -webkit-mask-image: linear-gradient(
         to right,
         transparent 0%,
         black 38%,
@@ -232,13 +250,13 @@ h1{
     );
 }
 
-.home::after{
-    content:"";
+.home::after {
+    content: "";
 
-    position:absolute;
-    inset:0;
+    position: absolute;
+    inset: 0;
 
-    background:linear-gradient(
+    background: linear-gradient(
         90deg,
         #05080c 0%,
         rgba(5,8,12,.93) 35%,
@@ -246,159 +264,167 @@ h1{
         rgba(5,8,12,.10)
     );
 
-    z-index:1;
+    z-index: 1;
+
+    pointer-events: none;
 }
 
-/* ОБЩИЕ РАЗДЕЛЫ */
+/* =========================
+   CONTENT
+========================= */
 
-.content{
-    width:100%;
-    padding:70px 0;
+.content {
+    width: 100%;
+    padding: 70px 0;
 }
 
-.label{
-    color:#25baff;
+.label {
+    color: #25baff;
 
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:2px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
 
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-h2{
-    font-size:clamp(40px,6vw,62px);
-    line-height:1.05;
-    letter-spacing:-3px;
+h2 {
+    font-size: clamp(40px, 6vw, 62px);
+    line-height: 1.05;
+    letter-spacing: -3px;
 
-    margin-bottom:38px;
+    margin-bottom: 38px;
 }
 
-/* ОБО МНЕ */
+/* =========================
+   ABOUT
+========================= */
 
-.about-text{
-    max-width:900px;
+.about-text {
+    max-width: 900px;
 
-    color:#aebbc6;
+    color: #aebbc6;
 
-    font-size:16px;
-    line-height:1.9;
+    font-size: 16px;
+    line-height: 1.9;
 }
 
-.about-text p{
-    margin-bottom:18px;
+.about-text p {
+    margin-bottom: 18px;
 }
 
-.socials{
-    display:grid;
+.socials {
+    display: grid;
 
-    max-width:800px;
+    max-width: 800px;
 
-    gap:12px;
+    gap: 12px;
 
-    margin-top:38px;
+    margin-top: 38px;
 }
 
-.social{
-    display:flex;
-    align-items:center;
+.social {
+    display: flex;
+    align-items: center;
 
-    min-height:76px;
+    min-height: 76px;
 
-    padding:12px 16px;
+    padding: 12px 16px;
 
-    color:white;
-    text-decoration:none;
+    color: white;
+    text-decoration: none;
 
-    background:#0b1118;
+    background: #0b1118;
 
-    border:1px solid rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.07);
 
-    border-radius:17px;
+    border-radius: 17px;
 
-    transition:.25s;
+    transition: .25s;
 }
 
-.social:hover{
-    transform:translateY(-3px);
+.social:hover {
+    transform: translateY(-3px);
 
-    background:#0e1924;
+    background: #0e1924;
 
-    border-color:rgba(37,186,255,.4);
+    border-color: rgba(37,186,255,.4);
 }
 
-.social-icon{
-    width:50px;
-    height:50px;
+.social-icon {
+    width: 50px;
+    height: 50px;
 
-    flex-shrink:0;
+    flex-shrink: 0;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border-radius:14px;
+    border-radius: 14px;
 
-    background:#121e29;
+    background: #121e29;
 }
 
-.social-icon svg{
-    width:28px;
-    height:28px;
+.social-icon svg {
+    width: 28px;
+    height: 28px;
 }
 
-.tiktok-logo{
-    fill:white;
+.tiktok-logo {
+    fill: white;
 }
 
-.youtube-logo{
-    fill:#ff0033;
+.youtube-logo {
+    fill: #ff0033;
 }
 
-.telegram-circle{
-    fill:#229ED9;
+.telegram-circle {
+    fill: #229ED9;
 }
 
-.telegram-plane{
-    fill:white;
+.telegram-plane {
+    fill: white;
 }
 
-.social-info{
-    margin-left:15px;
+.social-info {
+    margin-left: 15px;
 }
 
-.social-title{
-    font-size:15px;
-    font-weight:800;
+.social-title {
+    font-size: 15px;
+    font-weight: 800;
 }
 
-.social-name{
-    color:#82919f;
+.social-name {
+    color: #82919f;
 
-    font-size:12px;
+    font-size: 12px;
 
-    margin-top:4px;
+    margin-top: 4px;
 }
 
-.arrow{
-    margin-left:auto;
+.arrow {
+    margin-left: auto;
 
-    color:#566777;
+    color: #566777;
 
-    font-size:26px;
+    font-size: 26px;
 }
 
-/* НОВОСТИ / КОНКУРСЫ */
+/* =========================
+   POSTS
+========================= */
 
-.posts{
-    display:grid;
+.posts {
+    display: grid;
 
-    gap:15px;
+    gap: 15px;
 
-    max-width:850px;
+    max-width: 850px;
 }
 
-.post{
+.post {
     background:
         linear-gradient(
             145deg,
@@ -406,146 +432,144 @@ h2{
             rgba(8,14,21,.95)
         );
 
-    border:1px solid rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.07);
 
-    border-radius:22px;
+    border-radius: 22px;
 
-    padding:25px;
+    padding: 25px;
 }
 
-.post-type{
-    color:#25baff;
+.post-type {
+    color: #25baff;
 
-    font-size:10px;
-    font-weight:800;
+    font-size: 10px;
+    font-weight: 800;
 
-    letter-spacing:1.5px;
+    letter-spacing: 1.5px;
 
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-.post-date{
-    color:#536270;
+.post-date {
+    color: #536270;
 
-    font-size:11px;
+    font-size: 11px;
 
-    margin-bottom:16px;
+    margin-bottom: 16px;
 }
 
-.post-content{
-    color:#c7d0d8;
+.post-content {
+    color: #c7d0d8;
 
-    line-height:1.8;
+    line-height: 1.8;
 
-    white-space:pre-wrap;
+    white-space: pre-wrap;
 }
 
-.empty{
-    color:#71808d;
+.empty {
+    color: #71808d;
 
-    padding:25px;
+    padding: 25px;
 
-    background:#0b1118;
+    background: #0b1118;
 
-    border-radius:18px;
+    border-radius: 18px;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
-footer{
-    text-align:center;
+footer {
+    text-align: center;
 
-    color:#536270;
+    color: #536270;
 
-    font-size:11px;
+    font-size: 11px;
 
-    padding:25px 0 35px;
+    padding: 25px 0 35px;
 }
 
-/* МОБИЛЬНАЯ ВЕРСИЯ */
+/* =========================
+   MOBILE
+========================= */
 
-@media(max-width:720px){
+@media (max-width: 720px) {
 
-    header{
-        top:9px;
+    header {
+        top: 9px;
 
-        width:95%;
+        width: 95%;
 
-        min-height:60px;
+        min-height: 60px;
 
-        padding:8px 9px 8px 16px;
+        padding: 8px 9px 8px 16px;
     }
 
-    .logo{
-        font-size:16px;
+    .logo {
+        font-size: 16px;
     }
 
-    nav{
-        gap:1px;
+    nav {
+        gap: 1px;
     }
 
-    nav button{
-        padding:7px 6px;
-        font-size:8px;
+    nav button {
+        padding: 7px 6px;
+        font-size: 8px;
     }
 
-    .container{
-        width:92%;
-        padding-top:88px;
+    .container {
+        width: 92%;
+        padding-top: 88px;
     }
 
-    .home{
-        padding:35px 25px;
-
-        border-radius:22px;
-
-        align-items:flex-start;
+    .home {
+        padding: 35px 25px;
+        border-radius: 22px;
     }
 
-    .home-content{
-        width:100%;
+    .home-content {
+        width: 100%;
     }
 
-    .character{
-        right:-100px;
-
-        width:90%;
-
-        opacity:.35;
+    .character {
+        right: -100px;
+        width: 90%;
+        opacity: .35;
     }
 
-    h1{
-        font-size:48px;
-
-        letter-spacing:-2px;
+    h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
     }
 
-    .home-text{
-        font-size:14px;
-        line-height:1.75;
+    .home-text {
+        font-size: 14px;
+        line-height: 1.75;
     }
 
-    .content{
-        padding:45px 0;
+    .content {
+        padding: 45px 0;
     }
 
-    h2{
-        font-size:43px;
+    h2 {
+        font-size: 43px;
     }
 
-    .about-text{
-        font-size:14px;
-        line-height:1.8;
+    .about-text {
+        font-size: 14px;
+        line-height: 1.8;
     }
 
-    .social{
-        min-height:70px;
-        padding:11px;
+    .social {
+        min-height: 70px;
+        padding: 11px;
     }
 
-    .social-icon{
-        width:45px;
-        height:45px;
+    .social-icon {
+        width: 45px;
+        height: 45px;
     }
 }
 </style>
@@ -568,6 +592,7 @@ footer{
         <button
             id="nav-home"
             class="active"
+            type="button"
             onclick="openPage('home')"
         >
             ГЛАВНАЯ
@@ -575,6 +600,7 @@ footer{
 
         <button
             id="nav-news"
+            type="button"
             onclick="openPage('news')"
         >
             НОВОСТИ
@@ -582,6 +608,7 @@ footer{
 
         <button
             id="nav-about"
+            type="button"
             onclick="openPage('about')"
         >
             ОБО МНЕ
@@ -589,6 +616,7 @@ footer{
 
         <button
             id="nav-contests"
+            type="button"
             onclick="openPage('contests')"
         >
             КОНКУРСЫ
@@ -601,7 +629,9 @@ footer{
 
 <div class="container">
 
-<!-- ГЛАВНАЯ -->
+<!-- =========================
+     ГЛАВНАЯ
+========================= -->
 
 <section
     id="home"
@@ -617,11 +647,8 @@ footer{
     <div class="home-content">
 
         <div class="badge">
-
             <span class="badge-dot"></span>
-
             OFFICIAL WEBSITE
-
         </div>
 
         <h1>
@@ -643,15 +670,13 @@ footer{
             </p>
 
             <p>
-                Сейчас я активно снимаю в TikTok, YouTube
-                и публикую посты в свой
+                Сейчас я активно снимаю в TikTok, YouTube и
+                публикую посты в свой
                 <a
                     href="https://t.me/ArmyRobloxRPnewss"
                     target="_blank"
                     rel="noopener"
-                >
-                    Telegram канал
-                </a>.
+                >Telegram канал</a>.
             </p>
 
             <p>
@@ -660,9 +685,7 @@ footer{
                     href="https://www.tiktok.com/@gyurza_arrp"
                     target="_blank"
                     rel="noopener"
-                >
-                    @gyurza_arrp
-                </a>
+                >@gyurza_arrp</a>
             </p>
 
             <p>
@@ -671,9 +694,7 @@ footer{
                     href="https://www.youtube.com/@GyurzaOriginalOwnerRS"
                     target="_blank"
                     rel="noopener"
-                >
-                    @GyurzaOriginalOwnerRS
-                </a>
+                >@GyurzaOriginalOwnerRS</a>
             </p>
 
             <p>
@@ -687,7 +708,9 @@ footer{
 </section>
 
 
-<!-- НОВОСТИ -->
+<!-- =========================
+     НОВОСТИ
+========================= -->
 
 <section
     id="news"
@@ -720,7 +743,9 @@ footer{
 </section>
 
 
-<!-- ОБО МНЕ -->
+<!-- =========================
+     ОБО МНЕ
+========================= -->
 
 <section
     id="about"
@@ -740,17 +765,16 @@ footer{
         <div class="about-text">
 
             <p>
-                Я — Гюрза, медийная личность в сфере
-                «Армия Roblox RP». Меня знают благодаря моей
-                активности в сообществе и созданию контента.
+                Я — Гюрза, медийная личность в сфере «Армия Roblox RP».
+                Меня знают благодаря моей активности в сообществе и
+                созданию контента.
             </p>
 
             <p>
-                В определённый период я возглавлял клан
-                «Русская Сила!», который некоторое время
-                занимал 1-е место по балансу среди кланов.
-                Этот период стал важной частью моей истории
-                в сообществе.
+                В определённый период я возглавлял клан «Русская Сила!»,
+                который некоторое время занимал 1-е место по балансу
+                среди кланов. Этот период стал важной частью моей
+                истории в сообществе.
             </p>
 
             <p>
@@ -759,20 +783,21 @@ footer{
             </p>
 
             <p>
-                В основном я создаю контент для TikTok —
-                @gyurza_arrp. Также у меня есть YouTube-канал,
-                где я публикую видео и другие материалы,
-                связанные с моей деятельностью.
+                В основном я создаю контент для TikTok — @gyurza_arrp.
+                Также у меня есть YouTube-канал, где я публикую видео
+                и другие материалы, связанные с моей деятельностью.
             </p>
 
             <p>
                 Спасибо, что посетили мой сайт. Здесь вы сможете
-                следить за моей деятельностью, новостями
-                и будущими проектами.
+                следить за моей деятельностью, новостями и
+                будущими проектами.
             </p>
 
         </div>
 
+
+        <!-- КНОПКИ -->
 
         <div class="socials">
 
@@ -917,7 +942,9 @@ footer{
 </section>
 
 
-<!-- КОНКУРСЫ -->
+<!-- =========================
+     КОНКУРСЫ
+========================= -->
 
 <section
     id="contests"
@@ -957,76 +984,77 @@ footer{
 </div>
 
 
+<!-- SUPABASE ПОДКЛЮЧАЕМ ПОСЛЕ ВСЕГО HTML -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+
+/* =========================================
+   ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
+
+   ЭТОТ КОД НЕ ЗАВИСИТ ОТ SUPABASE
+========================================= */
+
+function openPage(pageName) {
+
+    var pages = document.querySelectorAll(".page");
+
+    for (var i = 0; i < pages.length; i++) {
+        pages[i].classList.remove("active");
+    }
+
+    var buttons = document.querySelectorAll("nav button");
+
+    for (var j = 0; j < buttons.length; j++) {
+        buttons[j].classList.remove("active");
+    }
+
+    var selectedPage =
+        document.getElementById(pageName);
+
+    if (selectedPage) {
+        selectedPage.classList.add("active");
+    }
+
+    var selectedButton =
+        document.getElementById("nav-" + pageName);
+
+    if (selectedButton) {
+        selectedButton.classList.add("active");
+    }
+
+    window.scrollTo(0, 0);
+}
+
 
 /* =========================================
    SUPABASE
 ========================================= */
 
-const SUPABASE_URL =
-    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
+var supabaseClient = null;
 
-const SUPABASE_KEY =
-    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+try {
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
+    if (
+        window.supabase &&
+        typeof window.supabase.createClient === "function"
+    ) {
+
+        supabaseClient =
+            window.supabase.createClient(
+                "https://gcwjtsqnmfimqdoyhfar.supabase.co",
+                "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w"
+            );
+
+    }
+
+} catch (error) {
+
+    console.log(
+        "Supabase недоступен:",
+        error
     );
-
-
-/* =========================================
-   ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
-========================================= */
-
-function openPage(pageName){
-
-    const pages = document.querySelectorAll(".page");
-
-    pages.forEach(function(page){
-
-        page.classList.remove("active");
-
-    });
-
-
-    const selectedPage =
-        document.getElementById(pageName);
-
-
-    if(selectedPage){
-
-        selectedPage.classList.add("active");
-
-    }
-
-
-    const buttons =
-        document.querySelectorAll("nav button");
-
-
-    buttons.forEach(function(button){
-
-        button.classList.remove("active");
-
-    });
-
-
-    const selectedButton =
-        document.getElementById(
-            "nav-" + pageName
-        );
-
-
-    if(selectedButton){
-
-        selectedButton.classList.add("active");
-
-    }
-
-
-    window.scrollTo(0,0);
 
 }
 
@@ -1035,40 +1063,39 @@ function openPage(pageName){
    НОВОСТИ
 ========================================= */
 
-async function loadNews(){
+async function loadNews() {
 
-    const list =
+    var list =
         document.getElementById("newsList");
 
+    if (!list) {
+        return;
+    }
 
-    try{
+    if (!supabaseClient) {
 
-        const result =
+        list.innerHTML =
+            '<div class="empty">' +
+            'Новостей пока нет.' +
+            '</div>';
+
+        return;
+    }
+
+    try {
+
+        var result =
             await supabaseClient
                 .from("site_content")
                 .select("*")
-                .eq("selection","news")
-                .order("created_at",{
-                    ascending:false
+                .eq("selection", "news")
+                .order("created_at", {
+                    ascending: false
                 });
 
+        if (result.error) {
 
-        if(result.error){
-
-            list.innerHTML =
-                '<div class="empty">' +
-                'Не удалось загрузить новости.' +
-                '</div>';
-
-            return;
-        }
-
-
-        const data =
-            result.data;
-
-
-        if(!data || data.length === 0){
+            console.log(result.error);
 
             list.innerHTML =
                 '<div class="empty">' +
@@ -1078,12 +1105,22 @@ async function loadNews(){
             return;
         }
 
+        var data = result.data;
+
+        if (!data || data.length === 0) {
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Новостей пока нет.' +
+                '</div>';
+
+            return;
+        }
 
         list.innerHTML =
-            data.map(function(item){
+            data.map(function(item) {
 
                 return `
-
                     <article class="post">
 
                         <div class="post-type">
@@ -1099,96 +1136,15 @@ async function loadNews(){
                         </div>
 
                     </article>
-
                 `;
 
             }).join("");
 
-    }catch(error){
+    } catch (error) {
+
+        console.log(error);
 
         list.innerHTML =
             '<div class="empty">' +
-            'Не удалось загрузить новости.' +
-            '</div>';
-
-    }
-
-}
-
-
-/* =========================================
-   КОНКУРСЫ
-========================================= */
-
-async function loadContests(){
-
-    const list =
-        document.getElementById("contestList");
-
-
-    try{
-
-        const result =
-            await supabaseClient
-                .from("site_content")
-                .select("*")
-                .eq("selection","contest")
-                .order("created_at",{
-                    ascending:false
-                });
-
-
-        if(result.error){
-
-            list.innerHTML =
-                '<div class="empty">' +
-                'Не удалось загрузить конкурсы.' +
-                '</div>';
-
-            return;
-        }
-
-
-        const data =
-            result.data;
-
-
-        if(!data || data.length === 0){
-
-            list.innerHTML =
-                '<div class="empty">' +
-                'Конкурсов пока нет.' +
-                '</div>';
-
-            return;
-        }
-
-
-        list.innerHTML =
-            data.map(function(item){
-
-                return `
-
-                    <article class="post">
-
-                        <div class="post-type">
-                            КОНКУРС
-                        </div>
-
-                        <div class="post-date">
-                            ${formatDate(item.created_at)}
-                        </div>
-
-                        <div class="post-content">
-                            ${escapeHtml(item.content)}
-                        </div>
-
-                    </article>
-
-                `;
-
-            }).join("");
-
-    }catch(error){
-
-        list
+            'Новостей пока нет.' +
+      
