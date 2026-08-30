@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GYURZA — Official</title>
+
+<style>
+
+/* =========================
+   ОСНОВА
+========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #05080c;
+    --panel: #0b1118;
+    --blue: #25baff;
+    --blue2: #0b8fd1;
+    --white: #f5f8fb;
+    --gray: #8795a3;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: var(--bg);
+    color: var(--white);
+
+    font-family: "Manrope", Arial, sans-serif;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   ФОНОВЫЕ ЭФФЕКТЫ
+========================= */
+
+body::before {
+    content: "";
+
+    position: fixed;
+
+    width: 600px;
+    height: 600px;
+
+    top: -300px;
+    left: -250px;
+
+    background: rgba(0, 174, 255, .16);
+
+    filter: blur(170px);
+
+    pointer-events: none;
+
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+
+    position: fixed;
+
+    width: 500px;
+    height: 500px;
+
+    right: -250px;
+    bottom: -250px;
+
+    background: rgba(0, 110, 255, .10);
+
+    filter: blur(160px);
+
+    pointer-events: none;
+
+    z-index: -2;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+
+    position: fixed;
+
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: min(1120px, 92%);
+
+    height: 66px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 10px 0 24px;
+
+    background: rgba(8, 13, 19, .75);
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 18px;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    z-index: 999;
+}
+
+
+/* ЛОГОТИП */
+
+.logo {
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--blue);
+}
+
+
+/* НАВИГАЦИЯ */
+
+nav {
+
+    display: flex;
+
+    gap: 4px;
+}
+
+nav button {
+
+    border: 0;
+
+    background: transparent;
+
+    color: #8795a3;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    padding: 11px 14px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+nav button:hover {
+    color: white;
+}
+
+nav button.active {
+
+    color: white;
+
+    background: rgba(37,186,255,.12);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(37,186,255,.08);
+}
+
+
+/* =========================
+   ПРИЛОЖЕНИЕ
+========================= */
+
+.container {
+
+    width: min(1120px, 92%);
+
+    min-height: 100vh;
+
+    margin: auto;
+
+    padding-top: 105px;
+}
+
+
+/* =========================
+   СТРАНИЦЫ
+========================= */
+
+.page {
+
+    display: none;
+
+    min-height: calc(100vh - 145px);
+
+    animation: appear .35s ease;
+}
+
+.page.active {
+    display: flex;
+}
+
+@keyframes appear {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   ГЛАВНАЯ
+========================= */
+
+.home {
+
+    position: relative;
+
+    overflow: hidden;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 30px;
+
+    padding: 70px;
+
+    min-height: calc(100vh - 145px);
+}
+
+
+/* ФОТО ПЕРСОНАЖА */
+
+.character {
+
+    position: absolute;
+
+    right: -40px;
+
+    bottom: 0;
+
+    width: min(53%, 570px);
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    opacity: .85;
+
+    mask-image:
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 35%,
+            black 100%
+        );
+
+    -webkit-mask-image:
+        linear-gradient(
+            to right,
+            transparent 0%,
+            black 35%,
+            black 100%
+        );
+
+    z-index: 0;
+}
+
+
+/* Затемнение картинки */
+
+.home::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #05080c 0%,
+            rgba(5,8,12,.93) 35%,
+            rgba(5,8,12,.25) 70%,
+            rgba(5,8,12,.1)
+        );
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* Контент */
+
+.home-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    max-width: 690px;
+
+    margin-right: auto;
+}
+
+
+/* маленькая надпись */
+
+.badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 13px;
+
+    margin-bottom: 25px;
+
+    border-radius: 50px;
+
+    border: 1px solid rgba(37,186,255,.2);
+
+    background: rgba(37,186,255,.06);
+
+    color: #69ceff;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.badge-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--blue);
+
+    box-shadow: 0 0 12px var(--blue);
+}
+
+
+/* Заголовок */
+
+h1 {
+
+    font-size: clamp(45px, 6vw, 76px);
+
+    line-height: 1.03;
+
+    letter-spacing: -3px;
+
+    font-weight: 800;
+
+    margin-bottom: 27px;
+}
+
+.blue {
+    color: var(--blue);
+}
+
+
+/* Текст */
+
+.home-text {
+
+    color: #aebbc6;
+
+    font-size: 16px;
+
+    line-height: 1.85;
+}
+
+.home-text p {
+    margin-bottom: 17px;
+}
+
+.home-text a {
+
+    color: #54c7ff;
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+.home-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   ОБЫЧНЫЕ СТРАНИЦЫ
+========================= */
+
+.content {
+
+    width: 100%;
+
+    margin: auto;
+
+    padding: 70px 0;
+}
+
+.label {
+
+    color: var(--blue);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 9px;
+}
+
+h2 {
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 38px;
+}
+
+
+/* =========================
+   ПУСТЫЕ СОСТОЯНИЯ
+========================= */
+
+.empty {
+
+    max-width: 900px;
+
+    padding: 75px 30px;
+
+    text-align: center;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(16,26,36,.92),
+            rgba(8,14,21,.92)
+        );
+}
+
+.empty-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin: auto;
+    margin-bottom: 19px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    color: var(--blue);
+
+    background: rgba(37,186,255,.08);
+
+    font-size: 24px;
+}
+
+.empty strong {
+
+    display: block;
+
+    font-size: 19px;
+
+    margin-bottom: 6px;
+}
+
+.empty p {
+
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   ОБО МНЕ
+========================= */
+
+.about-text {
+
+    max-width: 900px;
+
+    color: #acbac6;
+
+    font-size: 16px;
+
+    line-height: 1.9;
+}
+
+.about-text p {
+    margin-bottom: 18px;
+}
+
+
+/* =========================
+   СОЦИАЛЬНЫЕ КНОПКИ
+========================= */
+
+.socials {
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 760px);
+
+    gap: 12px;
+
+    margin-top: 38px;
+}
+
+.social {
+
+    display: flex;
+
+    align-items: center;
+
+    min-height: 76px;
+
+    padding: 12px 16px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background: rgba(11,18,26,.9);
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    border-radius: 17px;
+
+    transition: .25s;
+}
+
+.social:hover {
+
+    transform: translateY(-3px);
+
+    border-color: rgba(37,186,255,.4);
+
+    background: #0e1924;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.25);
+}
+
+
+/* Иконка */
+
+.social-icon {
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #121e29;
+}
+
+.social-icon svg {
+
+    width: 28px;
+    height: 28px;
+}
+
+
+/* Текст */
+
+.social-info {
+
+    margin-left: 15px;
+}
+
+.social-title {
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+.social-name {
+
+    color: #82919f;
+
+    font-size: 13px;
+
+    margin-top: 2px;
+}
+
+
+/* Стрелка */
+
+.arrow {
+
+    margin-left: auto;
+
+    color: #566777;
+
+    font-size: 25px;
+
+    transition: .2s;
+}
+
+.social:hover .arrow {
+
+    color: var(--blue);
+
+    transform: translateX(4px);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    text-align: center;
+
+    color: #536270;
+
+    font-size: 11px;
+
+    padding: 25px 0 35px;
+}
+
+
+/* =========================
+   МОБИЛЬНЫЙ
+========================= */
+
+@media(max-width: 720px) {
+
+    header {
+
+        top: 9px;
+
+        width: 95%;
+
+        height: auto;
+
+        min-height: 60px;
+
+        padding: 8px 9px 8px 16px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    nav {
+        gap: 1px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    nav button {
+
+        padding: 7px 6px;
+
+        font-size: 8px;
+    }
+
+    .container {
+
+        width: 92%;
+
+        padding-top: 88px;
+    }
+
+    .home {
+
+        padding: 35px 25px;
+
+        border-radius: 22px;
+
+        align-items: flex-start;
+    }
+
+    .character {
+
+        right: -100px;
+
+        width: 90%;
+
+        opacity: .42;
+
+        mask-image:
+            linear-gradient(
+                to right,
+                transparent 0%,
+                black 60%
+            );
+
+        -webkit-mask-image:
+            linear-gradient(
+                to right,
+                transparent 0%,
+                black 60%
+            );
+    }
+
+    .home::after {
+
+        background:
+            linear-gradient(
+                90deg,
+                #05080c 5%,
+                rgba(5,8,12,.9) 65%,
+                rgba(5,8,12,.3)
+            );
+    }
+
+    h1 {
+
+        font-size: 45px;
+
+        letter-spacing: -2px;
+    }
+
+    .home-text {
+
+        font-size: 14px;
+
+        line-height: 1.75;
+    }
+
+    .content {
+        padding: 45px 0;
+    }
+
+    .about-text {
+
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+    .social {
+
+        min-height: 68px;
+
+        padding: 11px;
+    }
+
+    .social-icon {
+
+        width: 44px;
+        height: 44px;
+    }
+
+    .social-title {
+        font-size: 14px;
+    }
+
+    .social-name {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a
+        class="logo"
+        href="#"
+        onclick="showPage('home'); return false;"
+    >
+        GYURZA<span>.</span>
+    </a>
+
+
+    <nav>
+
+        <button
+            class="active"
+            onclick="showPage('home', this)"
+        >
+            ГЛАВНАЯ
+        </button>
+
+        <button
+            onclick="showPage('news', this)"
+        >
+            НОВОСТИ
+        </button>
+
+        <button
+            onclick="showPage('about', this)"
+        >
+            ОБО МНЕ
+        </button>
+
+        <button
+            onclick="showPage('contests', this)"
+        >
+            КОНКУРСЫ
+        </button>
+
+    </nav>
+
+</header>
+
+
+
+<div class="container">
+
+
+<!-- ================= ГЛАВНАЯ ================= -->
+
+<section
+    id="home"
+    class="page active home"
+>
+
+
+    <!-- Персонаж -->
+
+    <img
+        class="character"
+        src="https://i.imgur.com/W5Lg2SX.jpeg"
+        alt="GYURZA"
+    >
+
+
+    <div class="home-content">
+
+        <div class="badge">
+
+            <span class="badge-dot"></span>
+
+            OFFICIAL WEBSITE
+
+        </div>
+
+
+        <h1>
+
+            Привет! Я
+            <span class="blue">Гюрза</span>
+            👋
+
+        </h1>
+
+
+        <div class="home-text">
+
+            <p>
+                Многие знают меня как медийную личность
+                в сфере «Армия Roblox RP», а также как
+                бывшего лидера клана «Русская Сила!».
+            </p>
+
+
+            <p>
+
+                На этом сайте ты сможешь узнать больше
+                обо мне, следить за новостями и будущими
+                конкурсами в моём
+                <a
+                    href="https://t.me/ArmyRobloxRPnewss"
+                    target="_blank"
+                >
+                    Telegram-канале
+                </a>,
+                а также найти много другой интересной
+                информации!
+
+            </p>
+
+
+            <p>
+
+                Рад, что ты заглянул на этот сайт! :)
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= НОВОСТИ ================= -->
+
+<section
+    id="news"
+    class="page"
+>
+
+    <div class="content">
+
+        <div class="label">
+            01 / NEWS
+        </div>
+
+        <h2>
+            Новости
+        </h2>
+
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ✦
+            </div>
+
+            <strong>
+                Новостей пока нет
+            </strong>
+
+            <p>
+                Следи за обновлениями — новые публикации
+                появятся здесь.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ОБО МНЕ ================= -->
+
+<section
+    id="about"
+    class="page"
+>
+
+    <div class="content">
+
+        <div class="label">
+            02 / ABOUT
+        </div>
+
+        <h2>
+            Обо мне
+        </h2>
+
+
+        <div class="about-text">
+
+            <p>
+                Я — Гюрза, медийная личность в сфере
+                «Армия Roblox RP». Меня знают благодаря
+                моей активности в сообществе и созданию
+                контента.
+            </p>
+
+
+            <p>
+                В определённый период я возглавлял клан
+                «Русская Сила!», который некоторое время
+                занимал 1-е место по балансу среди кланов.
+                Этот период стал важной частью моей истории
+                в сообществе.
+            </p>
+
+
+            <p>
+                Сейчас я состою в клане «Obsidian» и
+                продолжаю развивать свою медийную
+                деятельность.
+            </p>
+
+
+            <p>
+                В основном я создаю контент для TikTok —
+                @gyurza_arrp. Также у меня есть YouTube-канал,
+                где я публикую видео и другие материалы,
+                связанные с моей деятельностью.
+            </p>
+
+
+            <p>
+                Спасибо, что посетили мой сайт. Здесь вы
+                сможете следить за моей деятельностью,
+                новостями и будущими проектами.
+            </p>
+
+        </div>
+
+
+        <!-- СОЦСЕТИ -->
+
+        <div class="socials">
+
+
+            <!-- TIKTOK -->
+
+            <a
+                class="social"
+                href="https://tiktok.com/@gyurza_arrp"
+                target="_blank"
+            >
+
+                <div class="social-icon">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            fill="white"
+                            d="M15.2 3c.3 2.4 1.7 3.8 4 4v3.1c-1.5.1-2.9-.4-4-1.2v7.3c0 4-3.1 5.8-6 5.8-3.1 0-5.4-2.1-5.4-5 0-3.2 2.6-5.3 5.8-5.1v3.1c-1.7-.2-2.7.6-2.7 2 0 1.1.9 1.9 2.1 1.9 1.2 0 2.8-.7 2.8-3V3h3.4Z"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="social-info">
+
+                    <div class="social-title">
+                        Мой TikTok
+                    </div>
+
+                    <div class="social-name">
+                        @gyurza_arrp
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </a>
+
+
+
+            <!-- YOUTUBE -->
+
+            <a
+                class="social"
+                href="https://www.youtube.com/@GyurzaOriginalOwnerRS"
+                target="_blank"
+            >
+
+                <div class="social-icon">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            fill="#ff0033"
+                            d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8Z"
+                        />
+
+                        <path
+                            fill="white"
+                            d="m9.7 15.8 5.9-3.8-5.9-3.8v7.6Z"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="social-info">
+
+                    <div class="social-title">
+                        Мой YouTube
+                    </div>
+
+                    <div class="social-name">
+                        @GyurzaOriginalOwnerRS
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </a>
+
+
+
+            <!-- TELEGRAM -->
+
+            <a
+                class="social"
+                href="https://t.me/ArmyRobloxRPnewss"
+                target="_blank"
+            >
+
+                <div class="social-icon">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="11"
+                            fill="#229ED9"
+                        />
+
+                        <path
+                            fill="white"
+                            d="M17.8 7.1 15.5 17c-.2.7-.6.9-1.2.5l-3.4-2.5-1.7 1.7c-.2.2-.4.4-.8.4l.2-3.5 6.4-5.8c.3-.3-.1-.4-.5-.1L6.7 13 3.3 12c-.7-.2-.7-.7.2-1l13.2-5.1c.6-.2 1.2.1 1.1 1.2Z"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <div class="social-info">
+
+                    <div class="social-title">
+                        Мой Telegram канал
+                    </div>
+
+                    <div class="social-name">
+                        @ArmyRobloxRPnewss
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+                    ›
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= КОНКУРСЫ ================= -->
+
+<section
+    id="contests"
+    class="page"
+>
+
+    <div class="content">
+
+        <div class="label">
+            03 / CONTESTS
+        </div>
+
+        <h2>
+            Конкурсы
+        </h2>
+
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🎁
+            </div>
+
+            <strong>
+                Конкурсов пока нет
+            </strong>
+
+            <p>
+                Когда появится новый конкурс,
+                информация будет опубликована здесь.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    © 2026 GYURZA · Official Website
+
+</footer>
+
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
+========================= */
+
+function showPage(page, button) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    document
+        .getElementById(page)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll("nav button")
+        .forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+
+    history.replaceState(
+        null,
+        "",
+        "#" + page
+    );
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================
+   ОТКРЫТИЕ РАЗДЕЛА ИЗ URL
+========================= */
+
+window.addEventListener("load", function() {
+
+    const page =
+        location.hash.replace("#", "");
+
+    const valid = [
+        "home",
+        "news",
+        "about",
+        "contests"
+    ];
+
+
+    if (valid.includes(page)) {
+
+        const button =
+            document.querySelector(
+                `nav button[onclick*="'${page}'"]`
+            );
+
+        showPage(page, button);
+
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>
