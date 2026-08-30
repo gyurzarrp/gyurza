@@ -9,265 +9,268 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    background: #05080d;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
+html{
+    scroll-behavior:smooth;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    width: 550px;
-    height: 550px;
-    left: -250px;
-    top: -250px;
-    background: rgba(0, 174, 255, .14);
-    filter: blur(150px);
-    pointer-events: none;
-    z-index: -1;
+body{
+    background:#05080d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
 }
 
-/* =========================
-   HEADER
-========================= */
-
-header {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    width: min(1120px, 94%);
-    height: 66px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 10px 0 24px;
-
-    background: rgba(8, 13, 19, .94);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 18px;
-
-    backdrop-filter: blur(20px);
-
-    z-index: 10000;
-}
-
-.logo {
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.logo span {
-    color: #25baff;
+body:before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    left:-280px;
+    top:-280px;
+    background:rgba(0,174,255,.13);
+    filter:blur(160px);
+    pointer-events:none;
+    z-index:-1;
 }
 
 /* =========================
-   NAVIGATION
+   ШАПКА
 ========================= */
 
-nav {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+header{
+    position:fixed;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:min(1120px,94%);
+    min-height:66px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:8px 10px 8px 24px;
+
+    background:rgba(8,13,19,.94);
+
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:18px;
+
+    backdrop-filter:blur(20px);
+
+    z-index:10000;
 }
 
-.nav-btn {
-    appearance: none;
-    -webkit-appearance: none;
+.logo{
+    color:#fff;
+    text-decoration:none;
 
-    border: 1px solid transparent;
-    outline: none;
-
-    background: transparent;
-    color: #84919e;
-
-    padding: 11px 13px;
-
-    border-radius: 10px;
-
-    font-size: 10px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.nav-btn:hover {
-    color: white;
+.logo span{
+    color:#25baff;
 }
 
-.nav-btn.active {
-    color: white;
+/* =========================
+   КНОПКИ
+========================= */
 
-    background: rgba(37,186,255,.12);
+.navigation{
+    display:flex;
+    gap:5px;
+}
 
-    border-color: rgba(37,186,255,.25);
+.navigation button{
+    appearance:none;
+    border:1px solid transparent;
+    outline:none;
+
+    background:transparent;
+    color:#84919e;
+
+    padding:11px 14px;
+
+    border-radius:10px;
+
+    font-size:10px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.navigation button:hover{
+    color:#fff;
+}
+
+.navigation button.active{
+    color:#fff;
+
+    background:rgba(37,186,255,.12);
+
+    border-color:rgba(37,186,255,.35);
 
     box-shadow:
         0 0 18px rgba(37,186,255,.08);
 }
 
 /* =========================
-   MAIN
+   ОСНОВНОЙ КОНТЕЙНЕР
 ========================= */
 
-.container {
-    width: min(1120px, 92%);
-    margin: 0 auto;
-    padding-top: 105px;
-}
+.container{
+    width:min(1120px,92%);
+    margin:0 auto;
 
-/*
-    ВАЖНО:
-    Только активный раздел отображается.
-*/
-
-.page {
-    display: none !important;
-    width: 100%;
-}
-
-.page.active {
-    display: block !important;
+    padding-top:105px;
 }
 
 /* =========================
-   HOME
+   РАЗДЕЛЫ
 ========================= */
 
-.home {
-    min-height: calc(100vh - 145px);
+.section{
+    display:none;
+    width:100%;
 
-    position: relative;
-
-    display: none !important;
-    align-items: center;
-
-    overflow: hidden;
-
-    padding: 70px;
-
-    border-radius: 30px;
+    min-height:calc(100vh - 145px);
 }
 
-.home.active {
-    display: flex !important;
+.section.active{
+    display:block;
 }
 
-.home-content {
-    position: relative;
-    z-index: 3;
+/* =========================
+   ГЛАВНАЯ
+========================= */
 
-    width: 65%;
+#home{
+    position:relative;
+
+    min-height:calc(100vh - 145px);
+
+    overflow:hidden;
+
+    padding:70px;
+
+    border-radius:30px;
 }
 
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+.home-content{
+    position:relative;
+    z-index:3;
 
-    padding: 9px 14px;
-    margin-bottom: 25px;
-
-    border-radius: 50px;
-
-    background: rgba(37,186,255,.07);
-    border: 1px solid rgba(37,186,255,.2);
-
-    color: #69ceff;
-
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    width:65%;
 }
 
-.badge-dot {
-    width: 6px;
-    height: 6px;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
 
-    border-radius: 50%;
+    padding:9px 14px;
 
-    background: #25baff;
-    box-shadow: 0 0 12px #25baff;
+    margin-bottom:25px;
+
+    border-radius:50px;
+
+    background:rgba(37,186,255,.07);
+
+    border:1px solid rgba(37,186,255,.2);
+
+    color:#69ceff;
+
+    font-size:10px;
+    font-weight:800;
+
+    letter-spacing:1.5px;
 }
 
-h1 {
-    font-size: clamp(48px, 7vw, 82px);
-    line-height: 1;
-    letter-spacing: -4px;
+.badge-dot{
+    width:6px;
+    height:6px;
 
-    margin-bottom: 28px;
+    border-radius:50%;
+
+    background:#25baff;
+
+    box-shadow:0 0 12px #25baff;
 }
 
-.blue {
-    color: #25baff;
+h1{
+    font-size:clamp(48px,7vw,82px);
+
+    line-height:1;
+
+    letter-spacing:-4px;
+
+    margin-bottom:28px;
 }
 
-.home-text {
-    max-width: 700px;
-
-    color: #aebbc6;
-
-    font-size: 16px;
-    line-height: 1.85;
+.blue{
+    color:#25baff;
 }
 
-.home-text p {
-    margin-bottom: 17px;
+.home-text{
+    max-width:700px;
+
+    color:#aebbc6;
+
+    font-size:16px;
+
+    line-height:1.85;
 }
 
-.home-text a {
-    color: #54c7ff;
-    font-weight: 700;
-    text-decoration: none;
+.home-text p{
+    margin-bottom:17px;
 }
 
-.home-text a:hover {
-    text-decoration: underline;
+.home-text a{
+    color:#54c7ff;
+
+    font-weight:700;
+
+    text-decoration:none;
 }
 
-.character {
-    position: absolute;
+.home-text a:hover{
+    text-decoration:underline;
+}
 
-    right: -40px;
-    bottom: 0;
+.character{
+    position:absolute;
 
-    width: 53%;
-    height: 100%;
+    right:-40px;
+    bottom:0;
 
-    object-fit: cover;
+    width:53%;
+    height:100%;
 
-    opacity: .85;
+    object-fit:cover;
 
-    z-index: 1;
+    opacity:.85;
 
-    mask-image: linear-gradient(
+    z-index:1;
+
+    mask-image:linear-gradient(
         to right,
         transparent 0%,
         black 38%,
         black 100%
     );
 
-    -webkit-mask-image: linear-gradient(
+    -webkit-mask-image:linear-gradient(
         to right,
         transparent 0%,
         black 38%,
@@ -275,180 +278,195 @@ h1 {
     );
 }
 
-.home::after {
-    content: "";
+#home:after{
+    content:"";
 
-    position: absolute;
-    inset: 0;
+    position:absolute;
 
-    background: linear-gradient(
+    inset:0;
+
+    background:linear-gradient(
         90deg,
         #05080d 0%,
         rgba(5,8,13,.93) 35%,
         rgba(5,8,13,.35) 75%,
-        rgba(5,8,13,.1) 100%
+        rgba(5,8,13,.1)
     );
 
-    z-index: 2;
+    z-index:2;
 
-    pointer-events: none;
+    pointer-events:none;
 }
 
 /* =========================
-   OTHER SECTIONS
+   ВНУТРЕННИЕ РАЗДЕЛЫ
 ========================= */
 
-.content {
-    width: 100%;
-    padding: 70px 0;
+.content{
+    width:100%;
+
+    padding:65px 0;
 }
 
-.label {
-    color: #25baff;
+.label{
+    color:#25baff;
 
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
+    font-size:10px;
+    font-weight:800;
 
-    margin-bottom: 10px;
+    letter-spacing:2px;
+
+    margin-bottom:10px;
 }
 
-h2 {
-    font-size: clamp(40px, 6vw, 62px);
-    line-height: 1.05;
-    letter-spacing: -3px;
+h2{
+    font-size:clamp(42px,6vw,64px);
 
-    margin-bottom: 38px;
+    line-height:1.05;
+
+    letter-spacing:-3px;
+
+    margin-bottom:38px;
 }
 
 /* =========================
-   ABOUT
+   ОБО МНЕ
 ========================= */
 
-.about-text {
-    max-width: 900px;
+.about-text{
+    max-width:900px;
 
-    color: #aebbc6;
+    color:#aebbc6;
 
-    font-size: 16px;
-    line-height: 1.9;
+    font-size:16px;
+
+    line-height:1.9;
 }
 
-.about-text p {
-    margin-bottom: 18px;
+.about-text p{
+    margin-bottom:18px;
 }
 
 /* =========================
-   SOCIAL BUTTONS
+   СОЦСЕТИ
 ========================= */
 
-.socials {
-    display: grid;
-    gap: 12px;
+.socials{
+    display:grid;
 
-    max-width: 800px;
+    max-width:800px;
 
-    margin-top: 38px;
+    gap:12px;
+
+    margin-top:38px;
 }
 
-.social {
-    display: flex;
-    align-items: center;
+.social{
+    display:flex;
 
-    min-height: 76px;
+    align-items:center;
 
-    padding: 12px 16px;
+    min-height:76px;
 
-    color: white;
-    text-decoration: none;
+    padding:12px 16px;
 
-    background: #0b1118;
+    color:#fff;
 
-    border: 1px solid rgba(255,255,255,.07);
+    text-decoration:none;
 
-    border-radius: 17px;
+    background:#0b1118;
 
-    transition: .25s;
+    border:1px solid rgba(255,255,255,.07);
+
+    border-radius:17px;
+
+    transition:.25s;
 }
 
-.social:hover {
-    transform: translateY(-3px);
+.social:hover{
+    transform:translateY(-3px);
 
-    background: #0e1924;
+    background:#0e1924;
 
-    border-color: rgba(37,186,255,.4);
+    border-color:rgba(37,186,255,.4);
 }
 
-.social-icon {
-    width: 50px;
-    height: 50px;
+.social-icon{
+    width:50px;
+    height:50px;
 
-    flex-shrink: 0;
+    flex-shrink:0;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
 
-    border-radius: 14px;
+    align-items:center;
+    justify-content:center;
 
-    background: #121e29;
+    border-radius:14px;
+
+    background:#121e29;
 }
 
-.social-icon svg {
-    width: 28px;
-    height: 28px;
+.social-icon svg{
+    width:28px;
+    height:28px;
 }
 
-.tiktok-logo {
-    fill: white;
+.tiktok-logo{
+    fill:#fff;
 }
 
-.youtube-logo {
-    fill: #ff0033;
+.youtube-logo{
+    fill:#ff0033;
 }
 
-.telegram-circle {
-    fill: #229ED9;
+.telegram-circle{
+    fill:#229ED9;
 }
 
-.telegram-plane {
-    fill: white;
+.telegram-plane{
+    fill:#fff;
 }
 
-.social-info {
-    margin-left: 15px;
+.social-info{
+    margin-left:15px;
 }
 
-.social-title {
-    font-size: 15px;
-    font-weight: 800;
+.social-title{
+    font-size:15px;
+    font-weight:800;
 }
 
-.social-name {
-    color: #82919f;
-    font-size: 12px;
-    margin-top: 4px;
+.social-name{
+    color:#82919f;
+
+    font-size:12px;
+
+    margin-top:4px;
 }
 
-.arrow {
-    margin-left: auto;
-    color: #566777;
-    font-size: 26px;
+.arrow{
+    margin-left:auto;
+
+    color:#566777;
+
+    font-size:26px;
 }
 
 /* =========================
-   NEWS / CONTESTS
+   НОВОСТИ И КОНКУРСЫ
 ========================= */
 
-.posts {
-    display: grid;
-    gap: 15px;
+.posts{
+    display:grid;
 
-    max-width: 850px;
+    max-width:850px;
+
+    gap:15px;
 }
 
-.post {
-    padding: 25px;
+.post{
+    padding:25px;
 
     background:
         linear-gradient(
@@ -457,147 +475,155 @@ h2 {
             rgba(8,14,21,.95)
         );
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius: 22px;
+    border-radius:22px;
 }
 
-.post-type {
-    color: #25baff;
+.post-type{
+    color:#25baff;
 
-    font-size: 10px;
-    font-weight: 800;
+    font-size:10px;
 
-    letter-spacing: 1.5px;
+    font-weight:800;
 
-    margin-bottom: 10px;
+    letter-spacing:1.5px;
+
+    margin-bottom:10px;
 }
 
-.post-date {
-    color: #536270;
+.post-date{
+    color:#536270;
 
-    font-size: 11px;
+    font-size:11px;
 
-    margin-bottom: 16px;
+    margin-bottom:15px;
 }
 
-.post-content {
-    color: #c7d0d8;
+.post-content{
+    color:#c7d0d8;
 
-    line-height: 1.8;
+    font-size:15px;
 
-    white-space: pre-wrap;
+    line-height:1.8;
+
+    white-space:pre-wrap;
 }
 
-.empty {
-    color: #71808d;
+.empty{
+    padding:25px;
 
-    padding: 25px;
+    color:#71808d;
 
-    background: #0b1118;
+    background:#0b1118;
 
-    border: 1px solid rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.06);
 
-    border-radius: 18px;
+    border-radius:18px;
 }
 
 /* =========================
    FOOTER
 ========================= */
 
-footer {
-    text-align: center;
+footer{
+    text-align:center;
 
-    color: #536270;
+    color:#536270;
 
-    font-size: 11px;
+    font-size:11px;
 
-    padding: 25px 0 35px;
+    padding:25px 0 35px;
 }
 
 /* =========================
-   MOBILE
+   МОБИЛЬНЫЙ
 ========================= */
 
-@media (max-width: 720px) {
+@media(max-width:720px){
 
-    header {
-        top: 9px;
+    header{
+        top:9px;
 
-        width: 95%;
-        height: auto;
+        width:96%;
 
-        min-height: 60px;
-
-        padding: 8px 9px 8px 16px;
+        padding:8px 7px 8px 15px;
     }
 
-    .logo {
-        font-size: 16px;
+    .logo{
+        font-size:16px;
     }
 
-    nav {
-        gap: 1px;
+    .navigation{
+        gap:1px;
     }
 
-    .nav-btn {
-        padding: 7px 6px;
-        font-size: 8px;
+    .navigation button{
+        padding:8px 6px;
+
+        font-size:8px;
     }
 
-    .container {
-        width: 92%;
-        padding-top: 88px;
+    .container{
+        width:92%;
+
+        padding-top:88px;
     }
 
-    .home {
-        min-height: calc(100vh - 115px);
+    #home{
+        min-height:calc(100vh - 115px);
 
-        padding: 35px 25px;
-        border-radius: 22px;
+        padding:35px 25px;
+
+        border-radius:22px;
     }
 
-    .home-content {
-        width: 100%;
+    .home-content{
+        width:100%;
     }
 
-    .character {
-        right: -100px;
-        width: 90%;
-        opacity: .35;
+    .character{
+        right:-100px;
+
+        width:90%;
+
+        opacity:.35;
     }
 
-    h1 {
-        font-size: 48px;
-        letter-spacing: -2px;
+    h1{
+        font-size:48px;
+
+        letter-spacing:-2px;
     }
 
-    .home-text {
-        font-size: 14px;
-        line-height: 1.75;
+    .home-text{
+        font-size:14px;
+
+        line-height:1.75;
     }
 
-    .content {
-        padding: 45px 0;
+    .content{
+        padding:45px 0;
     }
 
-    h2 {
-        font-size: 43px;
+    h2{
+        font-size:43px;
     }
 
-    .about-text {
-        font-size: 14px;
-        line-height: 1.8;
+    .about-text{
+        font-size:14px;
+
+        line-height:1.8;
     }
 
-    .social {
-        min-height: 70px;
-        padding: 11px;
+    .social{
+        min-height:70px;
+        padding:11px;
     }
 
-    .social-icon {
-        width: 45px;
-        height: 45px;
+    .social-icon{
+        width:45px;
+        height:45px;
     }
 }
 </style>
@@ -606,7 +632,7 @@ footer {
 <body>
 
 <!-- =========================
-     HEADER
+     ШАПКА
 ========================= -->
 
 <header>
@@ -614,45 +640,42 @@ footer {
     <a
         href="#"
         class="logo"
-        onclick="showPage('home'); return false;"
+        onclick="showSection('home'); return false;"
     >
         GYURZA<span>.</span>
     </a>
 
-    <nav>
+    <nav class="navigation">
 
         <button
             type="button"
-            class="nav-btn active"
-            id="btn-home"
-            onclick="showPage('home')"
+            id="button-home"
+            class="active"
+            onclick="showSection('home')"
         >
             ГЛАВНАЯ
         </button>
 
         <button
             type="button"
-            class="nav-btn"
-            id="btn-news"
-            onclick="showPage('news')"
+            id="button-news"
+            onclick="showSection('news')"
         >
             НОВОСТИ
         </button>
 
         <button
             type="button"
-            class="nav-btn"
-            id="btn-about"
-            onclick="showPage('about')"
+            id="button-about"
+            onclick="showSection('about')"
         >
             ОБО МНЕ
         </button>
 
         <button
             type="button"
-            class="nav-btn"
-            id="btn-contests"
-            onclick="showPage('contests')"
+            id="button-contests"
+            onclick="showSection('contests')"
         >
             КОНКУРСЫ
         </button>
@@ -664,13 +687,14 @@ footer {
 
 <div class="container">
 
-<!-- =========================
+
+<!-- ==================================================
      ГЛАВНАЯ
-========================= -->
+================================================== -->
 
 <section
     id="home"
-    class="page home active"
+    class="section active"
 >
 
     <img
@@ -682,14 +706,21 @@ footer {
     <div class="home-content">
 
         <div class="badge">
+
             <span class="badge-dot"></span>
+
             OFFICIAL WEBSITE
+
         </div>
 
+
         <h1>
+
             Привет! Я
             <span class="blue">Гюрза</span>
+
         </h1>
+
 
         <div class="home-text">
 
@@ -749,13 +780,13 @@ footer {
 </section>
 
 
-<!-- =========================
+<!-- ==================================================
      НОВОСТИ
-========================= -->
+================================================== -->
 
 <section
     id="news"
-    class="page"
+    class="section"
 >
 
     <div class="content">
@@ -784,13 +815,13 @@ footer {
 </section>
 
 
-<!-- =========================
+<!-- ==================================================
      ОБО МНЕ
-========================= -->
+================================================== -->
 
 <section
     id="about"
-    class="page"
+    class="section"
 >
 
     <div class="content">
@@ -803,20 +834,20 @@ footer {
             Обо мне
         </h2>
 
+
         <div class="about-text">
 
             <p>
-                Я — Гюрза, медийная личность в сфере
-                «Армия Roblox RP». Меня знают благодаря моей
-                активности в сообществе и созданию контента.
+                Я — Гюрза, медийная личность в сфере «Армия Roblox RP».
+                Меня знают благодаря моей активности в сообществе и
+                созданию контента.
             </p>
 
             <p>
-                В определённый период я возглавлял клан
-                «Русская Сила!», который некоторое время
-                занимал 1-е место по балансу среди кланов.
-                Этот период стал важной частью моей истории
-                в сообществе.
+                В определённый период я возглавлял клан «Русская Сила!»,
+                который некоторое время занимал 1-е место по балансу
+                среди кланов. Этот период стал важной частью моей
+                истории в сообществе.
             </p>
 
             <p>
@@ -825,10 +856,9 @@ footer {
             </p>
 
             <p>
-                В основном я создаю контент для TikTok —
-                @gyurza_arrp. Также у меня есть YouTube-канал,
-                где я публикую видео и другие материалы,
-                связанные с моей деятельностью.
+                В основном я создаю контент для TikTok — @gyurza_arrp.
+                Также у меня есть YouTube-канал, где я публикую видео
+                и другие материалы, связанные с моей деятельностью.
             </p>
 
             <p>
@@ -840,9 +870,7 @@ footer {
         </div>
 
 
-        <!-- =========================
-             СОЦИАЛЬНЫЕ КНОПКИ
-        ========================= -->
+        <!-- КНОПКИ -->
 
         <div class="socials">
 
@@ -988,13 +1016,13 @@ footer {
 </section>
 
 
-<!-- =========================
+<!-- ==================================================
      КОНКУРСЫ
-========================= -->
+================================================== -->
 
 <section
     id="contests"
-    class="page"
+    class="section"
 >
 
     <div class="content">
@@ -1032,99 +1060,116 @@ footer {
 
 <script>
 
-/* =====================================================
-   ГЛАВНОЕ ИСПРАВЛЕНИЕ
+/* ==================================================
+   ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
+================================================== */
 
-   Переключение разделов полностью автономное.
-   Оно НЕ зависит от Supabase.
-===================================================== */
+function showSection(sectionName){
 
-function showPage(pageName) {
+    /* Скрываем ВСЕ разделы */
 
-    var pages = document.querySelectorAll(".page");
+    var sections =
+        document.querySelectorAll(".section");
 
-    for (var i = 0; i < pages.length; i++) {
-        pages[i].classList.remove("active");
+    sections.forEach(function(section){
+
+        section.classList.remove("active");
+
+    });
+
+
+    /* Убираем активность со ВСЕХ кнопок */
+
+    var buttons =
+        document.querySelectorAll(".navigation button");
+
+    buttons.forEach(function(button){
+
+        button.classList.remove("active");
+
+    });
+
+
+    /* Показываем выбранный раздел */
+
+    var selectedSection =
+        document.getElementById(sectionName);
+
+    if(selectedSection){
+
+        selectedSection.classList.add("active");
+
     }
 
 
-    var buttons = document.querySelectorAll(".nav-btn");
-
-    for (var j = 0; j < buttons.length; j++) {
-        buttons[j].classList.remove("active");
-    }
-
-
-    var selectedPage =
-        document.getElementById(pageName);
-
-    if (selectedPage) {
-        selectedPage.classList.add("active");
-    }
-
+    /* Подсвечиваем выбранную кнопку */
 
     var selectedButton =
-        document.getElementById("btn-" + pageName);
+        document.getElementById(
+            "button-" + sectionName
+        );
 
-    if (selectedButton) {
+    if(selectedButton){
+
         selectedButton.classList.add("active");
+
     }
 
 
-    window.scrollTo({
-        top: 0,
-        behavior: "instant"
-    });
+    /* Возвращаем страницу вверх */
+
+    window.scrollTo(0,0);
 }
 
 
-/* =====================================================
+/* ==================================================
    SUPABASE
-
-   Используется ТОЛЬКО для новостей и конкурсов.
-===================================================== */
+================================================== */
 
 var supabaseClient = null;
 
-try {
+try{
 
-    if (
+    if(
         window.supabase &&
         typeof window.supabase.createClient === "function"
-    ) {
+    ){
 
         supabaseClient =
             window.supabase.createClient(
+
                 "https://gcwjtsqnmfimqdoyhfar.supabase.co",
+
                 "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w"
+
             );
 
     }
 
-} catch (error) {
+}catch(error){
 
     console.log(
-        "Ошибка подключения Supabase:",
+        "Supabase error:",
         error
     );
 
 }
 
 
-/* =====================================================
+/* ==================================================
    НОВОСТИ
-===================================================== */
+================================================== */
 
-async function loadNews() {
+async function loadNews(){
 
     var list =
         document.getElementById("newsList");
 
-    if (!list) {
+    if(!list){
         return;
     }
 
-    if (!supabaseClient) {
+    if(!supabaseClient){
 
         list.innerHTML =
             '<div class="empty">' +
@@ -1134,18 +1179,37 @@ async function loadNews() {
         return;
     }
 
-    try {
+    try{
 
         var result =
             await supabaseClient
                 .from("site_content")
                 .select("*")
-                .eq("selection", "news")
-                .order("id", {
-                    ascending: false
+                .eq("selection","news")
+                .order("id",{
+                    ascending:false
                 });
 
 
-        if (result.error) {
+        if(result.error){
 
-            console.log(result.error)
+            console.log(result.error);
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Новостей пока нет.' +
+                '</div>';
+
+            return;
+        }
+
+
+        var data =
+            result.data;
+
+
+        if(!data || data.length === 0){
+
+            list.innerHTML =
+                '<div class="empty">' +
+            
