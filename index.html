@@ -6,33 +6,31 @@
 
 <title>GYURZA — Official</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 body {
-    background: #05080c;
-    color: #f5f8fb;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
+    background: #05080d;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
 body::before {
     content: "";
     position: fixed;
-    width: 600px;
-    height: 600px;
-    top: -300px;
+    width: 550px;
+    height: 550px;
     left: -250px;
-    background: rgba(0,174,255,.15);
-    filter: blur(170px);
+    top: -250px;
+    background: rgba(0, 174, 255, .14);
+    filter: blur(150px);
     pointer-events: none;
     z-index: -1;
 }
@@ -47,8 +45,8 @@ header {
     left: 50%;
     transform: translateX(-50%);
 
-    width: min(1120px, 92%);
-    min-height: 66px;
+    width: min(1120px, 94%);
+    height: 66px;
 
     display: flex;
     align-items: center;
@@ -56,20 +54,20 @@ header {
 
     padding: 0 10px 0 24px;
 
-    background: rgba(8,13,19,.90);
+    background: rgba(8, 13, 19, .94);
     border: 1px solid rgba(255,255,255,.08);
     border-radius: 18px;
 
     backdrop-filter: blur(20px);
 
-    z-index: 9999;
+    z-index: 10000;
 }
 
 .logo {
     color: white;
     text-decoration: none;
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 2px;
 }
 
@@ -77,60 +75,79 @@ header {
     color: #25baff;
 }
 
+/* =========================
+   NAVIGATION
+========================= */
+
 nav {
     display: flex;
+    align-items: center;
     gap: 4px;
 }
 
-nav button {
-    border: 0;
-    outline: 0;
+.nav-btn {
+    appearance: none;
+    -webkit-appearance: none;
 
-    color: #8795a3;
+    border: 1px solid transparent;
+    outline: none;
+
     background: transparent;
-
-    font-size: 10px;
-    font-weight: 800;
+    color: #84919e;
 
     padding: 11px 13px;
 
     border-radius: 10px;
 
+    font-size: 10px;
+    font-weight: 800;
+
     cursor: pointer;
 
-    transition: .2s;
+    transition:
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
 }
 
-nav button:hover {
+.nav-btn:hover {
     color: white;
 }
 
-nav button.active {
+.nav-btn.active {
     color: white;
+
     background: rgba(37,186,255,.12);
+
+    border-color: rgba(37,186,255,.25);
+
+    box-shadow:
+        0 0 18px rgba(37,186,255,.08);
 }
 
 /* =========================
-   CONTAINER
+   MAIN
 ========================= */
 
 .container {
     width: min(1120px, 92%);
-    margin: auto;
+    margin: 0 auto;
     padding-top: 105px;
 }
 
-/* =========================
-   PAGE SYSTEM
-========================= */
+/*
+    ВАЖНО:
+    Только активный раздел отображается.
+*/
 
 .page {
-    display: none;
-    min-height: calc(100vh - 145px);
+    display: none !important;
+    width: 100%;
 }
 
 .page.active {
-    display: block;
+    display: block !important;
 }
 
 /* =========================
@@ -138,10 +155,11 @@ nav button.active {
 ========================= */
 
 .home {
-    position: relative;
     min-height: calc(100vh - 145px);
 
-    display: flex;
+    position: relative;
+
+    display: none !important;
     align-items: center;
 
     overflow: hidden;
@@ -151,9 +169,13 @@ nav button.active {
     border-radius: 30px;
 }
 
+.home.active {
+    display: flex !important;
+}
+
 .home-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
 
     width: 65%;
 }
@@ -169,7 +191,7 @@ nav button.active {
     border-radius: 50px;
 
     background: rgba(37,186,255,.07);
-    border: 1px solid rgba(37,186,255,.20);
+    border: 1px solid rgba(37,186,255,.2);
 
     color: #69ceff;
 
@@ -192,6 +214,7 @@ h1 {
     font-size: clamp(48px, 7vw, 82px);
     line-height: 1;
     letter-spacing: -4px;
+
     margin-bottom: 28px;
 }
 
@@ -235,6 +258,8 @@ h1 {
 
     opacity: .85;
 
+    z-index: 1;
+
     mask-image: linear-gradient(
         to right,
         transparent 0%,
@@ -258,19 +283,19 @@ h1 {
 
     background: linear-gradient(
         90deg,
-        #05080c 0%,
-        rgba(5,8,12,.93) 35%,
-        rgba(5,8,12,.30) 75%,
-        rgba(5,8,12,.10)
+        #05080d 0%,
+        rgba(5,8,13,.93) 35%,
+        rgba(5,8,13,.35) 75%,
+        rgba(5,8,13,.1) 100%
     );
 
-    z-index: 1;
+    z-index: 2;
 
     pointer-events: none;
 }
 
 /* =========================
-   CONTENT
+   OTHER SECTIONS
 ========================= */
 
 .content {
@@ -313,12 +338,15 @@ h2 {
     margin-bottom: 18px;
 }
 
+/* =========================
+   SOCIAL BUTTONS
+========================= */
+
 .socials {
     display: grid;
+    gap: 12px;
 
     max-width: 800px;
-
-    gap: 12px;
 
     margin-top: 38px;
 }
@@ -398,33 +426,30 @@ h2 {
 
 .social-name {
     color: #82919f;
-
     font-size: 12px;
-
     margin-top: 4px;
 }
 
 .arrow {
     margin-left: auto;
-
     color: #566777;
-
     font-size: 26px;
 }
 
 /* =========================
-   POSTS
+   NEWS / CONTESTS
 ========================= */
 
 .posts {
     display: grid;
-
     gap: 15px;
 
     max-width: 850px;
 }
 
 .post {
+    padding: 25px;
+
     background:
         linear-gradient(
             145deg,
@@ -435,8 +460,6 @@ h2 {
     border: 1px solid rgba(255,255,255,.07);
 
     border-radius: 22px;
-
-    padding: 25px;
 }
 
 .post-type {
@@ -473,6 +496,8 @@ h2 {
 
     background: #0b1118;
 
+    border: 1px solid rgba(255,255,255,.06);
+
     border-radius: 18px;
 }
 
@@ -500,6 +525,7 @@ footer {
         top: 9px;
 
         width: 95%;
+        height: auto;
 
         min-height: 60px;
 
@@ -514,7 +540,7 @@ footer {
         gap: 1px;
     }
 
-    nav button {
+    .nav-btn {
         padding: 7px 6px;
         font-size: 8px;
     }
@@ -525,6 +551,8 @@ footer {
     }
 
     .home {
+        min-height: calc(100vh - 115px);
+
         padding: 35px 25px;
         border-radius: 22px;
     }
@@ -577,12 +605,16 @@ footer {
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
 
     <a
-        class="logo"
         href="#"
-        onclick="openPage('home'); return false;"
+        class="logo"
+        onclick="showPage('home'); return false;"
     >
         GYURZA<span>.</span>
     </a>
@@ -590,34 +622,37 @@ footer {
     <nav>
 
         <button
-            id="nav-home"
-            class="active"
             type="button"
-            onclick="openPage('home')"
+            class="nav-btn active"
+            id="btn-home"
+            onclick="showPage('home')"
         >
             ГЛАВНАЯ
         </button>
 
         <button
-            id="nav-news"
             type="button"
-            onclick="openPage('news')"
+            class="nav-btn"
+            id="btn-news"
+            onclick="showPage('news')"
         >
             НОВОСТИ
         </button>
 
         <button
-            id="nav-about"
             type="button"
-            onclick="openPage('about')"
+            class="nav-btn"
+            id="btn-about"
+            onclick="showPage('about')"
         >
             ОБО МНЕ
         </button>
 
         <button
-            id="nav-contests"
             type="button"
-            onclick="openPage('contests')"
+            class="nav-btn"
+            id="btn-contests"
+            onclick="showPage('contests')"
         >
             КОНКУРСЫ
         </button>
@@ -635,7 +670,7 @@ footer {
 
 <section
     id="home"
-    class="page active home"
+    class="page home active"
 >
 
     <img
@@ -676,7 +711,9 @@ footer {
                     href="https://t.me/ArmyRobloxRPnewss"
                     target="_blank"
                     rel="noopener"
-                >Telegram канал</a>.
+                >
+                    Telegram канал
+                </a>.
             </p>
 
             <p>
@@ -685,7 +722,9 @@ footer {
                     href="https://www.tiktok.com/@gyurza_arrp"
                     target="_blank"
                     rel="noopener"
-                >@gyurza_arrp</a>
+                >
+                    @gyurza_arrp
+                </a>
             </p>
 
             <p>
@@ -694,7 +733,9 @@ footer {
                     href="https://www.youtube.com/@GyurzaOriginalOwnerRS"
                     target="_blank"
                     rel="noopener"
-                >@GyurzaOriginalOwnerRS</a>
+                >
+                    @GyurzaOriginalOwnerRS
+                </a>
             </p>
 
             <p>
@@ -765,16 +806,17 @@ footer {
         <div class="about-text">
 
             <p>
-                Я — Гюрза, медийная личность в сфере «Армия Roblox RP».
-                Меня знают благодаря моей активности в сообществе и
-                созданию контента.
+                Я — Гюрза, медийная личность в сфере
+                «Армия Roblox RP». Меня знают благодаря моей
+                активности в сообществе и созданию контента.
             </p>
 
             <p>
-                В определённый период я возглавлял клан «Русская Сила!»,
-                который некоторое время занимал 1-е место по балансу
-                среди кланов. Этот период стал важной частью моей
-                истории в сообществе.
+                В определённый период я возглавлял клан
+                «Русская Сила!», который некоторое время
+                занимал 1-е место по балансу среди кланов.
+                Этот период стал важной частью моей истории
+                в сообществе.
             </p>
 
             <p>
@@ -783,9 +825,10 @@ footer {
             </p>
 
             <p>
-                В основном я создаю контент для TikTok — @gyurza_arrp.
-                Также у меня есть YouTube-канал, где я публикую видео
-                и другие материалы, связанные с моей деятельностью.
+                В основном я создаю контент для TikTok —
+                @gyurza_arrp. Также у меня есть YouTube-канал,
+                где я публикую видео и другие материалы,
+                связанные с моей деятельностью.
             </p>
 
             <p>
@@ -797,9 +840,12 @@ footer {
         </div>
 
 
-        <!-- КНОПКИ -->
+        <!-- =========================
+             СОЦИАЛЬНЫЕ КНОПКИ
+        ========================= -->
 
         <div class="socials">
+
 
             <!-- TIKTOK -->
 
@@ -984,19 +1030,16 @@ footer {
 </div>
 
 
-<!-- SUPABASE ПОДКЛЮЧАЕМ ПОСЛЕ ВСЕГО HTML -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
 
-/* =========================================
-   ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
+/* =====================================================
+   ГЛАВНОЕ ИСПРАВЛЕНИЕ
 
-   ЭТОТ КОД НЕ ЗАВИСИТ ОТ SUPABASE
-========================================= */
+   Переключение разделов полностью автономное.
+   Оно НЕ зависит от Supabase.
+===================================================== */
 
-function openPage(pageName) {
+function showPage(pageName) {
 
     var pages = document.querySelectorAll(".page");
 
@@ -1004,11 +1047,13 @@ function openPage(pageName) {
         pages[i].classList.remove("active");
     }
 
-    var buttons = document.querySelectorAll("nav button");
+
+    var buttons = document.querySelectorAll(".nav-btn");
 
     for (var j = 0; j < buttons.length; j++) {
         buttons[j].classList.remove("active");
     }
+
 
     var selectedPage =
         document.getElementById(pageName);
@@ -1017,20 +1062,27 @@ function openPage(pageName) {
         selectedPage.classList.add("active");
     }
 
+
     var selectedButton =
-        document.getElementById("nav-" + pageName);
+        document.getElementById("btn-" + pageName);
 
     if (selectedButton) {
         selectedButton.classList.add("active");
     }
 
-    window.scrollTo(0, 0);
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
 }
 
 
-/* =========================================
+/* =====================================================
    SUPABASE
-========================================= */
+
+   Используется ТОЛЬКО для новостей и конкурсов.
+===================================================== */
 
 var supabaseClient = null;
 
@@ -1052,16 +1104,16 @@ try {
 } catch (error) {
 
     console.log(
-        "Supabase недоступен:",
+        "Ошибка подключения Supabase:",
         error
     );
 
 }
 
 
-/* =========================================
+/* =====================================================
    НОВОСТИ
-========================================= */
+===================================================== */
 
 async function loadNews() {
 
@@ -1089,62 +1141,11 @@ async function loadNews() {
                 .from("site_content")
                 .select("*")
                 .eq("selection", "news")
-                .order("created_at", {
+                .order("id", {
                     ascending: false
                 });
 
+
         if (result.error) {
 
-            console.log(result.error);
-
-            list.innerHTML =
-                '<div class="empty">' +
-                'Новостей пока нет.' +
-                '</div>';
-
-            return;
-        }
-
-        var data = result.data;
-
-        if (!data || data.length === 0) {
-
-            list.innerHTML =
-                '<div class="empty">' +
-                'Новостей пока нет.' +
-                '</div>';
-
-            return;
-        }
-
-        list.innerHTML =
-            data.map(function(item) {
-
-                return `
-                    <article class="post">
-
-                        <div class="post-type">
-                            НОВОСТЬ
-                        </div>
-
-                        <div class="post-date">
-                            ${formatDate(item.created_at)}
-                        </div>
-
-                        <div class="post-content">
-                            ${escapeHtml(item.content)}
-                        </div>
-
-                    </article>
-                `;
-
-            }).join("");
-
-    } catch (error) {
-
-        console.log(error);
-
-        list.innerHTML =
-            '<div class="empty">' +
-            'Новостей пока нет.' +
-      
+            console.log(result.error)
