@@ -3,274 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>GYURZA — Official</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-    background:#05080d;
-    color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
-    min-height:100vh;
+body {
+    background: #05080d;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
-body:before{
-    content:"";
-    position:fixed;
-    width:600px;
-    height:600px;
-    left:-280px;
-    top:-280px;
-    background:rgba(0,174,255,.13);
-    filter:blur(160px);
-    pointer-events:none;
-    z-index:-1;
-}
-
-/* =========================
-   ШАПКА
-========================= */
-
-header{
-    position:fixed;
-    top:18px;
-    left:50%;
-    transform:translateX(-50%);
-
-    width:min(1120px,94%);
-    min-height:66px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:8px 10px 8px 24px;
-
-    background:rgba(8,13,19,.94);
-
-    border:1px solid rgba(255,255,255,.09);
-    border-radius:18px;
-
-    backdrop-filter:blur(20px);
-
-    z-index:10000;
-}
-
-.logo{
-    color:#fff;
-    text-decoration:none;
-
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:2px;
-}
-
-.logo span{
-    color:#25baff;
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    left: -280px;
+    top: -280px;
+    background: rgba(0, 174, 255, .13);
+    filter: blur(160px);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* =========================
-   КНОПКИ
+   HEADER
 ========================= */
 
-.navigation{
-    display:flex;
-    gap:5px;
+header {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: min(1120px, 94%);
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 8px 10px 8px 24px;
+
+    background: rgba(8, 13, 19, .94);
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 18px;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    z-index: 1000;
 }
 
-.navigation button{
-    appearance:none;
-    border:1px solid transparent;
-    outline:none;
-
-    background:transparent;
-    color:#84919e;
-
-    padding:11px 14px;
-
-    border-radius:10px;
-
-    font-size:10px;
-    font-weight:800;
-
-    cursor:pointer;
-
-    transition:.2s;
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
-.navigation button:hover{
-    color:#fff;
-}
-
-.navigation button.active{
-    color:#fff;
-
-    background:rgba(37,186,255,.12);
-
-    border-color:rgba(37,186,255,.35);
-
-    box-shadow:
-        0 0 18px rgba(37,186,255,.08);
+.logo span {
+    color: #25baff;
 }
 
 /* =========================
-   ОСНОВНОЙ КОНТЕЙНЕР
+   NAV
 ========================= */
 
-.container{
-    width:min(1120px,92%);
-    margin:0 auto;
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    padding-top:105px;
+.nav button {
+    appearance: none;
+    border: 1px solid transparent;
+    outline: none;
+
+    background: transparent;
+    color: #84919e;
+
+    padding: 11px 14px;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.nav button:hover {
+    color: #fff;
+}
+
+.nav button.active {
+    color: #fff;
+
+    background: rgba(37,186,255,.12);
+
+    border-color: rgba(37,186,255,.35);
+
+    box-shadow: 0 0 18px rgba(37,186,255,.08);
 }
 
 /* =========================
-   РАЗДЕЛЫ
+   CONTAINER
 ========================= */
 
-.section{
-    display:none;
-    width:100%;
-
-    min-height:calc(100vh - 145px);
-}
-
-.section.active{
-    display:block;
+.container {
+    width: min(1120px, 92%);
+    margin: 0 auto;
+    padding-top: 105px;
 }
 
 /* =========================
-   ГЛАВНАЯ
+   SECTIONS
 ========================= */
 
-#home{
-    position:relative;
+/*
+   ГЛАВНОЕ ИСПРАВЛЕНИЕ:
+   по умолчанию разделы скрыты.
+   active показывает только выбранный.
+*/
 
-    min-height:calc(100vh - 145px);
-
-    overflow:hidden;
-
-    padding:70px;
-
-    border-radius:30px;
+.section {
+    display: none;
+    width: 100%;
 }
 
-.home-content{
-    position:relative;
-    z-index:3;
-
-    width:65%;
+.section.active {
+    display: block;
 }
 
-.badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
+/* =========================
+   HOME
+========================= */
 
-    padding:9px 14px;
+#home {
+    position: relative;
 
-    margin-bottom:25px;
+    min-height: calc(100vh - 145px);
 
-    border-radius:50px;
+    padding: 70px;
 
-    background:rgba(37,186,255,.07);
+    border-radius: 30px;
 
-    border:1px solid rgba(37,186,255,.2);
-
-    color:#69ceff;
-
-    font-size:10px;
-    font-weight:800;
-
-    letter-spacing:1.5px;
+    overflow: hidden;
 }
 
-.badge-dot{
-    width:6px;
-    height:6px;
+.home-content {
+    position: relative;
+    z-index: 3;
 
-    border-radius:50%;
-
-    background:#25baff;
-
-    box-shadow:0 0 12px #25baff;
+    width: 65%;
 }
 
-h1{
-    font-size:clamp(48px,7vw,82px);
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
-    line-height:1;
+    padding: 9px 14px;
+    margin-bottom: 25px;
 
-    letter-spacing:-4px;
+    border-radius: 50px;
 
-    margin-bottom:28px;
+    background: rgba(37,186,255,.07);
+    border: 1px solid rgba(37,186,255,.2);
+
+    color: #69ceff;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
 }
 
-.blue{
-    color:#25baff;
+.badge-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #25baff;
+    box-shadow: 0 0 12px #25baff;
 }
 
-.home-text{
-    max-width:700px;
-
-    color:#aebbc6;
-
-    font-size:16px;
-
-    line-height:1.85;
+h1 {
+    font-size: clamp(48px, 7vw, 82px);
+    line-height: 1;
+    letter-spacing: -4px;
+    margin-bottom: 28px;
 }
 
-.home-text p{
-    margin-bottom:17px;
+.blue {
+    color: #25baff;
 }
 
-.home-text a{
-    color:#54c7ff;
+.home-text {
+    max-width: 700px;
 
-    font-weight:700;
+    color: #aebbc6;
 
-    text-decoration:none;
+    font-size: 16px;
+    line-height: 1.85;
 }
 
-.home-text a:hover{
-    text-decoration:underline;
+.home-text p {
+    margin-bottom: 17px;
 }
 
-.character{
-    position:absolute;
+.home-text a {
+    color: #54c7ff;
+    font-weight: 700;
+    text-decoration: none;
+}
 
-    right:-40px;
-    bottom:0;
+.home-text a:hover {
+    text-decoration: underline;
+}
 
-    width:53%;
-    height:100%;
+.character {
+    position: absolute;
 
-    object-fit:cover;
+    right: -40px;
+    bottom: 0;
 
-    opacity:.85;
+    width: 53%;
+    height: 100%;
 
-    z-index:1;
+    object-fit: cover;
 
-    mask-image:linear-gradient(
+    opacity: .85;
+
+    z-index: 1;
+
+    mask-image: linear-gradient(
         to right,
         transparent 0%,
         black 38%,
         black 100%
     );
 
-    -webkit-mask-image:linear-gradient(
+    -webkit-mask-image: linear-gradient(
         to right,
         transparent 0%,
         black 38%,
@@ -278,195 +269,180 @@ h1{
     );
 }
 
-#home:after{
-    content:"";
+#home::after {
+    content: "";
 
-    position:absolute;
+    position: absolute;
+    inset: 0;
 
-    inset:0;
-
-    background:linear-gradient(
+    background: linear-gradient(
         90deg,
         #05080d 0%,
         rgba(5,8,13,.93) 35%,
         rgba(5,8,13,.35) 75%,
-        rgba(5,8,13,.1)
+        rgba(5,8,13,.1) 100%
     );
 
-    z-index:2;
-
-    pointer-events:none;
+    z-index: 2;
+    pointer-events: none;
 }
 
 /* =========================
-   ВНУТРЕННИЕ РАЗДЕЛЫ
+   OTHER SECTIONS
 ========================= */
 
-.content{
-    width:100%;
-
-    padding:65px 0;
+.content {
+    width: 100%;
+    padding: 65px 0;
 }
 
-.label{
-    color:#25baff;
+.label {
+    color: #25baff;
 
-    font-size:10px;
-    font-weight:800;
+    font-size: 10px;
+    font-weight: 800;
 
-    letter-spacing:2px;
+    letter-spacing: 2px;
 
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-h2{
-    font-size:clamp(42px,6vw,64px);
+h2 {
+    font-size: clamp(42px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -3px;
 
-    line-height:1.05;
-
-    letter-spacing:-3px;
-
-    margin-bottom:38px;
+    margin-bottom: 38px;
 }
 
 /* =========================
-   ОБО МНЕ
+   ABOUT
 ========================= */
 
-.about-text{
-    max-width:900px;
+.about-text {
+    max-width: 900px;
 
-    color:#aebbc6;
+    color: #aebbc6;
 
-    font-size:16px;
-
-    line-height:1.9;
+    font-size: 16px;
+    line-height: 1.9;
 }
 
-.about-text p{
-    margin-bottom:18px;
+.about-text p {
+    margin-bottom: 18px;
 }
 
 /* =========================
-   СОЦСЕТИ
+   SOCIAL BUTTONS
 ========================= */
 
-.socials{
-    display:grid;
+.socials {
+    display: grid;
+    gap: 12px;
 
-    max-width:800px;
+    max-width: 800px;
 
-    gap:12px;
-
-    margin-top:38px;
+    margin-top: 38px;
 }
 
-.social{
-    display:flex;
+.social {
+    display: flex;
+    align-items: center;
 
-    align-items:center;
+    min-height: 76px;
 
-    min-height:76px;
+    padding: 12px 16px;
 
-    padding:12px 16px;
+    color: white;
+    text-decoration: none;
 
-    color:#fff;
+    background: #0b1118;
 
-    text-decoration:none;
+    border: 1px solid rgba(255,255,255,.07);
 
-    background:#0b1118;
+    border-radius: 17px;
 
-    border:1px solid rgba(255,255,255,.07);
-
-    border-radius:17px;
-
-    transition:.25s;
+    transition: .25s;
 }
 
-.social:hover{
-    transform:translateY(-3px);
+.social:hover {
+    transform: translateY(-3px);
 
-    background:#0e1924;
+    background: #0e1924;
 
-    border-color:rgba(37,186,255,.4);
+    border-color: rgba(37,186,255,.4);
 }
 
-.social-icon{
-    width:50px;
-    height:50px;
+.social-icon {
+    width: 50px;
+    height: 50px;
 
-    flex-shrink:0;
+    flex-shrink: 0;
 
-    display:flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    align-items:center;
-    justify-content:center;
+    border-radius: 14px;
 
-    border-radius:14px;
-
-    background:#121e29;
+    background: #121e29;
 }
 
-.social-icon svg{
-    width:28px;
-    height:28px;
+.social-icon svg {
+    width: 28px;
+    height: 28px;
 }
 
-.tiktok-logo{
-    fill:#fff;
+.tiktok-logo {
+    fill: white;
 }
 
-.youtube-logo{
-    fill:#ff0033;
+.youtube-logo {
+    fill: #ff0033;
 }
 
-.telegram-circle{
-    fill:#229ED9;
+.telegram-circle {
+    fill: #229ED9;
 }
 
-.telegram-plane{
-    fill:#fff;
+.telegram-plane {
+    fill: white;
 }
 
-.social-info{
-    margin-left:15px;
+.social-info {
+    margin-left: 15px;
 }
 
-.social-title{
-    font-size:15px;
-    font-weight:800;
+.social-title {
+    font-size: 15px;
+    font-weight: 800;
 }
 
-.social-name{
-    color:#82919f;
-
-    font-size:12px;
-
-    margin-top:4px;
+.social-name {
+    color: #82919f;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
-.arrow{
-    margin-left:auto;
-
-    color:#566777;
-
-    font-size:26px;
+.arrow {
+    margin-left: auto;
+    color: #566777;
+    font-size: 26px;
 }
 
 /* =========================
-   НОВОСТИ И КОНКУРСЫ
+   POSTS
 ========================= */
 
-.posts{
-    display:grid;
+.posts {
+    display: grid;
+    gap: 15px;
 
-    max-width:850px;
-
-    gap:15px;
+    max-width: 850px;
 }
 
-.post{
-    padding:25px;
+.post {
+    padding: 25px;
 
     background:
         linear-gradient(
@@ -475,165 +451,141 @@ h2{
             rgba(8,14,21,.95)
         );
 
-    border:1px solid rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.07);
 
-    border-radius:22px;
+    border-radius: 22px;
 }
 
-.post-type{
-    color:#25baff;
+.post-type {
+    color: #25baff;
 
-    font-size:10px;
+    font-size: 10px;
+    font-weight: 800;
 
-    font-weight:800;
+    letter-spacing: 1.5px;
 
-    letter-spacing:1.5px;
-
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
 
-.post-date{
-    color:#536270;
+.post-content {
+    color: #c7d0d8;
 
-    font-size:11px;
+    font-size: 15px;
+    line-height: 1.8;
 
-    margin-bottom:15px;
+    white-space: pre-wrap;
 }
 
-.post-content{
-    color:#c7d0d8;
+.empty {
+    padding: 25px;
 
-    font-size:15px;
+    color: #71808d;
 
-    line-height:1.8;
+    background: #0b1118;
 
-    white-space:pre-wrap;
-}
+    border: 1px solid rgba(255,255,255,.06);
 
-.empty{
-    padding:25px;
-
-    color:#71808d;
-
-    background:#0b1118;
-
-    border:1px solid rgba(255,255,255,.06);
-
-    border-radius:18px;
+    border-radius: 18px;
 }
 
 /* =========================
    FOOTER
 ========================= */
 
-footer{
-    text-align:center;
+footer {
+    text-align: center;
 
-    color:#536270;
+    color: #536270;
 
-    font-size:11px;
+    font-size: 11px;
 
-    padding:25px 0 35px;
+    padding: 25px 0 35px;
 }
 
 /* =========================
-   МОБИЛЬНЫЙ
+   MOBILE
 ========================= */
 
-@media(max-width:720px){
+@media (max-width:720px) {
 
-    header{
-        top:9px;
+    header {
+        top: 9px;
+        width: 96%;
 
-        width:96%;
-
-        padding:8px 7px 8px 15px;
+        padding: 8px 7px 8px 15px;
     }
 
-    .logo{
-        font-size:16px;
+    .logo {
+        font-size: 16px;
     }
 
-    .navigation{
-        gap:1px;
+    .nav {
+        gap: 1px;
     }
 
-    .navigation button{
-        padding:8px 6px;
-
-        font-size:8px;
+    .nav button {
+        padding: 8px 6px;
+        font-size: 8px;
     }
 
-    .container{
-        width:92%;
-
-        padding-top:88px;
+    .container {
+        width: 92%;
+        padding-top: 88px;
     }
 
-    #home{
-        min-height:calc(100vh - 115px);
-
-        padding:35px 25px;
-
-        border-radius:22px;
+    #home {
+        min-height: calc(100vh - 115px);
+        padding: 35px 25px;
+        border-radius: 22px;
     }
 
-    .home-content{
-        width:100%;
+    .home-content {
+        width: 100%;
     }
 
-    .character{
-        right:-100px;
-
-        width:90%;
-
-        opacity:.35;
+    .character {
+        right: -100px;
+        width: 90%;
+        opacity: .35;
     }
 
-    h1{
-        font-size:48px;
-
-        letter-spacing:-2px;
+    h1 {
+        font-size: 48px;
+        letter-spacing: -2px;
     }
 
-    .home-text{
-        font-size:14px;
-
-        line-height:1.75;
+    .home-text {
+        font-size: 14px;
+        line-height: 1.75;
     }
 
-    .content{
-        padding:45px 0;
+    .content {
+        padding: 45px 0;
     }
 
-    h2{
-        font-size:43px;
+    h2 {
+        font-size: 43px;
     }
 
-    .about-text{
-        font-size:14px;
-
-        line-height:1.8;
+    .about-text {
+        font-size: 14px;
+        line-height: 1.8;
     }
 
-    .social{
-        min-height:70px;
-        padding:11px;
+    .social {
+        min-height: 70px;
+        padding: 11px;
     }
 
-    .social-icon{
-        width:45px;
-        height:45px;
+    .social-icon {
+        width: 45px;
+        height: 45px;
     }
 }
 </style>
 </head>
 
 <body>
-
-<!-- =========================
-     ШАПКА
-========================= -->
 
 <header>
 
@@ -645,36 +597,36 @@ footer{
         GYURZA<span>.</span>
     </a>
 
-    <nav class="navigation">
+    <nav class="nav">
 
         <button
-            type="button"
-            id="button-home"
+            id="btn-home"
             class="active"
+            type="button"
             onclick="showSection('home')"
         >
             ГЛАВНАЯ
         </button>
 
         <button
+            id="btn-news"
             type="button"
-            id="button-news"
             onclick="showSection('news')"
         >
             НОВОСТИ
         </button>
 
         <button
+            id="btn-about"
             type="button"
-            id="button-about"
             onclick="showSection('about')"
         >
             ОБО МНЕ
         </button>
 
         <button
+            id="btn-contests"
             type="button"
-            id="button-contests"
             onclick="showSection('contests')"
         >
             КОНКУРСЫ
@@ -687,10 +639,9 @@ footer{
 
 <div class="container">
 
-
-<!-- ==================================================
+<!-- =========================
      ГЛАВНАЯ
-================================================== -->
+========================= -->
 
 <section
     id="home"
@@ -706,21 +657,14 @@ footer{
     <div class="home-content">
 
         <div class="badge">
-
             <span class="badge-dot"></span>
-
             OFFICIAL WEBSITE
-
         </div>
 
-
         <h1>
-
             Привет! Я
             <span class="blue">Гюрза</span>
-
         </h1>
-
 
         <div class="home-text">
 
@@ -780,9 +724,9 @@ footer{
 </section>
 
 
-<!-- ==================================================
+<!-- =========================
      НОВОСТИ
-================================================== -->
+========================= -->
 
 <section
     id="news"
@@ -803,11 +747,9 @@ footer{
             id="newsList"
             class="posts"
         >
-
             <div class="empty">
-                Загрузка новостей...
+                Новостей пока нет.
             </div>
-
         </div>
 
     </div>
@@ -815,9 +757,9 @@ footer{
 </section>
 
 
-<!-- ==================================================
+<!-- =========================
      ОБО МНЕ
-================================================== -->
+========================= -->
 
 <section
     id="about"
@@ -833,7 +775,6 @@ footer{
         <h2>
             Обо мне
         </h2>
-
 
         <div class="about-text">
 
@@ -870,10 +811,7 @@ footer{
         </div>
 
 
-        <!-- КНОПКИ -->
-
         <div class="socials">
-
 
             <!-- TIKTOK -->
 
@@ -887,12 +825,10 @@ footer{
                 <div class="social-icon">
 
                     <svg viewBox="0 0 24 24">
-
                         <path
                             class="tiktok-logo"
                             d="M15.2 3c.3 2.4 1.7 3.8 4 4v3.1c-1.5.1-2.9-.4-4-1.2v7.3c0 4-3.1 5.8-6 5.8-3.1 0-5.4-2.1-5.4-5 0-3.2 2.6-5.3 5.8-5.1v3.1c-1.7-.2-2.7.6-2.7 2 0 1.1.9 1.9 2.1 1.9 1.2 0 2.8-.7 2.8-3V3h3.4Z"
                         />
-
                     </svg>
 
                 </div>
@@ -909,9 +845,7 @@ footer{
 
                 </div>
 
-                <div class="arrow">
-                    →
-                </div>
+                <div class="arrow">→</div>
 
             </a>
 
@@ -955,9 +889,7 @@ footer{
 
                 </div>
 
-                <div class="arrow">
-                    →
-                </div>
+                <div class="arrow">→</div>
 
             </a>
 
@@ -1003,9 +935,7 @@ footer{
 
                 </div>
 
-                <div class="arrow">
-                    →
-                </div>
+                <div class="arrow">→</div>
 
             </a>
 
@@ -1016,9 +946,9 @@ footer{
 </section>
 
 
-<!-- ==================================================
+<!-- =========================
      КОНКУРСЫ
-================================================== -->
+========================= -->
 
 <section
     id="contests"
@@ -1039,11 +969,9 @@ footer{
             id="contestList"
             class="posts"
         >
-
             <div class="empty">
-                Загрузка конкурсов...
+                Конкурсов пока нет.
             </div>
-
         </div>
 
     </div>
@@ -1064,61 +992,59 @@ footer{
    ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
 ================================================== */
 
-function showSection(sectionName){
+function showSection(name) {
 
-    /* Скрываем ВСЕ разделы */
-
-    var sections =
+    /* Получаем все разделы */
+    const sections =
         document.querySelectorAll(".section");
 
-    sections.forEach(function(section){
-
+    /* Скрываем каждый */
+    sections.forEach(function(section) {
         section.classList.remove("active");
-
     });
 
 
-    /* Убираем активность со ВСЕХ кнопок */
+    /* Получаем все кнопки */
+    const buttons =
+        document.querySelectorAll(".nav button");
 
-    var buttons =
-        document.querySelectorAll(".navigation button");
-
-    buttons.forEach(function(button){
-
+    /* Убираем активную обводку */
+    buttons.forEach(function(button) {
         button.classList.remove("active");
-
     });
 
 
-    /* Показываем выбранный раздел */
+    /* Показываем нужный раздел */
+    const section =
+        document.getElementById(name);
 
-    var selectedSection =
-        document.getElementById(sectionName);
-
-    if(selectedSection){
-
-        selectedSection.classList.add("active");
-
+    if (section) {
+        section.classList.add("active");
     }
 
 
-    /* Подсвечиваем выбранную кнопку */
+    /* Активная кнопка */
+    const button =
+        document.getElementById("btn-" + name);
 
-    var selectedButton =
-        document.getElementById(
-            "button-" + sectionName
-        );
-
-    if(selectedButton){
-
-        selectedButton.classList.add("active");
-
+    if (button) {
+        button.classList.add("active");
     }
 
 
-    /* Возвращаем страницу вверх */
+    /* Возвращаемся наверх */
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
-    window.scrollTo(0,0);
+
+    /* Меняем hash */
+    history.replaceState(
+        null,
+        "",
+        "#" + name
+    );
 }
 
 
@@ -1126,29 +1052,24 @@ function showSection(sectionName){
    SUPABASE
 ================================================== */
 
-var supabaseClient = null;
+const SUPABASE_URL =
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
 
-try{
+const SUPABASE_KEY =
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
 
-    if(
-        window.supabase &&
-        typeof window.supabase.createClient === "function"
-    ){
+let db = null;
 
-        supabaseClient =
-            window.supabase.createClient(
+try {
 
-                "https://gcwjtsqnmfimqdoyhfar.supabase.co",
+    db = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-                "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w"
+} catch (error) {
 
-            );
-
-    }
-
-}catch(error){
-
-    console.log(
+    console.error(
         "Supabase error:",
         error
     );
@@ -1157,43 +1078,56 @@ try{
 
 
 /* ==================================================
+   БЕЗОПАСНЫЙ HTML
+================================================== */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ==================================================
    НОВОСТИ
 ================================================== */
 
-async function loadNews(){
+async function loadNews() {
 
-    var list =
+    const list =
         document.getElementById("newsList");
 
-    if(!list){
+    if (!db) {
         return;
     }
 
-    if(!supabaseClient){
+    try {
 
-        list.innerHTML =
-            '<div class="empty">' +
-            'Новостей пока нет.' +
-            '</div>';
-
-        return;
-    }
-
-    try{
-
-        var result =
-            await supabaseClient
+        const { data, error } =
+            await db
                 .from("site_content")
                 .select("*")
-                .eq("selection","news")
-                .order("id",{
-                    ascending:false
+                .eq("selection", "news")
+                .order("id", {
+                    ascending: false
                 });
 
 
-        if(result.error){
+        if (error) {
+            console.error(
+                "Ошибка загрузки новостей:",
+                error
+            );
 
-            console.log(result.error);
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
 
             list.innerHTML =
                 '<div class="empty">' +
@@ -1204,12 +1138,5 @@ async function loadNews(){
         }
 
 
-        var data =
-            result.data;
-
-
-        if(!data || data.length === 0){
-
-            list.innerHTML =
-                '<div class="empty">' +
-            
+        list.innerHTML =
+            data.map(funct
