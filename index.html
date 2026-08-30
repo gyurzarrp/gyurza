@@ -4,139 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GYURZA — Official</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>GYURZA — Official Website</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    background: #05080d;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
+body{
+    background:#05080d;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    min-height:100vh;
 }
 
 /* ================= HEADER ================= */
 
-header {
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+header{
+    position:fixed;
+    top:15px;
+    left:50%;
+    transform:translateX(-50%);
 
-    width: calc(100% - 30px);
-    max-width: 1150px;
-    min-height: 65px;
+    width:calc(100% - 30px);
+    max-width:1150px;
+    min-height:65px;
 
-    padding: 8px 10px 8px 22px;
+    padding:8px 10px 8px 22px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    background: rgba(8, 13, 20, .94);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 18px;
+    background:rgba(8,13,20,.94);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:18px;
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 
-    z-index: 1000;
+    z-index:9999;
 }
 
-.logo {
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: 2px;
+.logo{
+    color:#fff;
+    text-decoration:none;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.logo span {
-    color: #27baff;
+.logo span{
+    color:#27baff;
 }
 
-.nav {
-    display: flex;
-    gap: 5px;
+.nav{
+    display:flex;
+    gap:5px;
 }
 
-.nav button {
-    appearance: none;
-    -webkit-appearance: none;
+.nav button{
+    appearance:none;
+    -webkit-appearance:none;
 
-    background: transparent;
-    color: #7f8d9b;
+    background:transparent;
+    color:#7f8d9b;
 
-    border: 1px solid transparent;
-    border-radius: 10px;
+    border:1px solid transparent;
+    border-radius:10px;
 
-    padding: 11px 14px;
+    padding:11px 14px;
 
-    font-size: 10px;
-    font-weight: 800;
+    font-size:10px;
+    font-weight:800;
 
-    cursor: pointer;
+    cursor:pointer;
 
-    transition: .2s;
+    transition:.2s;
 }
 
-.nav button:hover {
-    color: white;
+.nav button:hover{
+    color:#fff;
 }
 
-.nav button.active {
-    color: white;
-    background: rgba(39,186,255,.12);
-    border-color: rgba(39,186,255,.45);
+.nav button.active{
+    color:#fff;
+    background:rgba(39,186,255,.12);
+    border-color:rgba(39,186,255,.45);
 }
 
 /* ================= CONTAINER ================= */
 
-.container {
-    width: min(1100px, 92%);
-    margin: auto;
-    padding-top: 105px;
+.container{
+    width:min(1100px,92%);
+    margin:auto;
+    padding-top:105px;
 }
 
 /* ================= PAGES ================= */
 
-/*
-   ВАЖНО:
-   Только одна страница имеет display:block.
-   Остальные display:none.
-*/
-
-.page {
-    display: none;
-    width: 100%;
+.page{
+    display:none;
+    width:100%;
 }
 
-.page.active {
-    display: block;
+.page.active{
+    display:block;
 }
 
 /* ================= HOME ================= */
 
-.home {
-    min-height: calc(100vh - 130px);
+.home{
+    min-height:calc(100vh - 130px);
 
-    position: relative;
-    overflow: hidden;
+    position:relative;
+    overflow:hidden;
 
-    padding: 70px;
+    padding:70px;
 
-    border-radius: 30px;
+    border-radius:30px;
 
     background:
         radial-gradient(
@@ -146,81 +138,81 @@ header {
         );
 }
 
-.home-content {
-    position: relative;
-    z-index: 2;
-    max-width: 700px;
+.home-content{
+    position:relative;
+    z-index:2;
+    max-width:700px;
 }
 
-.badge {
-    display: inline-block;
+.badge{
+    display:inline-block;
 
-    padding: 9px 15px;
-    margin-bottom: 25px;
+    padding:9px 15px;
+    margin-bottom:25px;
 
-    color: #55c8ff;
+    color:#55c8ff;
 
-    background: rgba(39,186,255,.08);
-    border: 1px solid rgba(39,186,255,.2);
+    background:rgba(39,186,255,.08);
+    border:1px solid rgba(39,186,255,.2);
 
-    border-radius: 50px;
+    border-radius:50px;
 
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
 }
 
-h1 {
-    font-size: clamp(48px, 8vw, 82px);
-    line-height: .98;
-    letter-spacing: -4px;
-    margin-bottom: 30px;
+h1{
+    font-size:clamp(48px,8vw,82px);
+    line-height:.98;
+    letter-spacing:-4px;
+    margin-bottom:30px;
 }
 
-.blue {
-    color: #27baff;
+.blue{
+    color:#27baff;
 }
 
-.home-text {
-    color: #aebac5;
-    font-size: 16px;
-    line-height: 1.85;
+.home-text{
+    color:#aebac5;
+    font-size:16px;
+    line-height:1.85;
 }
 
-.home-text p {
-    margin-bottom: 17px;
+.home-text p{
+    margin-bottom:17px;
 }
 
-.home-text a {
-    color: #4fc6ff;
-    text-decoration: none;
-    font-weight: 700;
+.home-text a{
+    color:#4fc6ff;
+    text-decoration:none;
+    font-weight:700;
 }
 
-.home-text a:hover {
-    text-decoration: underline;
+.home-text a:hover{
+    text-decoration:underline;
 }
 
-.character {
-    position: absolute;
+.character{
+    position:absolute;
 
-    right: -40px;
-    bottom: 0;
+    right:-40px;
+    bottom:0;
 
-    width: 55%;
-    height: 100%;
+    width:55%;
+    height:100%;
 
-    object-fit: cover;
+    object-fit:cover;
 
-    opacity: .65;
+    opacity:.65;
 
-    mask-image: linear-gradient(
+    mask-image:linear-gradient(
         to right,
         transparent,
         black 45%
     );
 
-    -webkit-mask-image: linear-gradient(
+    -webkit-mask-image:linear-gradient(
         to right,
         transparent,
         black 45%
@@ -229,319 +221,306 @@ h1 {
 
 /* ================= CONTENT ================= */
 
-.content {
-    padding: 65px 0;
+.content{
+    padding:65px 0;
 }
 
-.label {
-    color: #27baff;
+.label{
+    color:#27baff;
 
-    font-size: 10px;
-    font-weight: 800;
+    font-size:10px;
+    font-weight:800;
 
-    letter-spacing: 2px;
+    letter-spacing:2px;
 
-    margin-bottom: 12px;
+    margin-bottom:12px;
 }
 
-h2 {
-    font-size: clamp(42px, 7vw, 65px);
-    letter-spacing: -3px;
-    margin-bottom: 40px;
+h2{
+    font-size:clamp(42px,7vw,65px);
+    letter-spacing:-3px;
+    margin-bottom:40px;
 }
 
 /* ================= ABOUT ================= */
 
-.about-text {
-    max-width: 900px;
+.about-text{
+    max-width:900px;
 
-    color: #aebac5;
+    color:#aebac5;
 
-    font-size: 16px;
-    line-height: 1.9;
+    font-size:16px;
+    line-height:1.9;
 }
 
-.about-text p {
-    margin-bottom: 18px;
+.about-text p{
+    margin-bottom:18px;
 }
 
-/* ================= SOCIAL BUTTONS ================= */
+/* ================= SOCIALS ================= */
 
-.socials {
-    display: grid;
-    gap: 12px;
+.socials{
+    display:grid;
+    gap:12px;
 
-    max-width: 850px;
+    max-width:850px;
 
-    margin-top: 40px;
+    margin-top:40px;
 }
 
-.social {
-    display: flex;
-    align-items: center;
+.social{
+    display:flex;
+    align-items:center;
 
-    min-height: 75px;
+    min-height:75px;
 
-    padding: 12px 16px;
+    padding:12px 16px;
 
-    color: white;
-    text-decoration: none;
+    color:#fff;
+    text-decoration:none;
 
-    background: #0b1118;
+    background:#0b1118;
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius: 17px;
+    border-radius:17px;
 
-    transition: .2s;
+    transition:.2s;
 }
 
-.social:hover {
-    transform: translateY(-2px);
-    border-color: rgba(39,186,255,.4);
+.social:hover{
+    transform:translateY(-2px);
+    border-color:rgba(39,186,255,.4);
 }
 
-.social-icon {
-    width: 48px;
-    height: 48px;
+.social-icon{
+    width:48px;
+    height:48px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    border-radius: 13px;
+    border-radius:13px;
 
-    background: #121c26;
+    background:#121c26;
 
-    font-size: 22px;
+    font-size:22px;
 }
 
-.social-info {
-    margin-left: 15px;
+.social-info{
+    margin-left:15px;
 }
 
-.social-title {
-    font-size: 15px;
-    font-weight: 800;
+.social-title{
+    font-size:15px;
+    font-weight:800;
 }
 
-.social-name {
-    color: #7f8d9b;
-
-    font-size: 12px;
-
-    margin-top: 4px;
+.social-name{
+    color:#7f8d9b;
+    font-size:12px;
+    margin-top:4px;
 }
 
-.arrow {
-    margin-left: auto;
-
-    color: #607180;
-
-    font-size: 24px;
+.arrow{
+    margin-left:auto;
+    color:#607180;
+    font-size:24px;
 }
 
 /* ================= POSTS ================= */
 
-.posts {
-    display: grid;
-    gap: 15px;
-
-    max-width: 850px;
+.posts{
+    display:grid;
+    gap:15px;
+    max-width:850px;
 }
 
-.post {
-    padding: 25px;
+.post{
+    padding:25px;
 
-    background: linear-gradient(
+    background:linear-gradient(
         145deg,
         #101a24,
         #080e15
     );
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius: 20px;
+    border-radius:20px;
 }
 
-.post-type {
-    color: #27baff;
+.post-type{
+    color:#27baff;
 
-    font-size: 10px;
-    font-weight: 800;
+    font-size:10px;
+    font-weight:800;
 
-    letter-spacing: 1.5px;
+    letter-spacing:1.5px;
 
-    margin-bottom: 10px;
+    margin-bottom:10px;
 }
 
-.post-text {
-    color: #aebac5;
+.post-text{
+    color:#aebac5;
 
-    font-size: 15px;
-    line-height: 1.75;
+    font-size:15px;
+    line-height:1.75;
 
-    white-space: pre-wrap;
+    white-space:pre-wrap;
 }
 
-.post-date {
-    color: #53616e;
+.post-date{
+    color:#53616e;
 
-    font-size: 11px;
+    font-size:11px;
 
-    margin-top: 15px;
+    margin-top:15px;
 }
 
-.empty {
-    padding: 25px;
+.empty{
+    padding:25px;
 
-    color: #71808d;
+    color:#71808d;
 
-    background: #0b1118;
+    background:#0b1118;
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius: 18px;
+    border-radius:18px;
 }
 
-.error-box {
-    padding: 20px;
+.error-box{
+    padding:20px;
 
-    color: #ff687d;
+    color:#ff687d;
 
-    background: #170b0f;
+    background:#170b0f;
 
-    border: 1px solid rgba(255,80,100,.2);
+    border:1px solid rgba(255,80,100,.2);
 
-    border-radius: 15px;
+    border-radius:15px;
 }
 
 /* ================= FOOTER ================= */
 
-footer {
-    text-align: center;
+footer{
+    text-align:center;
 
-    color: #53616e;
+    color:#53616e;
 
-    font-size: 11px;
+    font-size:11px;
 
-    padding: 30px 0;
+    padding:30px 0;
 }
 
 /* ================= MOBILE ================= */
 
-@media (max-width: 720px) {
+@media(max-width:720px){
 
-    header {
-        top: 8px;
-        width: 96%;
-        padding-left: 14px;
+    header{
+        top:8px;
+        width:96%;
+        padding-left:14px;
     }
 
-    .logo {
-        font-size: 16px;
+    .logo{
+        font-size:16px;
     }
 
-    .nav {
-        gap: 1px;
+    .nav{
+        gap:1px;
     }
 
-    .nav button {
-        padding: 8px 6px;
-        font-size: 8px;
+    .nav button{
+        padding:8px 6px;
+        font-size:8px;
     }
 
-    .container {
-        width: 92%;
-        padding-top: 88px;
+    .container{
+        width:92%;
+        padding-top:88px;
     }
 
-    .home {
-        padding: 35px 25px;
-
-        min-height: calc(100vh - 110px);
-
-        border-radius: 22px;
+    .home{
+        padding:35px 25px;
+        min-height:calc(100vh - 110px);
+        border-radius:22px;
     }
 
-    h1 {
-        font-size: 48px;
-        letter-spacing: -2px;
+    h1{
+        font-size:48px;
+        letter-spacing:-2px;
     }
 
-    .home-text {
-        font-size: 14px;
+    .home-text{
+        font-size:14px;
     }
 
-    .character {
-        width: 90%;
-        right: -100px;
-        opacity: .3;
+    .character{
+        width:90%;
+        right:-100px;
+        opacity:.3;
     }
 
-    .content {
-        padding: 45px 0;
+    .content{
+        padding:45px 0;
     }
 
-    h2 {
-        font-size: 43px;
+    h2{
+        font-size:43px;
     }
 
-    .about-text {
-        font-size: 14px;
+    .about-text{
+        font-size:14px;
     }
 }
 </style>
 </head>
 
-
 <body>
-
-
-<!-- ================= HEADER ================= -->
 
 <header>
 
     <a
         class="logo"
         href="#"
-        onclick="openPage('home'); return false;"
+        onclick="showPage('home'); return false;"
     >
         GYURZA<span>.</span>
     </a>
-
 
     <nav class="nav">
 
         <button
             type="button"
-            id="button-home"
-            class="active"
-            onclick="openPage('home')"
+            id="nav-home"
+            onclick="showPage('home')"
         >
             ГЛАВНАЯ
         </button>
 
         <button
             type="button"
-            id="button-news"
-            onclick="openPage('news')"
+            id="nav-news"
+            onclick="showPage('news')"
         >
             НОВОСТИ
         </button>
 
         <button
             type="button"
-            id="button-about"
-            onclick="openPage('about')"
+            id="nav-about"
+            onclick="showPage('about')"
         >
             ОБО МНЕ
         </button>
 
         <button
             type="button"
-            id="button-contests"
-            onclick="openPage('contests')"
+            id="nav-contests"
+            onclick="showPage('contests')"
         >
             КОНКУРСЫ
         </button>
@@ -554,13 +533,11 @@ footer {
 <main class="container">
 
 
-<!-- ==================================================
-     ГЛАВНАЯ
-================================================== -->
+<!-- ================= ГЛАВНАЯ ================= -->
 
 <section
     id="page-home"
-    class="page active"
+    class="page"
 >
 
     <div class="home">
@@ -571,19 +548,16 @@ footer {
             alt=""
         >
 
-
         <div class="home-content">
 
             <div class="badge">
                 ● OFFICIAL WEBSITE
             </div>
 
-
             <h1>
                 Привет! Я
                 <span class="blue">Гюрза</span>
             </h1>
-
 
             <div class="home-text">
 
@@ -643,10 +617,7 @@ footer {
 </section>
 
 
-
-<!-- ==================================================
-     НОВОСТИ
-================================================== -->
+<!-- ================= НОВОСТИ ================= -->
 
 <section
     id="page-news"
@@ -679,10 +650,7 @@ footer {
 </section>
 
 
-
-<!-- ==================================================
-     ОБО МНЕ
-================================================== -->
+<!-- ================= ОБО МНЕ ================= -->
 
 <section
     id="page-about"
@@ -698,7 +666,6 @@ footer {
         <h2>
             Обо мне
         </h2>
-
 
         <div class="about-text">
 
@@ -738,9 +705,7 @@ footer {
         </div>
 
 
-
         <div class="socials">
-
 
             <a
                 class="social"
@@ -769,7 +734,6 @@ footer {
                 </div>
 
             </a>
-
 
 
             <a
@@ -801,7 +765,6 @@ footer {
             </a>
 
 
-
             <a
                 class="social"
                 href="https://t.me/ArmyRobloxRPnewss"
@@ -830,7 +793,6 @@ footer {
 
             </a>
 
-
         </div>
 
     </div>
@@ -838,10 +800,7 @@ footer {
 </section>
 
 
-
-<!-- ==================================================
-     КОНКУРСЫ
-================================================== -->
+<!-- ================= КОНКУРСЫ ================= -->
 
 <section
     id="page-contests"
@@ -878,112 +837,96 @@ footer {
     © 2026 GYURZA · Official Website
 </footer>
 
-
 </main>
-
 
 
 <script>
 
 /* =====================================================
-   SUPABASE
-===================================================== */
-
-const SUPABASE_URL =
-    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
-
-
-/* =====================================================
    ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
-   ЭТОТ КОД НЕ ЗАВИСИТ ОТ SUPABASE
+   НЕ ЗАВИСИТ ОТ SUPABASE
 ===================================================== */
 
-function openPage(pageName) {
+function showPage(name){
 
-    const pages = [
+    var pages = [
         "home",
         "news",
         "about",
         "contests"
     ];
 
+    for(var i = 0; i < pages.length; i++){
 
-    /* Сначала скрываем абсолютно ВСЕ */
-
-    for (let i = 0; i < pages.length; i++) {
-
-        const page =
+        var page =
             document.getElementById(
                 "page-" + pages[i]
             );
 
-        if (page) {
+        var nav =
+            document.getElementById(
+                "nav-" + pages[i]
+            );
+
+        if(page){
             page.classList.remove("active");
         }
 
-
-        const button =
-            document.getElementById(
-                "button-" + pages[i]
-            );
-
-        if (button) {
-            button.classList.remove("active");
+        if(nav){
+            nav.classList.remove("active");
         }
     }
 
 
-    /* Теперь показываем ТОЛЬКО выбранный */
-
-    const selectedPage =
+    var selectedPage =
         document.getElementById(
-            "page-" + pageName
+            "page-" + name
         );
 
-    if (selectedPage) {
+    var selectedNav =
+        document.getElementById(
+            "nav-" + name
+        );
+
+
+    if(selectedPage){
         selectedPage.classList.add("active");
     }
 
-
-    /* И подсвечиваем ТОЛЬКО его кнопку */
-
-    const selectedButton =
-        document.getElementById(
-            "button-" + pageName
-        );
-
-    if (selectedButton) {
-        selectedButton.classList.add("active");
+    if(selectedNav){
+        selectedNav.classList.add("active");
     }
 
 
-    /* Возвращаемся наверх */
-
-    window.scrollTo(0, 0);
+    window.scrollTo(0,0);
 }
+
+
+/* =====================================================
+   SUPABASE ПОДКЛЮЧАЕМ ПОСЛЕ НАВИГАЦИИ
+===================================================== */
+
+var SUPABASE_URL =
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
+
+var SUPABASE_KEY =
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+
+var supabaseClient = null;
 
 
 /* =====================================================
    БЕЗОПАСНЫЙ ТЕКСТ
 ===================================================== */
 
-function escapeHtml(text) {
+function escapeHtml(text){
 
-    return String(text ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
 
@@ -991,15 +934,15 @@ function escapeHtml(text) {
    ДАТА
 ===================================================== */
 
-function formatDate(date) {
+function formatDate(date){
 
-    if (!date) {
+    if(!date){
         return "";
     }
 
-    const d = new Date(date);
+    var d = new Date(date);
 
-    if (Number.isNaN(d.getTime())) {
+    if(isNaN(d.getTime())){
         return "";
     }
 
@@ -1008,42 +951,75 @@ function formatDate(date) {
 
 
 /* =====================================================
-   НОВОСТИ ИЗ SUPABASE
+   ЗАГРУЗКА SUPABASE
 ===================================================== */
 
-async function loadNews() {
+function connectSupabase(){
 
-    const list =
-        document.getElementById("newsList");
+    if(
+        typeof window.supabase === "undefined"
+    ){
+        console.log(
+            "Supabase пока недоступен."
+        );
 
-    if (!list) {
+        return false;
+    }
+
+
+    try{
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+        return true;
+
+    }catch(error){
+
+        console.error(error);
+
+        return false;
+    }
+}
+
+
+/* =====================================================
+   НОВОСТИ
+===================================================== */
+
+async function loadNews(){
+
+    if(!supabaseClient){
         return;
     }
 
 
-    try {
+    var list =
+        document.getElementById("newsList");
 
-        const result =
+
+    try{
+
+        var result =
             await supabaseClient
                 .from("site_content")
                 .select(
                     "id,selection,content,created_at"
                 )
-                .eq("selection", "news")
-                .order("id", {
-                    ascending: false
+                .eq("selection","news")
+                .order("id",{
+                    ascending:false
                 });
 
 
-        const data = result.data;
-        const error = result.error;
-
-
-        if (error) {
+        if(result.error){
 
             console.error(
-                "Новости:",
-                error
+                "Ошибка новостей:",
+                result.error
             );
 
             list.innerHTML =
@@ -1055,7 +1031,10 @@ async function loadNews() {
         }
 
 
-        if (!data || data.length === 0) {
+        if(
+            !result.data ||
+            result.data.length === 0
+        ){
 
             list.innerHTML =
                 '<div class="empty">' +
@@ -1067,7 +1046,7 @@ async function loadNews() {
 
 
         list.innerHTML =
-            data.map(function(item) {
+            result.data.map(function(item){
 
                 return `
                     <article class="post">
@@ -1080,67 +1059,98 @@ async function loadNews() {
                             ${escapeHtml(item.content)}
                         </div>
 
-                        ${
-                            item.created_at
-                            ?
-                            `
-                            <div class="post-date">
-                                ${formatDate(item.created_at)}
-                            </div>
-                            `
-                            :
-                            ""
-                        }
+                        <div class="post-date">
+                            ${formatDate(item.created_at)}
+                        </div>
 
                     </article>
                 `;
 
             }).join("");
 
-    } catch (error) {
+    }catch(error){
 
-        console.error(
-            "Новости:",
-            error
-        );
+        console.error(error);
 
-        list.innerHTML =
-            '<div class="error-box">' +
-            'Ошибка загрузки новостей.' +
-            '</div>';
     }
 }
 
 
 /* =====================================================
-   КОНКУРСЫ ИЗ SUPABASE
+   КОНКУРСЫ
 ===================================================== */
 
-async function loadContests() {
+async function loadContests(){
 
-    const list =
-        document.getElementById(
-            "contestList"
-        );
-
-    if (!list) {
+    if(!supabaseClient){
         return;
     }
 
 
-    try {
+    var list =
+        document.getElementById(
+            "contestList"
+        );
 
-        const result =
+
+    try{
+
+        var result =
             await supabaseClient
                 .from("site_content")
                 .select(
                     "id,selection,content,created_at"
                 )
-                .eq("selection", "contest")
-                .order("id", {
-                    ascending: false
+                .eq("selection","contest")
+                .order("id",{
+                    ascending:false
                 });
 
 
-        const data = result.data;
-        const erro
+        if(result.error){
+
+            console.error(
+                "Ошибка конкурсов:",
+                result.error
+            );
+
+            list.innerHTML =
+                '<div class="error-box">' +
+                'Не удалось загрузить конкурсы.' +
+                '</div>';
+
+            return;
+        }
+
+
+        if(
+            !result.data ||
+            result.data.length === 0
+        ){
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Конкурсов пока нет.' +
+                '</div>';
+
+            return;
+        }
+
+
+        list.innerHTML =
+            result.data.map(function(item){
+
+                return `
+                    <article class="post">
+
+                        <div class="post-type">
+                            КОНКУРС
+                        </div>
+
+                        <div class="post-text">
+                            ${escapeHtml(item.content)}
+                        </div>
+
+                        <div class="post-date">
+                            ${formatDate(item.created_at)}
+   
