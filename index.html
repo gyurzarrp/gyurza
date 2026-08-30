@@ -2,17 +2,21 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GYURZA — Official</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
@@ -50,7 +54,7 @@ header{
 
     padding:0 10px 0 24px;
 
-    background:rgba(8,13,19,.78);
+    background:rgba(8,13,19,.90);
     border:1px solid rgba(255,255,255,.08);
     border-radius:18px;
 
@@ -91,6 +95,12 @@ nav button{
     border-radius:10px;
 
     cursor:pointer;
+
+    transition:.2s;
+}
+
+nav button:hover{
+    color:white;
 }
 
 nav button.active{
@@ -104,44 +114,33 @@ nav button.active{
     padding-top:105px;
 }
 
+/* РАЗДЕЛЫ */
+
 .page{
     display:none;
     min-height:calc(100vh - 145px);
-    animation:pageIn .35s ease;
 }
 
 .page.active{
     display:flex;
 }
 
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-
-/* =========================
-   ГЛАВНАЯ
-========================= */
+/* ГЛАВНАЯ */
 
 .home{
     position:relative;
     align-items:center;
     overflow:hidden;
+
     padding:70px;
+
     border-radius:30px;
 }
 
 .home-content{
     position:relative;
     z-index:2;
+
     width:65%;
 }
 
@@ -168,7 +167,9 @@ nav button.active{
 .badge-dot{
     width:6px;
     height:6px;
+
     border-radius:50%;
+
     background:#25baff;
     box-shadow:0 0 12px #25baff;
 }
@@ -186,7 +187,9 @@ h1{
 
 .home-text{
     max-width:700px;
+
     color:#aebbc6;
+
     font-size:16px;
     line-height:1.85;
 }
@@ -246,10 +249,7 @@ h1{
     z-index:1;
 }
 
-
-/* =========================
-   ОБЩИЕ РАЗДЕЛЫ
-========================= */
+/* ОБЩИЕ РАЗДЕЛЫ */
 
 .content{
     width:100%;
@@ -258,9 +258,11 @@ h1{
 
 .label{
     color:#25baff;
+
     font-size:10px;
     font-weight:800;
     letter-spacing:2px;
+
     margin-bottom:10px;
 }
 
@@ -268,17 +270,17 @@ h2{
     font-size:clamp(40px,6vw,62px);
     line-height:1.05;
     letter-spacing:-3px;
+
     margin-bottom:38px;
 }
 
-
-/* =========================
-   ОБО МНЕ
-========================= */
+/* ОБО МНЕ */
 
 .about-text{
     max-width:900px;
+
     color:#aebbc6;
+
     font-size:16px;
     line-height:1.9;
 }
@@ -289,8 +291,11 @@ h2{
 
 .socials{
     display:grid;
+
     max-width:800px;
+
     gap:12px;
+
     margin-top:38px;
 }
 
@@ -316,7 +321,9 @@ h2{
 
 .social:hover{
     transform:translateY(-3px);
+
     background:#0e1924;
+
     border-color:rgba(37,186,255,.4);
 }
 
@@ -340,6 +347,22 @@ h2{
     height:28px;
 }
 
+.tiktok-logo{
+    fill:white;
+}
+
+.youtube-logo{
+    fill:#ff0033;
+}
+
+.telegram-circle{
+    fill:#229ED9;
+}
+
+.telegram-plane{
+    fill:white;
+}
+
 .social-info{
     margin-left:15px;
 }
@@ -351,24 +374,27 @@ h2{
 
 .social-name{
     color:#82919f;
+
     font-size:12px;
+
     margin-top:4px;
 }
 
 .arrow{
     margin-left:auto;
+
     color:#566777;
+
     font-size:26px;
 }
 
-
-/* =========================
-   НОВОСТИ / КОНКУРСЫ
-========================= */
+/* НОВОСТИ / КОНКУРСЫ */
 
 .posts{
     display:grid;
+
     gap:15px;
+
     max-width:850px;
 }
 
@@ -389,54 +415,64 @@ h2{
 
 .post-type{
     color:#25baff;
+
     font-size:10px;
     font-weight:800;
+
     letter-spacing:1.5px;
+
     margin-bottom:10px;
 }
 
 .post-date{
     color:#536270;
+
     font-size:11px;
+
     margin-bottom:16px;
 }
 
 .post-content{
     color:#c7d0d8;
+
     line-height:1.8;
+
     white-space:pre-wrap;
 }
 
 .empty{
     color:#71808d;
+
     padding:25px;
+
     background:#0b1118;
+
     border-radius:18px;
 }
 
-
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 footer{
     text-align:center;
+
     color:#536270;
+
     font-size:11px;
+
     padding:25px 0 35px;
 }
 
-
-/* =========================
-   MOBILE
-========================= */
+/* МОБИЛЬНАЯ ВЕРСИЯ */
 
 @media(max-width:720px){
 
     header{
         top:9px;
+
         width:95%;
+
         min-height:60px;
+
         padding:8px 9px 8px 16px;
     }
 
@@ -460,7 +496,9 @@ footer{
 
     .home{
         padding:35px 25px;
+
         border-radius:22px;
+
         align-items:flex-start;
     }
 
@@ -470,12 +508,15 @@ footer{
 
     .character{
         right:-100px;
+
         width:90%;
+
         opacity:.35;
     }
 
     h1{
         font-size:48px;
+
         letter-spacing:-2px;
     }
 
@@ -507,26 +548,8 @@ footer{
         height:45px;
     }
 }
-
-.tiktok-logo{
-    fill:white;
-}
-
-.youtube-logo{
-    fill:#ff0033;
-}
-
-.telegram-circle{
-    fill:#229ED9;
-}
-
-.telegram-plane{
-    fill:white;
-}
-
 </style>
 </head>
-
 
 <body>
 
@@ -535,7 +558,7 @@ footer{
     <a
         class="logo"
         href="#"
-        onclick="showPage('home');return false;"
+        onclick="openPage('home'); return false;"
     >
         GYURZA<span>.</span>
     </a>
@@ -543,30 +566,30 @@ footer{
     <nav>
 
         <button
-            id="btn-home"
+            id="nav-home"
             class="active"
-            onclick="showPage('home')"
+            onclick="openPage('home')"
         >
             ГЛАВНАЯ
         </button>
 
         <button
-            id="btn-news"
-            onclick="showPage('news')"
+            id="nav-news"
+            onclick="openPage('news')"
         >
             НОВОСТИ
         </button>
 
         <button
-            id="btn-about"
-            onclick="showPage('about')"
+            id="nav-about"
+            onclick="openPage('about')"
         >
             ОБО МНЕ
         </button>
 
         <button
-            id="btn-contests"
-            onclick="showPage('contests')"
+            id="nav-contests"
+            onclick="openPage('contests')"
         >
             КОНКУРСЫ
         </button>
@@ -578,10 +601,7 @@ footer{
 
 <div class="container">
 
-
-<!-- =========================
-     ГЛАВНАЯ
-========================= -->
+<!-- ГЛАВНАЯ -->
 
 <section
     id="home"
@@ -597,16 +617,17 @@ footer{
     <div class="home-content">
 
         <div class="badge">
-            <span class="badge-dot"></span>
-            OFFICIAL WEBSITE
-        </div>
 
+            <span class="badge-dot"></span>
+
+            OFFICIAL WEBSITE
+
+        </div>
 
         <h1>
             Привет! Я
             <span class="blue">Гюрза</span>
         </h1>
-
 
         <div class="home-text">
 
@@ -666,9 +687,7 @@ footer{
 </section>
 
 
-<!-- =========================
-     НОВОСТИ
-========================= -->
+<!-- НОВОСТИ -->
 
 <section
     id="news"
@@ -689,9 +708,11 @@ footer{
             id="newsList"
             class="posts"
         >
+
             <div class="empty">
                 Загрузка новостей...
             </div>
+
         </div>
 
     </div>
@@ -699,9 +720,7 @@ footer{
 </section>
 
 
-<!-- =========================
-     ОБО МНЕ
-========================= -->
+<!-- ОБО МНЕ -->
 
 <section
     id="about"
@@ -756,7 +775,6 @@ footer{
 
 
         <div class="socials">
-
 
             <!-- TIKTOK -->
 
@@ -899,9 +917,7 @@ footer{
 </section>
 
 
-<!-- =========================
-     КОНКУРСЫ
-========================= -->
+<!-- КОНКУРСЫ -->
 
 <section
     id="contests"
@@ -922,9 +938,11 @@ footer{
             id="contestList"
             class="posts"
         >
+
             <div class="empty">
                 Загрузка конкурсов...
             </div>
+
         </div>
 
     </div>
@@ -941,12 +959,15 @@ footer{
 
 <script>
 
+/* =========================================
+   SUPABASE
+========================================= */
+
 const SUPABASE_URL =
     "https://gcwjtsqnmfimqdoyhfar.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -955,64 +976,64 @@ const supabaseClient =
     );
 
 
-/* =========================
+/* =========================================
    ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
-========================= */
+========================================= */
 
-function showPage(pageName){
+function openPage(pageName){
 
-    document
-        .querySelectorAll(".page")
-        .forEach(page =>
-            page.classList.remove("active")
-        );
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page){
+
+        page.classList.remove("active");
+
+    });
 
 
-    const page =
+    const selectedPage =
         document.getElementById(pageName);
 
 
-    if(page){
-        page.classList.add("active");
+    if(selectedPage){
+
+        selectedPage.classList.add("active");
+
     }
 
 
-    document
-        .querySelectorAll("nav button")
-        .forEach(button =>
-            button.classList.remove("active")
-        );
+    const buttons =
+        document.querySelectorAll("nav button");
 
 
-    const button =
-        document.getElementById(
-            "btn-" + pageName
-        );
+    buttons.forEach(function(button){
 
+        button.classList.remove("active");
 
-    if(button){
-        button.classList.add("active");
-    }
-
-
-    history.replaceState(
-        null,
-        "",
-        "#" + pageName
-    );
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
     });
+
+
+    const selectedButton =
+        document.getElementById(
+            "nav-" + pageName
+        );
+
+
+    if(selectedButton){
+
+        selectedButton.classList.add("active");
+
+    }
+
+
+    window.scrollTo(0,0);
 
 }
 
 
-/* =========================
-   ЗАГРУЗКА НОВОСТЕЙ
-========================= */
+/* =========================================
+   НОВОСТИ
+========================================= */
 
 async function loadNews(){
 
@@ -1020,69 +1041,84 @@ async function loadNews(){
         document.getElementById("newsList");
 
 
-    const { data, error } =
-        await supabaseClient
-            .from("site_content")
-            .select("*")
-            .eq("selection","news")
-            .order("created_at",{
-                ascending:false
-            });
+    try{
+
+        const result =
+            await supabaseClient
+                .from("site_content")
+                .select("*")
+                .eq("selection","news")
+                .order("created_at",{
+                    ascending:false
+                });
 
 
-    if(error){
+        if(result.error){
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Не удалось загрузить новости.' +
+                '</div>';
+
+            return;
+        }
+
+
+        const data =
+            result.data;
+
+
+        if(!data || data.length === 0){
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Новостей пока нет.' +
+                '</div>';
+
+            return;
+        }
+
+
+        list.innerHTML =
+            data.map(function(item){
+
+                return `
+
+                    <article class="post">
+
+                        <div class="post-type">
+                            НОВОСТЬ
+                        </div>
+
+                        <div class="post-date">
+                            ${formatDate(item.created_at)}
+                        </div>
+
+                        <div class="post-content">
+                            ${escapeHtml(item.content)}
+                        </div>
+
+                    </article>
+
+                `;
+
+            }).join("");
+
+    }catch(error){
 
         list.innerHTML =
             '<div class="empty">' +
-            "Не удалось загрузить новости." +
-            "</div>";
+            'Не удалось загрузить новости.' +
+            '</div>';
 
-        return;
     }
-
-
-    if(!data || data.length === 0){
-
-        list.innerHTML =
-            '<div class="empty">' +
-            "Новостей пока нет." +
-            "</div>";
-
-        return;
-    }
-
-
-    list.innerHTML =
-        data.map(item => `
-
-            <article class="post">
-
-                <div class="post-type">
-                    НОВОСТЬ
-                </div>
-
-                <div class="post-date">
-                    ${formatDate(
-                        item.created_at
-                    )}
-                </div>
-
-                <div class="post-content">
-                    ${escapeHtml(
-                        item.content
-                    )}
-                </div>
-
-            </article>
-
-        `).join("");
 
 }
 
 
-/* =========================
-   ЗАГРУЗКА КОНКУРСОВ
-========================= */
+/* =========================================
+   КОНКУРСЫ
+========================================= */
 
 async function loadContests(){
 
@@ -1090,74 +1126,69 @@ async function loadContests(){
         document.getElementById("contestList");
 
 
-    const { data, error } =
-        await supabaseClient
-            .from("site_content")
-            .select("*")
-            .eq("selection","contest")
-            .order("created_at",{
-                ascending:false
-            });
+    try{
+
+        const result =
+            await supabaseClient
+                .from("site_content")
+                .select("*")
+                .eq("selection","contest")
+                .order("created_at",{
+                    ascending:false
+                });
 
 
-    if(error){
+        if(result.error){
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Не удалось загрузить конкурсы.' +
+                '</div>';
+
+            return;
+        }
+
+
+        const data =
+            result.data;
+
+
+        if(!data || data.length === 0){
+
+            list.innerHTML =
+                '<div class="empty">' +
+                'Конкурсов пока нет.' +
+                '</div>';
+
+            return;
+        }
+
 
         list.innerHTML =
-            '<div class="empty">' +
-            "Не удалось загрузить конкурсы." +
-            "</div>";
+            data.map(function(item){
 
-        return;
-    }
+                return `
 
+                    <article class="post">
 
-    if(!data || data.length === 0){
+                        <div class="post-type">
+                            КОНКУРС
+                        </div>
 
-        list.innerHTML =
-            '<div class="empty">' +
-            "Конкурсов пока нет." +
-            "</div>";
+                        <div class="post-date">
+                            ${formatDate(item.created_at)}
+                        </div>
 
-        return;
-    }
+                        <div class="post-content">
+                            ${escapeHtml(item.content)}
+                        </div>
 
+                    </article>
 
-    list.innerHTML =
-        data.map(item => `
+                `;
 
-            <article class="post">
+            }).join("");
 
-                <div class="post-type">
-                    КОНКУРС
-                </div>
+    }catch(error){
 
-                <div class="post-date">
-                    ${formatDate(
-                        item.created_at
-                    )}
-                </div>
-
-                <div class="post-content">
-                    ${escapeHtml(
-                        item.content
-                    )}
-                </div>
-
-            </article>
-
-        `).join("");
-
-}
-
-
-/* =========================
-   ДАТА
-========================= */
-
-function formatDate(date){
-
-    if(!date){
-        return "";
-    }
-
-    ret
+        list
