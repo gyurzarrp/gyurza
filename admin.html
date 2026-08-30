@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>GYURZA — Админ-панель</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -197,49 +196,37 @@ button:hover {
 
         <div class="card">
 
-            <h2>
-                🏠 Главная
-            </h2>
+            <h2>🏠 Главная</h2>
 
-            <label>
-                Заголовок
-            </label>
+            <label>Заголовок</label>
 
             <input
                 id="mainTitle"
                 placeholder="Привет! Я Гюрза 👋"
             >
 
-            <label>
-                Основной текст
-            </label>
+            <label>Основной текст</label>
 
             <textarea
                 id="mainText"
                 placeholder="Текст главной страницы..."
             ></textarea>
 
-            <label>
-                Telegram
-            </label>
+            <label>Telegram</label>
 
             <input
                 id="telegram"
                 placeholder="https://t.me/..."
             >
 
-            <label>
-                TikTok
-            </label>
+            <label>TikTok</label>
 
             <input
                 id="tiktok"
                 placeholder="https://tiktok.com/@..."
             >
 
-            <label>
-                YouTube
-            </label>
+            <label>YouTube</label>
 
             <input
                 id="youtube"
@@ -262,13 +249,9 @@ button:hover {
 
         <div class="card">
 
-            <h2>
-                📰 Новости
-            </h2>
+            <h2>📰 Новости</h2>
 
-            <label>
-                Текст новостей
-            </label>
+            <label>Текст новостей</label>
 
             <textarea
                 id="newsText"
@@ -291,13 +274,9 @@ button:hover {
 
         <div class="card">
 
-            <h2>
-                🎁 Конкурсы
-            </h2>
+            <h2>🎁 Конкурсы</h2>
 
-            <label>
-                Информация о конкурсах
-            </label>
+            <label>Информация о конкурсах</label>
 
             <textarea
                 id="contestText"
@@ -322,9 +301,9 @@ button:hover {
 
 <script>
 
-/* ==================================
+/* =================================
    SUPABASE
-================================== */
+================================= */
 
 const SUPABASE_URL =
     "https://gcwjtsqnmfimqdoyhfar.supabase.co";
@@ -339,9 +318,9 @@ const supabaseClient =
     );
 
 
-/* ==================================
+/* =================================
    ВХОД
-================================== */
+================================= */
 
 async function login() {
 
@@ -379,11 +358,8 @@ async function login() {
 
     const { error } =
         await supabaseClient.auth.signInWithPassword({
-
             email: email,
-
             password: password
-
         });
 
     if (error) {
@@ -401,22 +377,19 @@ async function login() {
     status.textContent = "";
 
     showAdmin();
-
 }
 
 
-/* ==================================
+/* =================================
    ПОКАЗ АДМИНКИ
-================================== */
+================================= */
 
 async function showAdmin() {
 
     const {
         data: { session }
     } =
-        await supabaseClient
-        .auth
-        .getSession();
+        await supabaseClient.auth.getSession();
 
     if (!session) {
         return;
@@ -433,28 +406,24 @@ async function showAdmin() {
         .remove("hidden");
 
     loadData();
-
 }
 
 
-/* ==================================
+/* =================================
    ВЫХОД
-================================== */
+================================= */
 
 async function logout() {
 
-    await supabaseClient
-        .auth
-        .signOut();
+    await supabaseClient.auth.signOut();
 
     location.reload();
-
 }
 
 
-/* ==================================
+/* =================================
    ЗАГРУЗКА ДАННЫХ
-================================== */
+================================= */
 
 async function loadData() {
 
@@ -476,7 +445,13 @@ async function loadData() {
         return;
     }
 
+    if (!data) {
+        return;
+    }
+
     data.forEach(function(row) {
+
+        /* ГЛАВНАЯ */
 
         if (row.section === "main") {
 
@@ -516,11 +491,11 @@ async function loadData() {
                     .getElementById("mainTitle")
                     .value =
                     row.content || "";
-
             }
-
         }
 
+
+        /* НОВОСТИ */
 
         if (row.section === "news") {
 
@@ -528,9 +503,10 @@ async function loadData() {
                 .getElementById("newsText")
                 .value =
                 row.content || "";
-
         }
 
+
+        /* КОНКУРСЫ */
 
         if (row.section === "contests") {
 
@@ -538,17 +514,15 @@ async function loadData() {
                 .getElementById("contestText")
                 .value =
                 row.content || "";
-
         }
 
     });
-
 }
 
 
-/* ==================================
+/* =================================
    СОХРАНЕНИЕ ГЛАВНОЙ
-================================== */
+================================= */
 
 async function saveMain() {
 
@@ -579,17 +553,11 @@ async function saveMain() {
 
     const content =
         JSON.stringify({
-
             title: title,
-
             text: text,
-
             telegram: telegram,
-
             tiktok: tiktok,
-
             youtube: youtube
-
         });
 
     const {
@@ -598,12 +566,7 @@ async function saveMain() {
         await supabaseClient
         .from("site_content")
         .update({
-
-            content: content,
-
-            updated_at:
-                new Date().toISOString()
-
+            content: content
         })
         .eq(
             "section",
@@ -630,15 +593,13 @@ async function saveMain() {
 
         status.className =
             "status";
-
     }
-
 }
 
 
-/* ==================================
+/* =================================
    СОХРАНЕНИЕ НОВОСТЕЙ
-================================== */
+================================= */
 
 async function saveNews() {
 
@@ -653,12 +614,7 @@ async function saveNews() {
         await supabaseClient
         .from("site_content")
         .update({
-
-            content: text,
-
-            updated_at:
-                new Date().toISOString()
-
+            content: text
         })
         .eq(
             "section",
@@ -685,15 +641,13 @@ async function saveNews() {
 
         status.className =
             "status";
-
     }
-
 }
 
 
-/* ==================================
+/* =================================
    СОХРАНЕНИЕ КОНКУРСОВ
-================================== */
+================================= */
 
 async function saveContests() {
 
@@ -708,12 +662,7 @@ async function saveContests() {
         await supabaseClient
         .from("site_content")
         .update({
-
-            content: text,
-
-            updated_at:
-                new Date().toISOString()
-
+            content: text
         })
         .eq(
             "section",
@@ -740,15 +689,13 @@ async function saveContests() {
 
         status.className =
             "status";
-
     }
-
 }
 
 
-/* ==================================
+/* =================================
    ПРОВЕРКА СЕССИИ
-================================== */
+================================= */
 
 window.addEventListener(
     "load",
@@ -762,9 +709,7 @@ window.addEventListener(
             .getSession();
 
         if (session) {
-
             showAdmin();
-
         }
 
     }
