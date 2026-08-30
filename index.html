@@ -2,19 +2,17 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>GYURZA — Official</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-}
-
-html,body{
-    width:100%;
-    min-height:100%;
 }
 
 body{
@@ -37,24 +35,6 @@ body::before{
     z-index:-1;
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    width:500px;
-    height:500px;
-    right:-250px;
-    bottom:-250px;
-    background:rgba(0,100,255,.10);
-    filter:blur(160px);
-    pointer-events:none;
-    z-index:-1;
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
 header{
     position:fixed;
     top:18px;
@@ -75,7 +55,6 @@ header{
     border-radius:18px;
 
     backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
 
     z-index:9999;
 }
@@ -83,7 +62,6 @@ header{
 .logo{
     color:white;
     text-decoration:none;
-
     font-size:20px;
     font-weight:800;
     letter-spacing:2px;
@@ -100,7 +78,7 @@ nav{
 
 nav button{
     border:0;
-    outline:none;
+    outline:0;
 
     color:#8795a3;
     background:transparent;
@@ -113,12 +91,6 @@ nav button{
     border-radius:10px;
 
     cursor:pointer;
-    transition:.25s;
-}
-
-nav button:hover{
-    color:white;
-    background:rgba(37,186,255,.08);
 }
 
 nav button.active{
@@ -126,27 +98,15 @@ nav button.active{
     background:rgba(37,186,255,.12);
 }
 
-
-/* =========================
-   CONTAINER
-========================= */
-
 .container{
     width:min(1120px,92%);
     margin:auto;
     padding-top:105px;
 }
 
-
-/* =========================
-   PAGES
-========================= */
-
 .page{
     display:none;
-
     min-height:calc(100vh - 145px);
-
     animation:pageIn .35s ease;
 }
 
@@ -168,25 +128,20 @@ nav button.active{
 
 
 /* =========================
-   HOME
+   ГЛАВНАЯ
 ========================= */
 
 .home{
     position:relative;
-
     align-items:center;
-
     overflow:hidden;
-
     padding:70px;
-
     border-radius:30px;
 }
 
 .home-content{
     position:relative;
     z-index:2;
-
     width:65%;
 }
 
@@ -207,27 +162,21 @@ nav button.active{
 
     font-size:10px;
     font-weight:800;
-
     letter-spacing:1.5px;
 }
 
 .badge-dot{
     width:6px;
     height:6px;
-
     border-radius:50%;
-
     background:#25baff;
-
     box-shadow:0 0 12px #25baff;
 }
 
 h1{
     font-size:clamp(48px,7vw,82px);
-
     line-height:1;
     letter-spacing:-4px;
-
     margin-bottom:28px;
 }
 
@@ -237,9 +186,7 @@ h1{
 
 .home-text{
     max-width:700px;
-
     color:#aebbc6;
-
     font-size:16px;
     line-height:1.85;
 }
@@ -254,10 +201,6 @@ h1{
     text-decoration:none;
 }
 
-.home-text a:hover{
-    text-decoration:underline;
-}
-
 .character{
     position:absolute;
 
@@ -268,7 +211,6 @@ h1{
     height:100%;
 
     object-fit:cover;
-    object-position:center;
 
     opacity:.85;
 
@@ -301,13 +243,12 @@ h1{
         rgba(5,8,12,.10)
     );
 
-    pointer-events:none;
     z-index:1;
 }
 
 
 /* =========================
-   CONTENT
+   ОБЩИЕ РАЗДЕЛЫ
 ========================= */
 
 .content{
@@ -317,34 +258,27 @@ h1{
 
 .label{
     color:#25baff;
-
     font-size:10px;
     font-weight:800;
-
     letter-spacing:2px;
-
     margin-bottom:10px;
 }
 
 h2{
     font-size:clamp(40px,6vw,62px);
-
     line-height:1.05;
     letter-spacing:-3px;
-
     margin-bottom:38px;
 }
 
 
 /* =========================
-   ABOUT
+   ОБО МНЕ
 ========================= */
 
 .about-text{
     max-width:900px;
-
     color:#aebbc6;
-
     font-size:16px;
     line-height:1.9;
 }
@@ -353,18 +287,10 @@ h2{
     margin-bottom:18px;
 }
 
-
-/* =========================
-   SOCIAL BUTTONS
-========================= */
-
 .socials{
     display:grid;
-
     max-width:800px;
-
     gap:12px;
-
     margin-top:38px;
 }
 
@@ -377,7 +303,6 @@ h2{
     padding:12px 16px;
 
     color:white;
-
     text-decoration:none;
 
     background:#0b1118;
@@ -391,12 +316,8 @@ h2{
 
 .social:hover{
     transform:translateY(-3px);
-
     background:#0e1924;
-
     border-color:rgba(37,186,255,.4);
-
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
 .social-icon{
@@ -430,81 +351,67 @@ h2{
 
 .social-name{
     color:#82919f;
-
     font-size:12px;
-
     margin-top:4px;
 }
 
 .arrow{
     margin-left:auto;
-
     color:#566777;
-
     font-size:26px;
-
-    transition:.2s;
-}
-
-.social:hover .arrow{
-    color:#25baff;
-    transform:translateX(4px);
 }
 
 
 /* =========================
-   CARDS
+   НОВОСТИ / КОНКУРСЫ
 ========================= */
 
-.card{
+.posts{
+    display:grid;
+    gap:15px;
     max-width:850px;
+}
 
-    padding:55px 30px;
-
-    border-radius:24px;
-
-    background:linear-gradient(
-        145deg,
-        rgba(16,26,36,.95),
-        rgba(8,14,21,.95)
-    );
+.post{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,26,36,.95),
+            rgba(8,14,21,.95)
+        );
 
     border:1px solid rgba(255,255,255,.07);
+
+    border-radius:22px;
+
+    padding:25px;
 }
 
-.card-icon{
-    width:58px;
-    height:58px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin-bottom:18px;
-
-    border-radius:17px;
-
-    background:rgba(37,186,255,.08);
-
+.post-type{
     color:#25baff;
-
-    font-size:24px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    margin-bottom:10px;
 }
 
-.card strong{
-    display:block;
-
-    margin-bottom:8px;
-
-    font-size:19px;
+.post-date{
+    color:#536270;
+    font-size:11px;
+    margin-bottom:16px;
 }
 
-.card p{
-    color:#8795a3;
-
+.post-content{
+    color:#c7d0d8;
     line-height:1.8;
+    white-space:pre-wrap;
+}
 
-    white-space:pre-line;
+.empty{
+    color:#71808d;
+    padding:25px;
+    background:#0b1118;
+    border-radius:18px;
 }
 
 
@@ -514,11 +421,8 @@ h2{
 
 footer{
     text-align:center;
-
     color:#536270;
-
     font-size:11px;
-
     padding:25px 0 35px;
 }
 
@@ -531,11 +435,8 @@ footer{
 
     header{
         top:9px;
-
         width:95%;
-
         min-height:60px;
-
         padding:8px 9px 8px 16px;
     }
 
@@ -560,7 +461,6 @@ footer{
     .home{
         padding:35px 25px;
         border-radius:22px;
-
         align-items:flex-start;
     }
 
@@ -572,15 +472,6 @@ footer{
         right:-100px;
         width:90%;
         opacity:.35;
-    }
-
-    .home::after{
-        background:linear-gradient(
-            90deg,
-            #05080c 5%,
-            rgba(5,8,12,.90) 65%,
-            rgba(5,8,12,.30)
-        );
     }
 
     h1{
@@ -617,11 +508,6 @@ footer{
     }
 }
 
-
-/* =========================
-   LOGOS
-========================= */
-
 .tiktok-logo{
     fill:white;
 }
@@ -644,21 +530,15 @@ footer{
 
 <body>
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
 <header>
 
     <a
         class="logo"
         href="#"
-        onclick="showPage('home'); return false;"
+        onclick="showPage('home');return false;"
     >
         GYURZA<span>.</span>
     </a>
-
 
     <nav>
 
@@ -714,23 +594,17 @@ footer{
         alt="GYURZA"
     >
 
-
     <div class="home-content">
 
         <div class="badge">
-
             <span class="badge-dot"></span>
-
             OFFICIAL WEBSITE
-
         </div>
 
 
         <h1>
-
             Привет! Я
             <span class="blue">Гюрза</span>
-
         </h1>
 
 
@@ -740,14 +614,12 @@ footer{
                 Всем привет 👋
             </p>
 
-
             <p>
                 Я Гюрза - меня знают как контент мейкера плейса
                 «Армия Роблокса РП», также я являюсь основателем
                 и бывшим лидером клана «Русская сила!», который я
                 к сожалению уже давно закрыл.
             </p>
-
 
             <p>
                 Сейчас я активно снимаю в TikTok, YouTube
@@ -761,7 +633,6 @@ footer{
                 </a>.
             </p>
 
-
             <p>
                 Мой TikTok:
                 <a
@@ -773,7 +644,6 @@ footer{
                 </a>
             </p>
 
-
             <p>
                 Мой YouTube:
                 <a
@@ -784,7 +654,6 @@ footer{
                     @GyurzaOriginalOwnerRS
                 </a>
             </p>
-
 
             <p>
                 Рад что ты заглянул сюда, удачи 😄
@@ -812,28 +681,17 @@ footer{
             01 / NEWS
         </div>
 
-
         <h2>
             Новости
         </h2>
 
-
-        <div class="card">
-
-            <div class="card-icon">
-                ✦
+        <div
+            id="newsList"
+            class="posts"
+        >
+            <div class="empty">
+                Загрузка новостей...
             </div>
-
-
-            <strong>
-                Новости
-            </strong>
-
-
-            <p>
-                Здесь будут появляться новые новости.
-            </p>
-
         </div>
 
     </div>
@@ -856,11 +714,9 @@ footer{
             02 / ABOUT
         </div>
 
-
         <h2>
             Обо мне
         </h2>
-
 
         <div class="about-text">
 
@@ -870,7 +726,6 @@ footer{
                 активности в сообществе и созданию контента.
             </p>
 
-
             <p>
                 В определённый период я возглавлял клан
                 «Русская Сила!», который некоторое время
@@ -879,12 +734,10 @@ footer{
                 в сообществе.
             </p>
 
-
             <p>
                 Сейчас я состою в клане «Obsidian» и продолжаю
                 развивать свою медийную деятельность.
             </p>
-
 
             <p>
                 В основном я создаю контент для TikTok —
@@ -892,7 +745,6 @@ footer{
                 где я публикую видео и другие материалы,
                 связанные с моей деятельностью.
             </p>
-
 
             <p>
                 Спасибо, что посетили мой сайт. Здесь вы сможете
@@ -903,9 +755,10 @@ footer{
         </div>
 
 
-        <!-- TIKTOK -->
-
         <div class="socials">
+
+
+            <!-- TIKTOK -->
 
             <a
                 class="social"
@@ -927,7 +780,6 @@ footer{
 
                 </div>
 
-
                 <div class="social-info">
 
                     <div class="social-title">
@@ -939,7 +791,6 @@ footer{
                     </div>
 
                 </div>
-
 
                 <div class="arrow">
                     →
@@ -975,7 +826,6 @@ footer{
 
                 </div>
 
-
                 <div class="social-info">
 
                     <div class="social-title">
@@ -987,7 +837,6 @@ footer{
                     </div>
 
                 </div>
-
 
                 <div class="arrow">
                     →
@@ -1025,7 +874,6 @@ footer{
 
                 </div>
 
-
                 <div class="social-info">
 
                     <div class="social-title">
@@ -1037,7 +885,6 @@ footer{
                     </div>
 
                 </div>
-
 
                 <div class="arrow">
                     →
@@ -1067,28 +914,17 @@ footer{
             03 / CONTESTS
         </div>
 
-
         <h2>
             Конкурсы
         </h2>
 
-
-        <div class="card">
-
-            <div class="card-icon">
-                🎁
+        <div
+            id="contestList"
+            class="posts"
+        >
+            <div class="empty">
+                Загрузка конкурсов...
             </div>
-
-
-            <strong>
-                Конкурсы
-            </strong>
-
-
-            <p>
-                Здесь будут появляться новые конкурсы.
-            </p>
-
         </div>
 
     </div>
@@ -1100,21 +936,36 @@ footer{
     © 2026 GYURZA · Official Website
 </footer>
 
-
 </div>
 
 
 <script>
 
+const SUPABASE_URL =
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================
+   ПЕРЕКЛЮЧЕНИЕ РАЗДЕЛОВ
+========================= */
+
 function showPage(pageName){
 
     document
         .querySelectorAll(".page")
-        .forEach(function(page){
-
-            page.classList.remove("active");
-
-        });
+        .forEach(page =>
+            page.classList.remove("active")
+        );
 
 
     const page =
@@ -1128,28 +979,20 @@ function showPage(pageName){
 
     document
         .querySelectorAll("nav button")
-        .forEach(function(button){
-
-            button.classList.remove("active");
-
-        });
+        .forEach(button =>
+            button.classList.remove("active")
+        );
 
 
-    const activeButton =
+    const button =
         document.getElementById(
             "btn-" + pageName
         );
 
 
-    if(activeButton){
-        activeButton.classList.add("active");
+    if(button){
+        button.classList.add("active");
     }
-
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
 
 
     history.replaceState(
@@ -1157,61 +1000,164 @@ function showPage(pageName){
         "",
         "#" + pageName
     );
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
 }
 
 
-window.addEventListener(
-    "load",
-    function(){
+/* =========================
+   ЗАГРУЗКА НОВОСТЕЙ
+========================= */
 
-        const page =
-            location.hash.replace("#","");
+async function loadNews(){
 
-        if(
-            page === "home" ||
-            page === "news" ||
-            page === "about" ||
-            page === "contests"
-        ){
+    const list =
+        document.getElementById("newsList");
 
-            showPage(page);
 
-        }else{
+    const { data, error } =
+        await supabaseClient
+            .from("site_content")
+            .select("*")
+            .eq("selection","news")
+            .order("created_at",{
+                ascending:false
+            });
 
-            showPage("home");
 
-        }
+    if(error){
 
+        list.innerHTML =
+            '<div class="empty">' +
+            "Не удалось загрузить новости." +
+            "</div>";
+
+        return;
     }
-);
 
 
-window.addEventListener(
-    "popstate",
-    function(){
+    if(!data || data.length === 0){
 
-        const page =
-            location.hash.replace("#","");
+        list.innerHTML =
+            '<div class="empty">' +
+            "Новостей пока нет." +
+            "</div>";
 
-        if(
-            page === "home" ||
-            page === "news" ||
-            page === "about" ||
-            page === "contests"
-        ){
-
-            showPage(page);
-
-        }else{
-
-            showPage("home");
-
-        }
-
+        return;
     }
-);
 
-</script>
 
-</body>
-</html>
+    list.innerHTML =
+        data.map(item => `
+
+            <article class="post">
+
+                <div class="post-type">
+                    НОВОСТЬ
+                </div>
+
+                <div class="post-date">
+                    ${formatDate(
+                        item.created_at
+                    )}
+                </div>
+
+                <div class="post-content">
+                    ${escapeHtml(
+                        item.content
+                    )}
+                </div>
+
+            </article>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   ЗАГРУЗКА КОНКУРСОВ
+========================= */
+
+async function loadContests(){
+
+    const list =
+        document.getElementById("contestList");
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("site_content")
+            .select("*")
+            .eq("selection","contest")
+            .order("created_at",{
+                ascending:false
+            });
+
+
+    if(error){
+
+        list.innerHTML =
+            '<div class="empty">' +
+            "Не удалось загрузить конкурсы." +
+            "</div>";
+
+        return;
+    }
+
+
+    if(!data || data.length === 0){
+
+        list.innerHTML =
+            '<div class="empty">' +
+            "Конкурсов пока нет." +
+            "</div>";
+
+        return;
+    }
+
+
+    list.innerHTML =
+        data.map(item => `
+
+            <article class="post">
+
+                <div class="post-type">
+                    КОНКУРС
+                </div>
+
+                <div class="post-date">
+                    ${formatDate(
+                        item.created_at
+                    )}
+                </div>
+
+                <div class="post-content">
+                    ${escapeHtml(
+                        item.content
+                    )}
+                </div>
+
+            </article>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   ДАТА
+========================= */
+
+function formatDate(date){
+
+    if(!date){
+        return "";
+    }
+
+    ret
