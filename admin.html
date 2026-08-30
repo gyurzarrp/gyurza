@@ -2,297 +2,271 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GYURZA — Админ-панель</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GYURZA — Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    min-height: 100vh;
-    background: #05080c;
-    color: #f5f8fb;
-    font-family: Arial, sans-serif;
-    padding: 25px;
+body{
+    background:#05080c;
+    color:#fff;
+    font-family:Arial,sans-serif;
+    padding:20px;
 }
 
-.container {
-    width: min(800px, 100%);
-    margin: auto;
+.wrap{
+    width:min(1000px,100%);
+    margin:auto;
 }
 
-.card {
-    background: #0b1118;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 20px;
+h1{
+    margin:20px 0 8px;
 }
 
-h1 {
-    margin-bottom: 8px;
+.sub{
+    color:#81909d;
+    margin-bottom:25px;
 }
 
-h2 {
-    margin-bottom: 18px;
+.panel{
+    background:#0b1118;
+    border:1px solid #18232e;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
 }
 
-p {
-    color: #8795a3;
-    margin-bottom: 20px;
+input,textarea,select{
+    width:100%;
+    background:#070b10;
+    color:white;
+    border:1px solid #253442;
+    border-radius:10px;
+    padding:13px;
+    margin:7px 0 12px;
+    font:inherit;
 }
 
-label {
-    display: block;
-    color: #aebbc6;
-    font-size: 13px;
-    margin: 15px 0 7px;
+textarea{
+    min-height:150px;
+    resize:vertical;
 }
 
-input,
-textarea {
-    width: 100%;
-    padding: 13px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,.1);
-    background: #111a23;
-    color: white;
-    outline: none;
-    font: inherit;
+button{
+    border:0;
+    border-radius:10px;
+    padding:12px 16px;
+    cursor:pointer;
+    font-weight:700;
 }
 
-textarea {
-    min-height: 130px;
-    resize: vertical;
+.primary{
+    background:#25baff;
+    color:#001018;
 }
 
-button {
-    border: 0;
-    border-radius: 10px;
-    padding: 13px 18px;
-    margin-top: 18px;
-    background: #25baff;
-    color: #001018;
-    font-weight: 800;
-    cursor: pointer;
+.danger{
+    background:#d9364f;
+    color:white;
 }
 
-button:hover {
-    opacity: .9;
+.secondary{
+    background:#17232e;
+    color:white;
 }
 
-.logout {
-    background: #202b35;
-    color: white;
-    margin-left: 8px;
+.hidden{
+    display:none;
 }
 
-.hidden {
-    display: none;
+.status{
+    margin-top:12px;
+    color:#8da0ae;
 }
 
-.status {
-    margin-top: 15px;
-    color: #25baff;
+.item{
+    border:1px solid #1b2935;
+    background:#080e14;
+    border-radius:14px;
+    padding:16px;
+    margin-top:12px;
 }
 
-.error {
-    color: #ff5c5c;
+.item-type{
+    color:#25baff;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
 }
 
-.small {
-    font-size: 12px;
-    color: #657583;
+.item-date{
+    color:#61717f;
+    font-size:11px;
+    margin:7px 0;
 }
 
-.top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+.item-text{
+    white-space:pre-wrap;
+    color:#c7d0d8;
+    line-height:1.6;
+    margin:10px 0 15px;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+#app{
+    display:none;
+}
+
+.error{
+    color:#ff687d;
+}
+
+.success{
+    color:#52dc91;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="wrap">
 
-    <!-- ВХОД -->
+    <div id="login">
 
-    <div id="loginBox" class="card">
+        <h1>Админ-панель</h1>
+        <div class="sub">GYURZA Official Website</div>
 
-        <h1>GYURZA ADMIN</h1>
+        <div class="panel">
 
-        <p>
-            Вход в панель управления сайтом
-        </p>
+            <input
+                id="email"
+                type="email"
+                placeholder="Email"
+            >
 
-        <label>Email</label>
+            <input
+                id="password"
+                type="password"
+                placeholder="Пароль"
+            >
 
-        <input
-            id="email"
-            type="email"
-            placeholder="Email администратора"
-        >
+            <button
+                class="primary"
+                onclick="login()"
+            >
+                Войти
+            </button>
 
-        <label>Пароль</label>
+            <div id="loginStatus" class="status"></div>
 
-        <input
-            id="password"
-            type="password"
-            placeholder="Пароль"
-        >
-
-        <button onclick="login()">
-            ВОЙТИ
-        </button>
-
-        <div id="loginStatus" class="status"></div>
+        </div>
 
     </div>
 
 
-    <!-- АДМИНКА -->
+    <div id="app">
 
-    <div id="adminBox" class="hidden">
+        <h1>Админ-панель</h1>
 
-        <div class="card">
+        <div class="sub">
+            Управление новостями и конкурсами
+        </div>
 
-            <div class="top">
 
-                <div>
+        <!-- РЕДАКТОР -->
 
-                    <h1>
-                        Панель управления
-                    </h1>
+        <div class="panel">
 
-                    <p class="small">
-                        Управление сайтом GYURZA
-                    </p>
+            <h2 id="editorTitle">
+                Новая публикация
+            </h2>
 
-                </div>
+            <br>
+
+            <select id="type">
+
+                <option value="news">
+                    Новость
+                </option>
+
+                <option value="contest">
+                    Конкурс
+                </option>
+
+            </select>
+
+
+            <textarea
+                id="content"
+                placeholder="Текст публикации..."
+            ></textarea>
+
+
+            <input
+                id="editId"
+                type="hidden"
+            >
+
+
+            <div class="actions">
 
                 <button
-                    class="logout"
-                    onclick="logout()"
+                    class="primary"
+                    onclick="savePost()"
                 >
-                    Выйти
+                    Сохранить
                 </button>
 
+                <button
+                    class="secondary"
+                    onclick="clearEditor()"
+                >
+                    Очистить
+                </button>
+
+            </div>
+
+
+            <div id="saveStatus" class="status"></div>
+
+        </div>
+
+
+        <!-- ИСТОРИЯ -->
+
+        <div class="panel">
+
+            <h2>
+                История публикаций
+            </h2>
+
+            <br>
+
+            <div id="history">
+                Загрузка...
             </div>
 
         </div>
 
 
-        <!-- ГЛАВНАЯ -->
-
-        <div class="card">
-
-            <h2>🏠 Главная</h2>
-
-            <label>Заголовок</label>
-
-            <input
-                id="mainTitle"
-                placeholder="Привет! Я Гюрза 👋"
-            >
-
-            <label>Основной текст</label>
-
-            <textarea
-                id="mainText"
-                placeholder="Текст главной страницы..."
-            ></textarea>
-
-            <label>Telegram</label>
-
-            <input
-                id="telegram"
-                placeholder="https://t.me/..."
-            >
-
-            <label>TikTok</label>
-
-            <input
-                id="tiktok"
-                placeholder="https://tiktok.com/@..."
-            >
-
-            <label>YouTube</label>
-
-            <input
-                id="youtube"
-                placeholder="https://www.youtube.com/@..."
-            >
-
-            <button onclick="saveMain()">
-                СОХРАНИТЬ ГЛАВНУЮ
-            </button>
-
-            <div
-                id="mainStatus"
-                class="status"
-            ></div>
-
-        </div>
-
-
-        <!-- НОВОСТИ -->
-
-        <div class="card">
-
-            <h2>📰 Новости</h2>
-
-            <label>Текст новостей</label>
-
-            <textarea
-                id="newsText"
-                placeholder="Напиши здесь новости..."
-            ></textarea>
-
-            <button onclick="saveNews()">
-                СОХРАНИТЬ НОВОСТИ
-            </button>
-
-            <div
-                id="newsStatus"
-                class="status"
-            ></div>
-
-        </div>
-
-
-        <!-- КОНКУРСЫ -->
-
-        <div class="card">
-
-            <h2>🎁 Конкурсы</h2>
-
-            <label>Информация о конкурсах</label>
-
-            <textarea
-                id="contestText"
-                placeholder="Напиши здесь информацию о конкурсе..."
-            ></textarea>
-
-            <button onclick="saveContests()">
-                СОХРАНИТЬ КОНКУРСЫ
-            </button>
-
-            <div
-                id="contestStatus"
-                class="status"
-            ></div>
-
-        </div>
+        <button
+            class="secondary"
+            onclick="logout()"
+        >
+            Выйти
+        </button>
 
     </div>
 
@@ -301,15 +275,12 @@ button:hover {
 
 <script>
 
-/* =================================
-   SUPABASE
-================================= */
-
 const SUPABASE_URL =
     "https://gcwjtsqnmfimqdoyhfar.supabase.co";
 
 const SUPABASE_KEY =
     "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -318,402 +289,424 @@ const supabaseClient =
     );
 
 
-/* =================================
-   ВХОД
-================================= */
+/* =========================
+   АВТОРИЗАЦИЯ
+========================= */
 
-async function login() {
+async function login(){
 
     const email =
-        document
-        .getElementById("email")
-        .value
-        .trim();
+        document.getElementById("email").value.trim();
 
     const password =
-        document
-        .getElementById("password")
-        .value;
+        document.getElementById("password").value;
 
     const status =
-        document
-        .getElementById("loginStatus");
+        document.getElementById("loginStatus");
 
-    if (!email || !password) {
 
-        status.textContent =
-            "Введите email и пароль.";
+    status.textContent = "Вход...";
 
-        status.className =
-            "status error";
-
-        return;
-    }
-
-    status.textContent =
-        "Выполняется вход...";
-
-    status.className =
-        "status";
 
     const { error } =
         await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
+            email,
+            password
         });
 
-    if (error) {
+
+    if(error){
+
+        status.className = "status error";
 
         status.textContent =
-            "Ошибка входа: " +
-            error.message;
-
-        status.className =
-            "status error";
+            "Ошибка: " + error.message;
 
         return;
     }
 
-    status.textContent = "";
 
-    showAdmin();
+    status.className = "status success";
+
+    status.textContent = "Успешно";
+
+
+    showApp();
+
 }
 
 
-/* =================================
-   ПОКАЗ АДМИНКИ
-================================= */
+/* =========================
+   ПРОВЕРКА СЕССИИ
+========================= */
 
-async function showAdmin() {
+async function checkSession(){
 
-    const {
-        data: { session }
-    } =
+    const { data } =
         await supabaseClient.auth.getSession();
 
-    if (!session) {
-        return;
+
+    if(data.session){
+
+        showApp();
+
     }
 
-    document
-        .getElementById("loginBox")
-        .classList
-        .add("hidden");
-
-    document
-        .getElementById("adminBox")
-        .classList
-        .remove("hidden");
-
-    loadData();
 }
 
 
-/* =================================
-   ВЫХОД
-================================= */
+async function showApp(){
 
-async function logout() {
+    document.getElementById("login").style.display =
+        "none";
+
+    document.getElementById("app").style.display =
+        "block";
+
+    await loadHistory();
+
+}
+
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
+async function savePost(){
+
+    const type =
+        document.getElementById("type").value;
+
+    const content =
+        document.getElementById("content").value.trim();
+
+    const editId =
+        document.getElementById("editId").value;
+
+    const status =
+        document.getElementById("saveStatus");
+
+
+    if(!content){
+
+        status.className = "status error";
+        status.textContent =
+            "Введите текст.";
+
+        return;
+    }
+
+
+    status.className = "status";
+    status.textContent = "Сохранение...";
+
+
+    let result;
+
+
+    if(editId){
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .update({
+                    selection:type,
+                    content:content,
+                    updated_at:new Date().toISOString()
+                })
+                .eq("id",editId);
+
+    }else{
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .insert({
+                    selection:type,
+                    content:content
+                });
+
+    }
+
+
+    if(result.error){
+
+        status.className = "status error";
+
+        status.textContent =
+            "Ошибка: " + result.error.message;
+
+        return;
+    }
+
+
+    status.className = "status success";
+
+    status.textContent =
+        editId
+        ? "Изменения сохранены!"
+        : "Публикация добавлена!";
+
+
+    clearEditor();
+
+    await loadHistory();
+
+}
+
+
+/* =========================
+   ИСТОРИЯ
+========================= */
+
+async function loadHistory(){
+
+    const history =
+        document.getElementById("history");
+
+
+    history.textContent = "Загрузка...";
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("site_content")
+            .select("*")
+            .in("selection",["news","contest"])
+            .order("created_at",{
+                ascending:false
+            });
+
+
+    if(error){
+
+        history.innerHTML =
+            '<div class="error">' +
+            "Ошибка: " +
+            escapeHtml(error.message) +
+            "</div>";
+
+        return;
+    }
+
+
+    if(!data || data.length === 0){
+
+        history.innerHTML =
+            '<div class="sub">' +
+            "Публикаций пока нет." +
+            "</div>";
+
+        return;
+    }
+
+
+    history.innerHTML =
+        data.map(item => {
+
+            const type =
+                item.selection === "contest"
+                ? "КОНКУРС"
+                : "НОВОСТЬ";
+
+
+            const date =
+                item.updated_at ||
+                item.created_at;
+
+
+            return `
+
+                <div class="item">
+
+                    <div class="item-type">
+                        ${type}
+                    </div>
+
+                    <div class="item-date">
+                        ${formatDate(date)}
+                    </div>
+
+                    <div class="item-text">
+                        ${escapeHtml(item.content)}
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="primary"
+                            onclick="editPost(${item.id})"
+                        >
+                            Изменить
+                        </button>
+
+                        <button
+                            class="danger"
+                            onclick="deletePost(${item.id})"
+                        >
+                            Удалить
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================
+   РЕДАКТИРОВАНИЕ
+========================= */
+
+async function editPost(id){
+
+    const { data, error } =
+        await supabaseClient
+            .from("site_content")
+            .select("*")
+            .eq("id",id)
+            .single();
+
+
+    if(error){
+
+        alert(
+            "Ошибка: " + error.message
+        );
+
+        return;
+    }
+
+
+    document.getElementById("type").value =
+        data.selection;
+
+    document.getElementById("content").value =
+        data.content;
+
+    document.getElementById("editId").value =
+        data.id;
+
+    document.getElementById("editorTitle").textContent =
+        "Редактирование публикации";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   УДАЛЕНИЕ
+========================= */
+
+async function deletePost(id){
+
+    const ok =
+        confirm(
+            "Удалить именно эту публикацию?"
+        );
+
+
+    if(!ok){
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("site_content")
+            .delete()
+            .eq("id",id);
+
+
+    if(error){
+
+        alert(
+            "Ошибка: " + error.message
+        );
+
+        return;
+    }
+
+
+    await loadHistory();
+
+}
+
+
+/* =========================
+   ОЧИСТКА
+========================= */
+
+function clearEditor(){
+
+    document.getElementById("content").value =
+        "";
+
+    document.getElementById("editId").value =
+        "";
+
+    document.getElementById("editorTitle").textContent =
+        "Новая публикация";
+
+}
+
+
+/* =========================
+   ВЫХОД
+========================= */
+
+async function logout(){
 
     await supabaseClient.auth.signOut();
 
     location.reload();
+
 }
 
 
-/* =================================
-   ЗАГРУЗКА ДАННЫХ
-================================= */
+/* =========================
+   ДАТА
+========================= */
 
-async function loadData() {
+function formatDate(date){
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-        .from("site_content")
-        .select("*");
-
-    if (error) {
-
-        alert(
-            "Ошибка загрузки: " +
-            error.message
-        );
-
-        return;
+    if(!date){
+        return "";
     }
 
-    if (!data) {
-        return;
-    }
+    return new Date(date).toLocaleString(
+        "ru-RU"
+    );
 
-    data.forEach(function(row) {
-
-        /* ГЛАВНАЯ */
-
-        if (row.section === "main") {
-
-            try {
-
-                const main =
-                    JSON.parse(row.content);
-
-                document
-                    .getElementById("mainTitle")
-                    .value =
-                    main.title || "";
-
-                document
-                    .getElementById("mainText")
-                    .value =
-                    main.text || "";
-
-                document
-                    .getElementById("telegram")
-                    .value =
-                    main.telegram || "";
-
-                document
-                    .getElementById("tiktok")
-                    .value =
-                    main.tiktok || "";
-
-                document
-                    .getElementById("youtube")
-                    .value =
-                    main.youtube || "";
-
-            } catch {
-
-                document
-                    .getElementById("mainTitle")
-                    .value =
-                    row.content || "";
-            }
-        }
-
-
-        /* НОВОСТИ */
-
-        if (row.section === "news") {
-
-            document
-                .getElementById("newsText")
-                .value =
-                row.content || "";
-        }
-
-
-        /* КОНКУРСЫ */
-
-        if (row.section === "contests") {
-
-            document
-                .getElementById("contestText")
-                .value =
-                row.content || "";
-        }
-
-    });
 }
 
 
-/* =================================
-   СОХРАНЕНИЕ ГЛАВНОЙ
-================================= */
+/* =========================
+   БЕЗОПАСНЫЙ ТЕКСТ
+========================= */
 
-async function saveMain() {
+function escapeHtml(text){
 
-    const title =
-        document
-        .getElementById("mainTitle")
-        .value;
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
-    const text =
-        document
-        .getElementById("mainText")
-        .value;
-
-    const telegram =
-        document
-        .getElementById("telegram")
-        .value;
-
-    const tiktok =
-        document
-        .getElementById("tiktok")
-        .value;
-
-    const youtube =
-        document
-        .getElementById("youtube")
-        .value;
-
-    const content =
-        JSON.stringify({
-            title: title,
-            text: text,
-            telegram: telegram,
-            tiktok: tiktok,
-            youtube: youtube
-        });
-
-    const {
-        error
-    } =
-        await supabaseClient
-        .from("site_content")
-        .update({
-            content: content
-        })
-        .eq(
-            "section",
-            "main"
-        );
-
-    const status =
-        document
-        .getElementById("mainStatus");
-
-    if (error) {
-
-        status.textContent =
-            "Ошибка: " +
-            error.message;
-
-        status.className =
-            "status error";
-
-    } else {
-
-        status.textContent =
-            "✓ Главная сохранена";
-
-        status.className =
-            "status";
-    }
 }
 
 
-/* =================================
-   СОХРАНЕНИЕ НОВОСТЕЙ
-================================= */
-
-async function saveNews() {
-
-    const text =
-        document
-        .getElementById("newsText")
-        .value;
-
-    const {
-        error
-    } =
-        await supabaseClient
-        .from("site_content")
-        .update({
-            content: text
-        })
-        .eq(
-            "section",
-            "news"
-        );
-
-    const status =
-        document
-        .getElementById("newsStatus");
-
-    if (error) {
-
-        status.textContent =
-            "Ошибка: " +
-            error.message;
-
-        status.className =
-            "status error";
-
-    } else {
-
-        status.textContent =
-            "✓ Новости сохранены";
-
-        status.className =
-            "status";
-    }
-}
-
-
-/* =================================
-   СОХРАНЕНИЕ КОНКУРСОВ
-================================= */
-
-async function saveContests() {
-
-    const text =
-        document
-        .getElementById("contestText")
-        .value;
-
-    const {
-        error
-    } =
-        await supabaseClient
-        .from("site_content")
-        .update({
-            content: text
-        })
-        .eq(
-            "section",
-            "contests"
-        );
-
-    const status =
-        document
-        .getElementById("contestStatus");
-
-    if (error) {
-
-        status.textContent =
-            "Ошибка: " +
-            error.message;
-
-        status.className =
-            "status error";
-
-    } else {
-
-        status.textContent =
-            "✓ Конкурсы сохранены";
-
-        status.className =
-            "status";
-    }
-}
-
-
-/* =================================
-   ПРОВЕРКА СЕССИИ
-================================= */
-
-window.addEventListener(
-    "load",
-    async function() {
-
-        const {
-            data: { session }
-        } =
-            await supabaseClient
-            .auth
-            .getSession();
-
-        if (session) {
-            showAdmin();
-        }
-
-    }
-);
+checkSession();
 
 </script>
 
