@@ -6,48 +6,48 @@
 <title>GYURZA — Official</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-html, body {
-    width: 100%;
-    min-height: 100%;
+html,body{
+    width:100%;
+    min-height:100%;
 }
 
-body {
-    background: #05080c;
-    color: #f5f8fb;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
+body{
+    background:#05080c;
+    color:#f5f8fb;
+    font-family:Arial,sans-serif;
+    overflow-x:hidden;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    width: 600px;
-    height: 600px;
-    top: -300px;
-    left: -250px;
-    background: rgba(0,174,255,.15);
-    filter: blur(170px);
-    pointer-events: none;
-    z-index: -1;
+body::before{
+    content:"";
+    position:fixed;
+    width:600px;
+    height:600px;
+    top:-300px;
+    left:-250px;
+    background:rgba(0,174,255,.15);
+    filter:blur(170px);
+    pointer-events:none;
+    z-index:-1;
 }
 
-body::after {
-    content: "";
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    right: -250px;
-    bottom: -250px;
-    background: rgba(0,100,255,.10);
-    filter: blur(160px);
-    pointer-events: none;
-    z-index: -1;
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    right:-250px;
+    bottom:-250px;
+    background:rgba(0,100,255,.10);
+    filter:blur(160px);
+    pointer-events:none;
+    z-index:-1;
 }
 
 
@@ -55,92 +55,86 @@ body::after {
    HEADER
 ========================= */
 
-header {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%);
+header{
+    position:fixed;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%);
 
-    width: min(1120px,92%);
-    min-height: 66px;
+    width:min(1120px,92%);
+    min-height:66px;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    padding: 0 10px 0 24px;
+    padding:0 10px 0 24px;
 
-    background: rgba(8,13,19,.78);
+    background:rgba(8,13,19,.78);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
 
-    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
 
-    border-radius: 18px;
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    z-index: 9999;
+    z-index:9999;
 }
 
-.logo {
-    color: white;
-    text-decoration: none;
+.logo{
+    color:white;
+    text-decoration:none;
 
-    font-size: 20px;
-    font-weight: 800;
-
-    letter-spacing: 2px;
+    font-size:20px;
+    font-weight:800;
+    letter-spacing:2px;
 }
 
-.logo span {
-    color: #25baff;
+.logo span{
+    color:#25baff;
 }
 
-nav {
-    display: flex;
-    gap: 4px;
+nav{
+    display:flex;
+    gap:4px;
 }
 
-nav button {
-    border: 0;
-    outline: none;
+nav button{
+    border:0;
+    outline:none;
 
-    color: #8795a3;
+    color:#8795a3;
+    background:transparent;
 
-    background: transparent;
+    font-size:10px;
+    font-weight:800;
 
-    font-size: 10px;
-    font-weight: 800;
+    padding:11px 13px;
 
-    padding: 11px 13px;
+    border-radius:10px;
 
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    transition: .25s;
+    cursor:pointer;
+    transition:.25s;
 }
 
-nav button:hover {
-    color: white;
-    background: rgba(37,186,255,.08);
+nav button:hover{
+    color:white;
+    background:rgba(37,186,255,.08);
 }
 
-nav button.active {
-    color: white;
-    background: rgba(37,186,255,.12);
+nav button.active{
+    color:white;
+    background:rgba(37,186,255,.12);
 }
 
 
 /* =========================
-   MAIN
+   CONTAINER
 ========================= */
 
-.container {
-    width: min(1120px,92%);
-    margin: auto;
-
-    padding-top: 105px;
+.container{
+    width:min(1120px,92%);
+    margin:auto;
+    padding-top:105px;
 }
 
 
@@ -148,30 +142,28 @@ nav button.active {
    PAGES
 ========================= */
 
-.page {
-    display: none;
+.page{
+    display:none;
 
-    min-height: calc(100vh - 145px);
+    min-height:calc(100vh - 145px);
 
-    animation: pageIn .35s ease;
+    animation:pageIn .35s ease;
 }
 
-.page.active {
-    display: flex;
+.page.active{
+    display:flex;
 }
 
-@keyframes pageIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(12px);
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(12px);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
-
 }
 
 
@@ -179,153 +171,138 @@ nav button.active {
    HOME
 ========================= */
 
-.home {
-    position: relative;
+.home{
+    position:relative;
 
-    align-items: center;
+    align-items:center;
 
-    overflow: hidden;
+    overflow:hidden;
 
-    padding: 70px;
+    padding:70px;
 
-    border-radius: 30px;
+    border-radius:30px;
 }
 
-.home-content {
-    position: relative;
+.home-content{
+    position:relative;
+    z-index:2;
 
-    z-index: 2;
-
-    width: 65%;
+    width:65%;
 }
 
-.badge {
-    display: inline-flex;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
 
-    align-items: center;
+    padding:9px 14px;
+    margin-bottom:25px;
 
-    gap: 8px;
+    border-radius:50px;
 
-    padding: 9px 14px;
+    background:rgba(37,186,255,.07);
+    border:1px solid rgba(37,186,255,.20);
 
-    margin-bottom: 25px;
+    color:#69ceff;
 
-    border-radius: 50px;
+    font-size:10px;
+    font-weight:800;
 
-    background: rgba(37,186,255,.07);
-
-    border: 1px solid rgba(37,186,255,.20);
-
-    color: #69ceff;
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
+    letter-spacing:1.5px;
 }
 
-.badge-dot {
-    width: 6px;
-    height: 6px;
+.badge-dot{
+    width:6px;
+    height:6px;
 
-    border-radius: 50%;
+    border-radius:50%;
 
-    background: #25baff;
+    background:#25baff;
 
-    box-shadow: 0 0 12px #25baff;
+    box-shadow:0 0 12px #25baff;
 }
 
-h1 {
-    font-size: clamp(48px,7vw,82px);
+h1{
+    font-size:clamp(48px,7vw,82px);
 
-    line-height: 1;
+    line-height:1;
+    letter-spacing:-4px;
 
-    letter-spacing: -4px;
-
-    margin-bottom: 28px;
+    margin-bottom:28px;
 }
 
-.blue {
-    color: #25baff;
+.blue{
+    color:#25baff;
 }
 
-.home-text {
-    max-width: 700px;
+.home-text{
+    max-width:700px;
 
-    color: #aebbc6;
+    color:#aebbc6;
 
-    font-size: 16px;
-
-    line-height: 1.85;
+    font-size:16px;
+    line-height:1.85;
 }
 
-.home-text p {
-    margin-bottom: 17px;
+.home-text p{
+    margin-bottom:17px;
 }
 
-.home-text a {
-    color: #54c7ff;
-
-    font-weight: 700;
-
-    text-decoration: none;
+.home-text a{
+    color:#54c7ff;
+    font-weight:700;
+    text-decoration:none;
 }
 
-.home-text a:hover {
-    text-decoration: underline;
+.home-text a:hover{
+    text-decoration:underline;
 }
 
-.character {
-    position: absolute;
+.character{
+    position:absolute;
 
-    right: -40px;
-    bottom: 0;
+    right:-40px;
+    bottom:0;
 
-    width: 53%;
-    height: 100%;
+    width:53%;
+    height:100%;
 
-    object-fit: cover;
-    object-position: center;
+    object-fit:cover;
+    object-position:center;
 
-    opacity: .85;
+    opacity:.85;
 
-    mask-image:
-        linear-gradient(
-            to right,
-            transparent 0%,
-            black 38%,
-            black 100%
-        );
+    mask-image:linear-gradient(
+        to right,
+        transparent 0%,
+        black 38%,
+        black 100%
+    );
 
-    -webkit-mask-image:
-        linear-gradient(
-            to right,
-            transparent 0%,
-            black 38%,
-            black 100%
-        );
+    -webkit-mask-image:linear-gradient(
+        to right,
+        transparent 0%,
+        black 38%,
+        black 100%
+    );
 }
 
-.home::after {
-    content: "";
+.home::after{
+    content:"";
 
-    position: absolute;
+    position:absolute;
+    inset:0;
 
-    inset: 0;
+    background:linear-gradient(
+        90deg,
+        #05080c 0%,
+        rgba(5,8,12,.93) 35%,
+        rgba(5,8,12,.30) 75%,
+        rgba(5,8,12,.10)
+    );
 
-    background:
-        linear-gradient(
-            90deg,
-            #05080c 0%,
-            rgba(5,8,12,.93) 35%,
-            rgba(5,8,12,.30) 75%,
-            rgba(5,8,12,.10)
-        );
-
-    pointer-events: none;
-
-    z-index: 1;
+    pointer-events:none;
+    z-index:1;
 }
 
 
@@ -333,32 +310,29 @@ h1 {
    CONTENT
 ========================= */
 
-.content {
-    width: 100%;
-
-    padding: 70px 0;
+.content{
+    width:100%;
+    padding:70px 0;
 }
 
-.label {
-    color: #25baff;
+.label{
+    color:#25baff;
 
-    font-size: 10px;
+    font-size:10px;
+    font-weight:800;
 
-    font-weight: 800;
+    letter-spacing:2px;
 
-    letter-spacing: 2px;
-
-    margin-bottom: 10px;
+    margin-bottom:10px;
 }
 
-h2 {
-    font-size: clamp(40px,6vw,62px);
+h2{
+    font-size:clamp(40px,6vw,62px);
 
-    line-height: 1.05;
+    line-height:1.05;
+    letter-spacing:-3px;
 
-    letter-spacing: -3px;
-
-    margin-bottom: 38px;
+    margin-bottom:38px;
 }
 
 
@@ -366,18 +340,17 @@ h2 {
    ABOUT
 ========================= */
 
-.about-text {
-    max-width: 900px;
+.about-text{
+    max-width:900px;
 
-    color: #aebbc6;
+    color:#aebbc6;
 
-    font-size: 16px;
-
-    line-height: 1.9;
+    font-size:16px;
+    line-height:1.9;
 }
 
-.about-text p {
-    margin-bottom: 18px;
+.about-text p{
+    margin-bottom:18px;
 }
 
 
@@ -385,105 +358,97 @@ h2 {
    SOCIAL BUTTONS
 ========================= */
 
-.socials {
-    display: grid;
+.socials{
+    display:grid;
 
-    max-width: 800px;
+    max-width:800px;
 
-    gap: 12px;
+    gap:12px;
 
-    margin-top: 38px;
+    margin-top:38px;
 }
 
-.social {
-    display: flex;
+.social{
+    display:flex;
+    align-items:center;
 
-    align-items: center;
+    min-height:76px;
 
-    min-height: 76px;
+    padding:12px 16px;
 
-    padding: 12px 16px;
+    color:white;
 
-    color: white;
+    text-decoration:none;
 
-    text-decoration: none;
+    background:#0b1118;
 
-    background: #0b1118;
+    border:1px solid rgba(255,255,255,.07);
 
-    border: 1px solid rgba(255,255,255,.07);
+    border-radius:17px;
 
-    border-radius: 17px;
-
-    transition: .25s;
+    transition:.25s;
 }
 
-.social:hover {
-    transform: translateY(-3px);
+.social:hover{
+    transform:translateY(-3px);
 
-    background: #0e1924;
+    background:#0e1924;
 
-    border-color:
-        rgba(37,186,255,.4);
+    border-color:rgba(37,186,255,.4);
 
-    box-shadow:
-        0 15px 40px rgba(0,0,0,.25);
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
-.social-icon {
-    width: 50px;
-    height: 50px;
+.social-icon{
+    width:50px;
+    height:50px;
 
-    flex-shrink: 0;
+    flex-shrink:0;
 
-    display: flex;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    align-items: center;
-    justify-content: center;
+    border-radius:14px;
 
-    border-radius: 14px;
-
-    background: #121e29;
+    background:#121e29;
 }
 
-.social-icon svg {
-    width: 28px;
-    height: 28px;
-
-    display: block;
+.social-icon svg{
+    width:28px;
+    height:28px;
 }
 
-.social-info {
-    margin-left: 15px;
+.social-info{
+    margin-left:15px;
 }
 
-.social-title {
-    font-size: 15px;
-
-    font-weight: 800;
+.social-title{
+    font-size:15px;
+    font-weight:800;
 }
 
-.social-name {
-    color: #82919f;
+.social-name{
+    color:#82919f;
 
-    font-size: 12px;
+    font-size:12px;
 
-    margin-top: 4px;
+    margin-top:4px;
 }
 
-.arrow {
-    margin-left: auto;
+.arrow{
+    margin-left:auto;
 
-    color: #566777;
+    color:#566777;
 
-    font-size: 26px;
+    font-size:26px;
 
-    transition: .2s;
+    transition:.2s;
 }
 
-.social:hover .arrow {
-    color: #25baff;
-
-    transform: translateX(4px);
+.social:hover .arrow{
+    color:#25baff;
+    transform:translateX(4px);
 }
 
 
@@ -491,57 +456,55 @@ h2 {
    CARDS
 ========================= */
 
-.card {
-    max-width: 850px;
+.card{
+    max-width:850px;
 
-    padding: 55px 30px;
+    padding:55px 30px;
 
-    border-radius: 24px;
+    border-radius:24px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(16,26,36,.95),
-            rgba(8,14,21,.95)
-        );
+    background:linear-gradient(
+        145deg,
+        rgba(16,26,36,.95),
+        rgba(8,14,21,.95)
+    );
 
-    border: 1px solid rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 }
 
-.card-icon {
-    width: 58px;
-    height: 58px;
+.card-icon{
+    width:58px;
+    height:58px;
 
-    display: flex;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    align-items: center;
-    justify-content: center;
+    margin-bottom:18px;
 
-    margin-bottom: 18px;
+    border-radius:17px;
 
-    border-radius: 17px;
+    background:rgba(37,186,255,.08);
 
-    background: rgba(37,186,255,.08);
+    color:#25baff;
 
-    color: #25baff;
-
-    font-size: 24px;
+    font-size:24px;
 }
 
-.card strong {
-    display: block;
+.card strong{
+    display:block;
 
-    margin-bottom: 8px;
+    margin-bottom:8px;
 
-    font-size: 19px;
+    font-size:19px;
 }
 
-.card p {
-    color: #8795a3;
+.card p{
+    color:#8795a3;
 
-    line-height: 1.8;
+    line-height:1.8;
 
-    white-space: pre-line;
+    white-space:pre-line;
 }
 
 
@@ -549,17 +512,14 @@ h2 {
    FOOTER
 ========================= */
 
-footer {
-    text-align: center;
+footer{
+    text-align:center;
 
-    color: #536270;
+    color:#536270;
 
-    font-size: 11px;
+    font-size:11px;
 
-    padding:
-        25px
-        0
-        35px;
+    padding:25px 0 35px;
 }
 
 
@@ -567,134 +527,115 @@ footer {
    MOBILE
 ========================= */
 
-@media(max-width:720px) {
+@media(max-width:720px){
 
-    header {
-        top: 9px;
+    header{
+        top:9px;
 
-        width: 95%;
+        width:95%;
 
-        min-height: 60px;
+        min-height:60px;
 
-        padding:
-            8px
-            9px
-            8px
-            16px;
+        padding:8px 9px 8px 16px;
     }
 
-    .logo {
-        font-size: 16px;
+    .logo{
+        font-size:16px;
     }
 
-    nav {
-        gap: 1px;
+    nav{
+        gap:1px;
     }
 
-    nav button {
-        padding:
-            7px
-            6px;
-
-        font-size: 8px;
+    nav button{
+        padding:7px 6px;
+        font-size:8px;
     }
 
-    .container {
-        width: 92%;
-
-        padding-top: 88px;
+    .container{
+        width:92%;
+        padding-top:88px;
     }
 
-    .home {
-        padding:
-            35px
-            25px;
+    .home{
+        padding:35px 25px;
+        border-radius:22px;
 
-        border-radius: 22px;
-
-        align-items: flex-start;
+        align-items:flex-start;
     }
 
-    .home-content {
-        width: 100%;
+    .home-content{
+        width:100%;
     }
 
-    .character {
-        right: -100px;
-
-        width: 90%;
-
-        opacity: .35;
+    .character{
+        right:-100px;
+        width:90%;
+        opacity:.35;
     }
 
-    .home::after {
-        background:
-            linear-gradient(
-                90deg,
-                #05080c 5%,
-                rgba(5,8,12,.90) 65%,
-                rgba(5,8,12,.30)
-            );
+    .home::after{
+        background:linear-gradient(
+            90deg,
+            #05080c 5%,
+            rgba(5,8,12,.90) 65%,
+            rgba(5,8,12,.30)
+        );
     }
 
-    h1 {
-        font-size: 48px;
-
-        letter-spacing: -2px;
+    h1{
+        font-size:48px;
+        letter-spacing:-2px;
     }
 
-    .home-text {
-        font-size: 14px;
-
-        line-height: 1.75;
+    .home-text{
+        font-size:14px;
+        line-height:1.75;
     }
 
-    .content {
-        padding: 45px 0;
+    .content{
+        padding:45px 0;
     }
 
-    h2 {
-        font-size: 43px;
+    h2{
+        font-size:43px;
     }
 
-    .about-text {
-        font-size: 14px;
-
-        line-height: 1.8;
+    .about-text{
+        font-size:14px;
+        line-height:1.8;
     }
 
-    .social {
-        min-height: 70px;
-
-        padding: 11px;
+    .social{
+        min-height:70px;
+        padding:11px;
     }
 
-    .social-icon {
-        width: 45px;
-        height: 45px;
+    .social-icon{
+        width:45px;
+        height:45px;
     }
-
 }
 
 
 /* =========================
-   SVG LOGOS
+   LOGOS
 ========================= */
 
-.tiktok-logo {
-    fill: white;
+.tiktok-logo{
+    fill:white;
 }
 
-.youtube-logo {
-    fill: #ff0033;
+.youtube-logo{
+    fill:#ff0033;
 }
 
-.telegram-circle {
-    fill: #229ED9;
+.telegram-circle{
+    fill:#229ED9;
 }
 
-.telegram-plane {
-    fill: white;
+.telegram-plane{
+    fill:white;
 }
 
 </style>
@@ -713,7 +654,7 @@ footer {
     <a
         class="logo"
         href="#"
-        onclick="showPage('home')"
+        onclick="showPage('home'); return false;"
     >
         GYURZA<span>.</span>
     </a>
@@ -759,7 +700,7 @@ footer {
 
 
 <!-- =========================
-     HOME
+     ГЛАВНАЯ
 ========================= -->
 
 <section
@@ -788,12 +729,7 @@ footer {
         <h1>
 
             Привет! Я
-
-            <span class="blue">
-                Гюрза
-            </span>
-
-            👋
+            <span class="blue">Гюрза</span>
 
         </h1>
 
@@ -804,19 +740,54 @@ footer {
                 Всем привет 👋
             </p>
 
-            <p>
-                Я Гюрза — меня знают как контент-мейкера
-                плейса «Армия Роблокса РП».
-            </p>
 
             <p>
-                Сейчас я активно создаю контент,
-                развиваю свою медийную деятельность
-                и общаюсь со своей аудиторией.
+                Я Гюрза - меня знают как контент мейкера плейса
+                «Армия Роблокса РП», также я являюсь основателем
+                и бывшим лидером клана «Русская сила!», который я
+                к сожалению уже давно закрыл.
             </p>
 
+
             <p>
-                Рад видеть тебя на моём официальном сайте!
+                Сейчас я активно снимаю в TikTok, YouTube
+                и публикую посты в свой
+                <a
+                    href="https://t.me/ArmyRobloxRPnewss"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    Telegram канал
+                </a>.
+            </p>
+
+
+            <p>
+                Мой TikTok:
+                <a
+                    href="https://www.tiktok.com/@gyurza_arrp"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    @gyurza_arrp
+                </a>
+            </p>
+
+
+            <p>
+                Мой YouTube:
+                <a
+                    href="https://www.youtube.com/@GyurzaOriginalOwnerRS"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    @GyurzaOriginalOwnerRS
+                </a>
+            </p>
+
+
+            <p>
+                Рад что ты заглянул сюда, удачи 😄
             </p>
 
         </div>
@@ -827,7 +798,7 @@ footer {
 
 
 <!-- =========================
-     NEWS
+     НОВОСТИ
 ========================= -->
 
 <section
@@ -871,7 +842,7 @@ footer {
 
 
 <!-- =========================
-     ABOUT
+     ОБО МНЕ
 ========================= -->
 
 <section
@@ -932,12 +903,9 @@ footer {
         </div>
 
 
-        <!-- =========================
-             TIKTOK
-        ========================= -->
+        <!-- TIKTOK -->
 
         <div class="socials">
-
 
             <a
                 class="social"
@@ -948,10 +916,7 @@ footer {
 
                 <div class="social-icon">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-label="TikTok"
-                    >
+                    <svg viewBox="0 0 24 24">
 
                         <path
                             class="tiktok-logo"
@@ -983,9 +948,7 @@ footer {
             </a>
 
 
-            <!-- =========================
-                 YOUTUBE
-            ========================= -->
+            <!-- YOUTUBE -->
 
             <a
                 class="social"
@@ -996,10 +959,7 @@ footer {
 
                 <div class="social-icon">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-label="YouTube"
-                    >
+                    <svg viewBox="0 0 24 24">
 
                         <path
                             class="youtube-logo"
@@ -1036,9 +996,7 @@ footer {
             </a>
 
 
-            <!-- =========================
-                 TELEGRAM
-            ========================= -->
+            <!-- TELEGRAM -->
 
             <a
                 class="social"
@@ -1049,10 +1007,7 @@ footer {
 
                 <div class="social-icon">
 
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-label="Telegram"
-                    >
+                    <svg viewBox="0 0 24 24">
 
                         <circle
                             class="telegram-circle"
@@ -1090,7 +1045,6 @@ footer {
 
             </a>
 
-
         </div>
 
     </div>
@@ -1099,7 +1053,7 @@ footer {
 
 
 <!-- =========================
-     CONTESTS
+     КОНКУРСЫ
 ========================= -->
 
 <section
@@ -1143,9 +1097,7 @@ footer {
 
 
 <footer>
-
     © 2026 GYURZA · Official Website
-
 </footer>
 
 
@@ -1154,15 +1106,11 @@ footer {
 
 <script>
 
-/* =========================
-   ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ
-========================= */
-
-function showPage(pageName) {
+function showPage(pageName){
 
     document
         .querySelectorAll(".page")
-        .forEach(function(page) {
+        .forEach(function(page){
 
             page.classList.remove("active");
 
@@ -1173,16 +1121,14 @@ function showPage(pageName) {
         document.getElementById(pageName);
 
 
-    if (page) {
-
+    if(page){
         page.classList.add("active");
-
     }
 
 
     document
         .querySelectorAll("nav button")
-        .forEach(function(button) {
+        .forEach(function(button){
 
             button.classList.remove("active");
 
@@ -1195,42 +1141,42 @@ function showPage(pageName) {
         );
 
 
-    if (activeButton) {
-
+    if(activeButton){
         activeButton.classList.add("active");
-
     }
 
 
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
     });
 
+
+    history.replaceState(
+        null,
+        "",
+        "#" + pageName
+    );
 }
 
 
-/* =========================
-   КНОПКА НАЗАД / ВПЕРЁД
-========================= */
-
 window.addEventListener(
-    "popstate",
-    function() {
+    "load",
+    function(){
 
         const page =
             location.hash.replace("#","");
 
-        if (
+        if(
             page === "home" ||
             page === "news" ||
             page === "about" ||
             page === "contests"
-        ) {
+        ){
 
             showPage(page);
 
-        } else {
+        }else{
 
             showPage("home");
 
@@ -1240,27 +1186,23 @@ window.addEventListener(
 );
 
 
-/* =========================
-   ОТКРЫТИЕ СТРАНИЦЫ
-========================= */
-
 window.addEventListener(
-    "load",
-    function() {
+    "popstate",
+    function(){
 
         const page =
             location.hash.replace("#","");
 
-        if (
+        if(
             page === "home" ||
             page === "news" ||
             page === "about" ||
             page === "contests"
-        ) {
+        ){
 
             showPage(page);
 
-        } else {
+        }else{
 
             showPage("home");
 
