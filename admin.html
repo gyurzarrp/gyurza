@@ -68,6 +68,11 @@ button{
     font-weight:700;
 }
 
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
 .primary{
     background:#25baff;
     color:#001018;
@@ -75,12 +80,12 @@ button{
 
 .danger{
     background:#d9364f;
-    color:#fff;
+    color:white;
 }
 
 .secondary{
     background:#17232e;
-    color:#fff;
+    color:white;
 }
 
 .status{
@@ -137,630 +142,834 @@ button{
 .editing{
     border-color:#25baff;
 }
-</style></head><body><div class="wrap"><div id="login"><h1>Админ-панель</h1><div class="sub">
-GYURZA Official Website
-</div><div class="panel"><input
-id="email"
-type="email"
-placeholder="Email"
 
-«»
+.empty{
+    color:#81909d;
+    padding:10px 0;
+}
+</style></head><body><div class="wrap"><!-- =========================
+     ВХОД
+========================= --><div id="login"><h1>Админ-панель</h1>
 
-<input
-id="password"
-type="password"
-placeholder="Пароль"
+<div class="sub">
+    GYURZA Official Website
+</div>
 
-«»
+<div class="panel">
 
-<button
-id="loginButton"
-class="primary"
+    <input
+        id="email"
+        type="email"
+        placeholder="Email"
+        autocomplete="email"
+    >
 
-«»
+    <input
+        id="password"
+        type="password"
+        placeholder="Пароль"
+        autocomplete="current-password"
+    >
 
-Войти
-</button>
+    <button
+        id="loginButton"
+        class="primary"
+    >
+        Войти
+    </button>
+
+    <div
+        id="loginStatus"
+        class="status"
+    ></div>
+
+</div>
+
+</div><!-- =========================
+     ПАНЕЛЬ
+========================= --><div id="app"><h1>Админ-панель</h1>
+
+<div class="sub">
+    Управление новостями и конкурсами
+</div>
+
+
+<!-- =====================
+     НОВАЯ ПУБЛИКАЦИЯ
+====================== -->
 
 <div
-id="loginStatus"
-class="status"
-></div></div></div><div id="app"><h1>Админ-панель</h1><div class="sub">
-Управление новостями и конкурсами
-</div><div
-class="panel"
-id="editorPanel"
-><h2 id="editorTitle">
-Новая публикация
-</h2><select id="type"><option value="news">
-Новость
-</option><option value="contest">
-Конкурс
-</option></select><textarea
-id="content"
-placeholder="Введите текст публикации..."
-></textarea><input
-id="editId"
-type="hidden"
+    class="panel"
+    id="editorPanel"
+>
 
-«»
+    <h2 id="editorTitle">
+        Новая публикация
+    </h2>
 
-<div class="actions"><button
-id="saveButton"
-class="primary"
+    <select id="type">
 
-«»
+        <option value="news">
+            Новость
+        </option>
 
-Опубликовать
-</button>
+        <option value="contest">
+            Конкурс
+        </option>
+
+    </select>
+
+    <textarea
+        id="content"
+        placeholder="Текст публикации..."
+    ></textarea>
+
+    <input
+        id="editId"
+        type="hidden"
+    >
+
+    <div class="actions">
+
+        <button
+            id="saveButton"
+            class="primary"
+        >
+            Опубликовать
+        </button>
+
+        <button
+            id="clearButton"
+            class="secondary"
+        >
+            Очистить
+        </button>
+
+    </div>
+
+    <div
+        id="saveStatus"
+        class="status"
+    ></div>
+
+</div>
+
+
+<!-- =====================
+     ИСТОРИЯ
+====================== -->
+
+<div class="panel">
+
+    <h2>
+        История публикаций
+    </h2>
+
+    <div id="history">
+        Загрузка...
+    </div>
+
+</div>
+
+
+<!-- =====================
+     ВЫХОД
+====================== -->
 
 <button
-id="clearButton"
-class="secondary"
-
-«»
-
-Очистить
-</button>
-
-</div><div
-id="saveStatus"
-class="status"
-></div></div><div class="panel"><h2>
-История публикаций
-</h2><div id="history">
-Загрузка...
-</div></div><button
-id="logoutButton"
-class="secondary"
-
-«»
-
-Выйти
+    id="logoutButton"
+    class="secondary"
+>
+    Выйти
 </button>
 
 </div></div><script>
 
+/* =================================================
+   SUPABASE
+================================================= */
+
 const SUPABASE_URL =
-"https://gcwjtsqnmfimqdoyhfar.supabase.co";
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
-
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
 
 const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
-const login =
-document.getElementById("login");
+/* =================================================
+   ЭЛЕМЕНТЫ
+================================================= */
 
-const app =
-document.getElementById("app");
+const loginBlock =
+    document.getElementById("login");
 
-const email =
-document.getElementById("email");
+const appBlock =
+    document.getElementById("app");
 
-const password =
-document.getElementById("password");
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
 
 const loginButton =
-document.getElementById("loginButton");
+    document.getElementById("loginButton");
 
 const loginStatus =
-document.getElementById("loginStatus");
+    document.getElementById("loginStatus");
 
-const type =
-document.getElementById("type");
+const typeInput =
+    document.getElementById("type");
 
-const content =
-document.getElementById("content");
+const contentInput =
+    document.getElementById("content");
 
-const editId =
-document.getElementById("editId");
+const editIdInput =
+    document.getElementById("editId");
 
 const saveButton =
-document.getElementById("saveButton");
+    document.getElementById("saveButton");
 
 const clearButton =
-document.getElementById("clearButton");
+    document.getElementById("clearButton");
 
 const saveStatus =
-document.getElementById("saveStatus");
+    document.getElementById("saveStatus");
 
-const history =
-document.getElementById("history");
+const historyBlock =
+    document.getElementById("history");
 
 const editorTitle =
-document.getElementById("editorTitle");
+    document.getElementById("editorTitle");
 
 const editorPanel =
-document.getElementById("editorPanel");
+    document.getElementById("editorPanel");
 
 const logoutButton =
-document.getElementById("logoutButton");
+    document.getElementById("logoutButton");
 
 
-/* LOGIN */
+/* =================================================
+   ВХОД
+================================================= */
 
 loginButton.onclick = async function(){
 
-const result =
-await supabaseClient.auth.signInWithPassword({
+    const email =
+        emailInput.value.trim();
 
-email:email.value.trim(),
-
-password:password.value
-
-});
+    const password =
+        passwordInput.value;
 
 
-if(result.error){
+    if(!email || !password){
 
-loginStatus.className =
-"status error";
+        setStatus(
+            loginStatus,
+            "Введите email и пароль.",
+            "error"
+        );
 
-loginStatus.textContent =
-"Ошибка: " +
-result.error.message;
-
-return;
-
-}
+        return;
+    }
 
 
-loginStatus.className =
-"status success";
+    loginButton.disabled = true;
 
-loginStatus.textContent =
-"Успешно";
+    loginButton.textContent =
+        "Вход...";
 
-showApp();
+
+    const result =
+        await supabaseClient.auth
+            .signInWithPassword({
+
+                email: email,
+                password: password
+
+            });
+
+
+    loginButton.disabled = false;
+
+    loginButton.textContent =
+        "Войти";
+
+
+    if(result.error){
+
+        setStatus(
+            loginStatus,
+            "Ошибка: " +
+            result.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    setStatus(
+        loginStatus,
+        "Успешный вход!",
+        "success"
+    );
+
+
+    await showApp();
 
 };
 
 
-/* SESSION */
+/* Enter для входа */
+
+passwordInput.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            loginButton.click();
+
+        }
+
+    }
+);
+
+
+/* =================================================
+   ПРОВЕРКА СЕССИИ
+================================================= */
 
 async function checkSession(){
 
-const result =
-await supabaseClient.auth.getSession();
+    const result =
+        await supabaseClient.auth
+            .getSession();
 
-if(
-result.data &&
-result.data.session
-){
 
-showApp();
+    if(
+        result.data &&
+        result.data.session
+    ){
 
-}
+        await showApp();
+
+    }
 
 }
 
 
 async function showApp(){
 
-login.style.display =
-"none";
+    loginBlock.style.display =
+        "none";
 
-app.style.display =
-"block";
+    appBlock.style.display =
+        "block";
 
-loadHistory();
+    await loadHistory();
 
 }
 
 
-/* SAVE */
+/* =================================================
+   СОХРАНЕНИЕ ПУБЛИКАЦИИ
+================================================= */
 
 saveButton.onclick = async function(){
 
-const postType =
-type.value;
+    const postType =
+        typeInput.value;
 
-const postContent =
-content.value.trim();
+    const postContent =
+        contentInput.value.trim();
 
-const id =
-editId.value;
-
-
-if(!postContent){
-
-saveStatus.className =
-"status error";
-
-saveStatus.textContent =
-"Введите текст.";
-
-return;
-
-}
+    const id =
+        editIdInput.value;
 
 
-saveButton.disabled =
-true;
+    if(!postContent){
 
-saveButton.textContent =
-"Сохранение...";
+        setStatus(
+            saveStatus,
+            "Введите текст публикации.",
+            "error"
+        );
 
-
-let result;
-
-
-if(id){
-
-result =
-await supabaseClient
-.from("site_content")
-.update({
-
-section:postType,
-
-content:postContent,
-
-updated_at:
-new Date().toISOString()
-
-})
-.eq(
-"id",
-id
-);
-
-}else{
-
-result =
-await supabaseClient
-.from("site_content")
-.insert({
-
-section:postType,
-
-content:postContent
-
-});
-
-}
+        return;
+    }
 
 
-saveButton.disabled =
-false;
+    saveButton.disabled = true;
+
+    saveButton.textContent =
+        id
+        ? "Сохранение..."
+        : "Публикация...";
 
 
-if(result.error){
-
-saveButton.textContent =
-id
-? "Сохранить изменения"
-: "Опубликовать";
-
-saveStatus.className =
-"status error";
-
-saveStatus.textContent =
-"Ошибка: " +
-result.error.message;
-
-return;
-
-}
+    let result;
 
 
-saveStatus.className =
-"status success";
+    /* РЕДАКТИРОВАНИЕ */
 
-saveStatus.textContent =
-id
-? "Изменения сохранены!"
-: "Публикация добавлена!";
+    if(id){
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .update({
+
+                    section:
+                        postType,
+
+                    content:
+                        postContent,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                })
+                .eq(
+                    "id",
+                    id
+                );
 
 
-clearEditor();
+    /* НОВАЯ ПУБЛИКАЦИЯ */
 
-loadHistory();
+    }else{
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .insert({
+
+                    section:
+                        postType,
+
+                    content:
+                        postContent
+
+                });
+
+    }
+
+
+    saveButton.disabled = false;
+
+
+    if(result.error){
+
+        saveButton.textContent =
+            id
+            ? "Сохранить изменения"
+            : "Опубликовать";
+
+
+        setStatus(
+            saveStatus,
+            "Ошибка: " +
+            result.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    setStatus(
+        saveStatus,
+        id
+        ? "Изменения сохранены!"
+        : "Публикация добавлена!",
+        "success"
+    );
+
+
+    clearEditor();
+
+    await loadHistory();
 
 };
 
 
-/* HISTORY */
+/* =================================================
+   ИСТОРИЯ
+================================================= */
 
 async function loadHistory(){
 
-history.innerHTML =
-"Загрузка...";
+    historyBlock.innerHTML =
+        '<div class="status">Загрузка...</div>';
 
 
-const result =
-await supabaseClient
-.from("site_content")
-.select(
-"id, section, content, created_at, updated_at"
-)
-.in(
-"section",
-[
-"news",
-"contest"
-]
-)
-.order(
-"created_at",
-{
-ascending:false
+    const result =
+        await supabaseClient
+            .from("site_content")
+            .select(
+                "id, section, content, created_at, updated_at"
+            )
+            .in(
+                "section",
+                [
+                    "news",
+                    "contest"
+                ]
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if(result.error){
+
+        historyBlock.innerHTML =
+            '<div class="error">' +
+            "Ошибка: " +
+            escapeHtml(
+                result.error.message
+            ) +
+            "</div>";
+
+        return;
+    }
+
+
+    const data =
+        result.data || [];
+
+
+    if(data.length === 0){
+
+        historyBlock.innerHTML =
+            '<div class="empty">' +
+            "Публикаций пока нет." +
+            "</div>";
+
+        return;
+    }
+
+
+    historyBlock.innerHTML =
+        data.map(
+            function(item){
+
+                const itemType =
+                    item.section === "contest"
+                    ? "КОНКУРС"
+                    : "НОВОСТЬ";
+
+
+                const date =
+                    item.updated_at ||
+                    item.created_at;
+
+
+                return `
+
+                    <div class="item">
+
+                        <div class="item-type">
+                            ${itemType}
+                        </div>
+
+                        <div class="item-date">
+                            ${formatDate(date)}
+                        </div>
+
+                        <div class="item-text">
+                            ${escapeHtml(item.content)}
+                        </div>
+
+                        <div class="actions">
+
+                            <button
+                                class="primary"
+                                onclick="editPost(${item.id})"
+                            >
+                                Изменить
+                            </button>
+
+                            <button
+                                class="danger"
+                                onclick="deletePost(${item.id})"
+                            >
+                                Удалить
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
 }
-);
 
 
-if(result.error){
-
-history.innerHTML =
-'<div class="error">' +
-"Ошибка: " +
-escapeHtml(
-result.error.message
-) +
-"</div>";
-
-return;
-
-}
-
-
-const data =
-result.data || [];
-
-
-if(data.length === 0){
-
-history.innerHTML =
-'<div class="sub">' +
-"Публикаций пока нет." +
-"</div>";
-
-return;
-
-}
-
-
-history.innerHTML =
-data.map(function(item){
-
-const title =
-item.section === "contest"
-? "КОНКУРС"
-: "НОВОСТЬ";
-
-
-const date =
-item.updated_at ||
-item.created_at;
-
-
-return `
-
-<div class="item">
-
-<div class="item-type">
-${title}
-</div>
-
-<div class="item-date">
-${formatDate(date)}
-</div>
-
-<div class="item-text">
-${escapeHtml(item.content)}
-</div>
-
-<div class="actions">
-
-<button
-class="primary"
-onclick="editPost(${item.id})"
->
-Изменить
-</button>
-
-<button
-class="danger"
-onclick="deletePost(${item.id})"
->
-Удалить
-</button>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
-
-/* EDIT */
+/* =================================================
+   РЕДАКТИРОВАНИЕ
+================================================= */
 
 async function editPost(id){
 
-const result =
-await supabaseClient
-.from("site_content")
-.select(
-"id, section, content"
-)
-.eq(
-"id",
-id
-)
-.single();
+    const result =
+        await supabaseClient
+            .from("site_content")
+            .select(
+                "id, section, content"
+            )
+            .eq(
+                "id",
+                id
+            )
+            .single();
 
 
-if(result.error){
+    if(result.error){
 
-alert(
-"Ошибка: " +
-result.error.message
-);
+        alert(
+            "Ошибка: " +
+            result.error.message
+        );
 
-return;
+        return;
+    }
+
+
+    typeInput.value =
+        result.data.section;
+
+    contentInput.value =
+        result.data.content;
+
+    editIdInput.value =
+        result.data.id;
+
+
+    editorTitle.textContent =
+        "Редактирование публикации";
+
+
+    saveButton.textContent =
+        "Сохранить изменения";
+
+
+    editorPanel.classList.add(
+        "editing"
+    );
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
 
 }
 
 
-type.value =
-result.data.section;
-
-content.value =
-result.data.content;
-
-editId.value =
-result.data.id;
-
-editorTitle.textContent =
-"Редактирование публикации";
-
-saveButton.textContent =
-"Сохранить изменения";
-
-editorPanel.classList.add(
-"editing"
-);
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-}
-
-
-/* DELETE */
+/* =================================================
+   УДАЛЕНИЕ
+================================================= */
 
 async function deletePost(id){
 
-if(
-!confirm(
-"Удалить эту публикацию?"
-)
-){
+    const confirmed =
+        confirm(
+            "Удалить эту публикацию?"
+        );
 
-return;
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    const result =
+        await supabaseClient
+            .from("site_content")
+            .delete()
+            .eq(
+                "id",
+                id
+            );
+
+
+    if(result.error){
+
+        alert(
+            "Ошибка удаления: " +
+            result.error.message
+        );
+
+        return;
+    }
+
+
+    if(
+        editIdInput.value ===
+        String(id)
+    ){
+
+        clearEditor();
+
+    }
+
+
+    await loadHistory();
 
 }
 
 
-const result =
-await supabaseClient
-.from("site_content")
-.delete()
-.eq(
-"id",
-id
-);
-
-
-if(result.error){
-
-alert(
-"Ошибка: " +
-result.error.message
-);
-
-return;
-
-}
-
-
-loadHistory();
-
-}
-
-
-/* CLEAR */
+/* =================================================
+   ОЧИСТКА
+================================================= */
 
 clearButton.onclick =
-clearEditor;
+    clearEditor;
 
 
 function clearEditor(){
 
-type.value =
-"news";
+    typeInput.value =
+        "news";
 
-content.value =
-"";
+    contentInput.value =
+        "";
 
-editId.value =
-"";
+    editIdInput.value =
+        "";
 
-editorTitle.textContent =
-"Новая публикация";
 
-saveButton.textContent =
-"Опубликовать";
+    editorTitle.textContent =
+        "Новая публикация";
 
-editorPanel.classList.remove(
-"editing"
-);
 
-saveStatus.textContent =
-"";
+    saveButton.textContent =
+        "Опубликовать";
+
+
+    editorPanel.classList.remove(
+        "editing"
+    );
+
+
+    saveStatus.textContent =
+        "";
 
 }
 
 
-/* LOGOUT */
+/* =================================================
+   ВЫХОД
+================================================= */
 
 logoutButton.onclick =
-async function(){
+    async function(){
 
-await supabaseClient.auth.signOut();
+        await supabaseClient.auth.signOut();
 
-location.reload();
+        location.reload();
 
-};
+    };
 
 
-/* DATE */
+/* =================================================
+   СТАТУС
+================================================= */
+
+function setStatus(
+    element,
+    text,
+    type
+){
+
+    element.textContent =
+        text;
+
+    element.className =
+        "status";
+
+
+    if(type){
+
+        element.classList.add(
+            type
+        );
+
+    }
+
+}
+
+
+/* =================================================
+   ДАТА
+================================================= */
 
 function formatDate(date){
 
-if(!date){
-return "";
+    if(!date){
+
+        return "";
+
+    }
+
+
+    const d =
+        new Date(date);
+
+
+    if(isNaN(d.getTime())){
+
+        return "";
+
+    }
+
+
+    return d.toLocaleString(
+        "ru-RU"
+    );
+
 }
 
-const d =
-new Date(date);
 
-return d.toLocaleString(
-"ru-RU"
-);
-
-}
-
-
-/* ESCAPE */
+/* =================================================
+   БЕЗОПАСНЫЙ ТЕКСТ
+================================================= */
 
 function escapeHtml(text){
 
-return String(text || "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
+
+/* =================================================
+   ЗАПУСК
+================================================= */
 
 checkSession();
 
