@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GYURZA — Admin</title><style>
+<title>GYURZA — Admin</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 *{
     box-sizing:border-box;
     margin:0;
@@ -17,12 +17,16 @@ body{
 }
 
 .wrap{
-    width:min(900px,100%);
+    width:min(1000px,100%);
     margin:auto;
 }
 
 h1{
     margin:20px 0 8px;
+}
+
+h2{
+    margin-bottom:15px;
 }
 
 .sub{
@@ -52,15 +56,21 @@ select{
 }
 
 textarea{
-    min-height:150px;
+    min-height:170px;
+    resize:vertical;
 }
 
 button{
     border:0;
     border-radius:10px;
-    padding:12px 18px;
+    padding:12px 16px;
     cursor:pointer;
     font-weight:700;
+}
+
+button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
 }
 
 .primary{
@@ -68,41 +78,34 @@ button{
     color:#001018;
 }
 
-.secondary{
-    background:#17232e;
-    color:white;
-}
-
 .danger{
     background:#d9364f;
     color:white;
 }
 
-button:disabled{
-    opacity:.5;
+.secondary{
+    background:#17232e;
+    color:white;
 }
 
 .status{
-    margin-top:15px;
-    padding:12px;
-    border-radius:10px;
-    background:#070b10;
-    color:#9aaab7;
+    margin-top:12px;
+    color:#8da0ae;
     line-height:1.5;
     word-break:break-word;
-}
-
-.success{
-    color:#52dc91;
 }
 
 .error{
     color:#ff687d;
 }
 
+.success{
+    color:#52dc91;
+}
+
 .item{
-    background:#080e14;
     border:1px solid #1b2935;
+    background:#080e14;
     border-radius:14px;
     padding:16px;
     margin-top:12px;
@@ -112,6 +115,7 @@ button:disabled{
     color:#25baff;
     font-size:11px;
     font-weight:bold;
+    letter-spacing:1px;
 }
 
 .item-date{
@@ -124,7 +128,7 @@ button:disabled{
     white-space:pre-wrap;
     color:#c7d0d8;
     line-height:1.6;
-    margin-bottom:15px;
+    margin:10px 0 15px;
 }
 
 .actions{
@@ -136,7 +140,18 @@ button:disabled{
 #app{
     display:none;
 }
-</style><!-- SUPABASE --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><div class="wrap"><!-- LOGIN --><div id="login"><h1>Админ-панель</h1>
+
+.editing{
+    border-color:#25baff;
+}
+
+.empty{
+    color:#81909d;
+    padding:10px 0;
+}
+</style></head><body><div class="wrap"><!-- =========================
+     LOGIN
+========================= --><div id="login"><h1>Админ-панель</h1>
 
 <div class="sub">
     GYURZA Official Website
@@ -169,13 +184,13 @@ button:disabled{
     <div
         id="loginStatus"
         class="status"
-    >
-        Проверка подключения...
-    </div>
+    ></div>
 
 </div>
 
-</div><!-- ADMIN --><div id="app"><h1>Админ-панель</h1>
+</div><!-- =========================
+     ADMIN
+========================= --><div id="app"><h1>Админ-панель</h1>
 
 <div class="sub">
     Управление новостями и конкурсами
@@ -187,7 +202,14 @@ button:disabled{
 ></div>
 
 
-<div class="panel">
+<!-- =====================
+     РЕДАКТОР
+====================== -->
+
+<div
+    class="panel"
+    id="editorPanel"
+>
 
     <h2 id="editorTitle">
         Новая публикация
@@ -243,6 +265,10 @@ button:disabled{
 </div>
 
 
+<!-- =====================
+     ИСТОРИЯ
+====================== -->
+
 <div class="panel">
 
     <h2>
@@ -266,116 +292,120 @@ button:disabled{
 
 </div></div><script>
 
-/* =========================================
-   SUPABASE CONFIG
-========================================= */
+/* =================================================
+   SUPABASE
+================================================= */
 
 const SUPABASE_URL =
-"https://gcwjtsqnmfimqdoyhfar.supabase.co";
+    "https://gcwjtsqnmfimqdoyhfar.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+    "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
+
+let supabaseClient = null;
 
 
-/* =========================================
-   CHECK SUPABASE LIBRARY
-========================================= */
-
-const loginStatus =
-document.getElementById("loginStatus");
-
-
-if(
-    typeof window.supabase === "undefined"
-){
-
-    loginStatus.className =
-    "status error";
-
-    loginStatus.textContent =
-    "ОШИБКА: библиотека Supabase не загрузилась. Проверь интернет-соединение.";
-
-}else{
-
-    loginStatus.className =
-    "status success";
-
-    loginStatus.textContent =
-    "Supabase загружен. Подключение готово.";
-
-}
-
-
-/* =========================================
-   CLIENT
-========================================= */
-
-let client = null;
-
+/* =================================================
+   СОЗДАНИЕ CLIENT
+================================================= */
 
 try{
 
-    if(
-        typeof window.supabase !== "undefined"
-    ){
-
-        client =
+    supabaseClient =
         window.supabase.createClient(
             SUPABASE_URL,
             SUPABASE_KEY
         );
 
-    }
-
 }catch(error){
 
-    loginStatus.className =
-    "status error";
-
-    loginStatus.textContent =
-    "Ошибка создания Supabase клиента: " +
-    error.message;
+    console.error(
+        "Supabase initialization error:",
+        error
+    );
 
 }
 
 
-/* =========================================
-   LOGIN
-========================================= */
-
-const loginButton =
-document.getElementById("loginButton");
-
-const emailInput =
-document.getElementById("email");
-
-const passwordInput =
-document.getElementById("password");
+/* =================================================
+   ELEMENTS
+================================================= */
 
 const loginBlock =
-document.getElementById("login");
+    document.getElementById("login");
 
 const appBlock =
-document.getElementById("app");
+    document.getElementById("app");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const loginStatus =
+    document.getElementById("loginStatus");
 
 const userInfo =
-document.getElementById("userInfo");
+    document.getElementById("userInfo");
+
+const typeInput =
+    document.getElementById("type");
+
+const contentInput =
+    document.getElementById("content");
+
+const editIdInput =
+    document.getElementById("editId");
+
+const saveButton =
+    document.getElementById("saveButton");
+
+const clearButton =
+    document.getElementById("clearButton");
+
+const saveStatus =
+    document.getElementById("saveStatus");
+
+const historyBlock =
+    document.getElementById("history");
+
+const editorTitle =
+    document.getElementById("editorTitle");
+
+const editorPanel =
+    document.getElementById("editorPanel");
+
+const logoutButton =
+    document.getElementById("logoutButton");
 
 
-loginButton.onclick =
-async function(){
+/* =================================================
+   LOGIN
+================================================= */
+
+loginButton.addEventListener(
+    "click",
+    login
+);
+
+
+async function login(){
 
     const email =
-    emailInput.value.trim();
+        emailInput.value.trim();
 
     const password =
-    passwordInput.value;
+        passwordInput.value;
 
 
-    if(!client){
+    if(!supabaseClient){
 
         showLoginError(
-            "Supabase клиент не создан."
+            "Supabase не загрузился."
         );
 
         return;
@@ -406,41 +436,35 @@ async function(){
 
 
     loginButton.disabled =
-    true;
+        true;
 
     loginButton.textContent =
-    "Вход...";
+        "Вход...";
 
 
     loginStatus.className =
-    "status";
+        "status";
 
     loginStatus.textContent =
-    "Отправляю данные в Supabase...";
+        "Проверка данных...";
 
 
     try{
 
         const result =
-        await client.auth.signInWithPassword({
+            await supabaseClient.auth
+                .signInWithPassword({
 
-            email:email,
+                    email:email,
 
-            password:password
+                    password:password
 
-        });
-
-
-        console.log(
-            "SUPABASE LOGIN RESULT:",
-            result
-        );
+                });
 
 
         if(result.error){
 
             showLoginError(
-                "Supabase: " +
                 result.error.message
             );
 
@@ -455,7 +479,7 @@ async function(){
         ){
 
             showLoginError(
-                "Supabase не вернул сессию."
+                "Сессия не была создана."
             );
 
             return;
@@ -464,75 +488,52 @@ async function(){
 
 
         loginStatus.className =
-        "status success";
+            "status success";
 
         loginStatus.textContent =
-        "Вход выполнен!";
+            "Вход выполнен!";
 
 
-        loginBlock.style.display =
-        "none";
-
-        appBlock.style.display =
-        "block";
-
-
-        const user =
-        result.data.user;
-
-
-        if(user){
-
-            userInfo.textContent =
-            "Выполнен вход: " +
-            user.email;
-
-        }
-
-
-        loadHistory();
+        await showApp(
+            result.data.user
+        );
 
 
     }catch(error){
 
-        console.error(
-            "LOGIN ERROR:",
-            error
-        );
-
-
         showLoginError(
-            "JavaScript ошибка: " +
+            "Ошибка: " +
             error.message
         );
 
     }finally{
 
         loginButton.disabled =
-        false;
+            false;
 
         loginButton.textContent =
-        "Войти";
+            "Войти";
 
     }
 
-};
+}
 
 
 function showLoginError(message){
 
     loginStatus.className =
-    "status error";
+        "status error";
 
     loginStatus.textContent =
-    message;
+        "Ошибка: " +
+        message;
 
 }
 
 
-/* =========================================
+/* =================================================
    ENTER
-========================================= */
+================================================= */
 
 passwordInput.addEventListener(
     "keydown",
@@ -540,7 +541,7 @@ passwordInput.addEventListener(
 
         if(event.key === "Enter"){
 
-            loginButton.click();
+            login();
 
         }
 
@@ -548,63 +549,170 @@ passwordInput.addEventListener(
 );
 
 
-/* =========================================
-   SAVE
-========================================= */
+/* =================================================
+   SHOW APP
+================================================= */
 
-const typeInput =
-document.getElementById("type");
+async function showApp(user){
 
-const contentInput =
-document.getElementById("content");
+    loginBlock.style.display =
+        "none";
 
-const editIdInput =
-document.getElementById("editId");
-
-const saveButton =
-document.getElementById("saveButton");
-
-const saveStatus =
-document.getElementById("saveStatus");
-
-const editorTitle =
-document.getElementById("editorTitle");
-
-const clearButton =
-document.getElementById("clearButton");
-
-const editorPanel =
-document.querySelector(".panel");
+    appBlock.style.display =
+        "block";
 
 
-saveButton.onclick =
-async function(){
+    if(user){
 
-    const text =
-    contentInput.value.trim();
+        userInfo.textContent =
+            "Выполнен вход: " +
+            (user.email || "");
 
-    const section =
-    typeInput.value;
-
-    const id =
-    editIdInput.value;
+    }
 
 
-    if(!text){
+    await loadHistory();
 
-        saveStatus.className =
-        "status error";
+}
 
-        saveStatus.textContent =
-        "Введите текст.";
+
+/* =================================================
+   CHECK SESSION
+================================================= */
+
+async function checkSession(){
+
+    if(!supabaseClient){
+
+        loginStatus.className =
+            "status error";
+
+        loginStatus.textContent =
+            "Supabase не загрузился.";
 
         return;
 
     }
 
 
+    try{
+
+        const result =
+            await supabaseClient.auth
+                .getSession();
+
+
+        if(
+            result.data &&
+            result.data.session
+        ){
+
+            await showApp(
+                result.data.session.user
+            );
+
+        }else{
+
+            loginStatus.className =
+                "status";
+
+            loginStatus.textContent =
+                "Введите email и пароль.";
+
+        }
+
+    }catch(error){
+
+        loginStatus.className =
+            "status error";
+
+        loginStatus.textContent =
+            "Ошибка проверки сессии: " +
+            error.message;
+
+    }
+
+}
+
+
+/* =================================================
+   SAVE / UPDATE
+================================================= */
+
+saveButton.addEventListener(
+    "click",
+    savePost
+);
+
+
+async function savePost(){
+
+    const section =
+        typeInput.value;
+
+    const text =
+        contentInput.value.trim();
+
+    const rawId =
+        editIdInput.value.trim();
+
+
+    if(!text){
+
+        saveStatus.className =
+            "status error";
+
+        saveStatus.textContent =
+            "Введите текст публикации.";
+
+        return;
+
+    }
+
+
+    let numericId = null;
+
+
+    if(rawId !== ""){
+
+        numericId =
+            Number(rawId);
+
+
+        if(
+            !Number.isInteger(
+                numericId
+            )
+        ){
+
+            saveStatus.className =
+                "status error";
+
+            saveStatus.textContent =
+                "Неверный ID публикации.";
+
+            return;
+
+        }
+
+    }
+
+
     saveButton.disabled =
-    true;
+        true;
+
+
+    saveButton.textContent =
+        numericId !== null
+        ? "Сохранение..."
+        : "Публикация...";
+
+
+    saveStatus.className =
+        "status";
+
+    saveStatus.textContent =
+        "Обработка...";
 
 
     try{
@@ -612,45 +720,48 @@ async function(){
         let result;
 
 
-        if(id){
+        /* =========================
+           UPDATE
+        ========================= */
 
-            const numericId =
-            Number(id);
-
+        if(numericId !== null){
 
             result =
-            await client
-            .from("site_content")
-            .update({
+                await supabaseClient
+                    .from("site_content")
+                    .update({
 
-                section:section,
+                        section:section,
 
-                content:text,
+                        content:text,
 
-                updated_at:
-                new Date().toISOString()
+                        updated_at:
+                            new Date()
+                                .toISOString()
 
-            })
-            .eq(
-                "id",
-                numericId
-            )
-            .select();
+                    })
+                    .eq(
+                        "id",
+                        numericId
+                    );
 
+
+        /* =========================
+           INSERT
+        ========================= */
 
         }else{
 
             result =
-            await client
-            .from("site_content")
-            .insert({
+                await supabaseClient
+                    .from("site_content")
+                    .insert({
 
-                section:section,
+                        section:section,
 
-                content:text
+                        content:text
 
-            })
-            .select();
+                    });
 
         }
 
@@ -663,75 +774,74 @@ async function(){
 
 
         saveStatus.className =
-        "status success";
+            "status success";
 
         saveStatus.textContent =
-        id
-        ? "Изменено!"
-        : "Опубликовано!";
+            numericId !== null
+            ? "Изменения сохранены!"
+            : "Публикация добавлена!";
 
 
         clearEditor();
 
-        loadHistory();
+        await loadHistory();
 
 
     }catch(error){
 
         saveStatus.className =
-        "status error";
+            "status error";
 
         saveStatus.textContent =
-        "Ошибка: " +
-        error.message;
+            "Ошибка: " +
+            error.message;
 
     }finally{
 
         saveButton.disabled =
-        false;
+            false;
 
         saveButton.textContent =
-        editIdInput.value
-        ? "Сохранить изменения"
-        : "Опубликовать";
+            editIdInput.value
+            ? "Сохранить изменения"
+            : "Опубликовать";
 
     }
 
-};
+}
 
 
-/* =========================================
-   HISTORY
-========================================= */
-
-const historyBlock =
-document.getElementById("history");
-
+/* =================================================
+   LOAD HISTORY
+================================================= */
 
 async function loadHistory(){
 
     historyBlock.innerHTML =
-    "Загрузка...";
+        '<div class="status">Загрузка...</div>';
 
 
     try{
 
         const result =
-        await client
-        .from("site_content")
-        .select(
-            "id,section,content,created_at,updated_at"
-        )
-        .in(
-            "section",
-            ["news","contest"]
-        )
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        );
+            await supabaseClient
+                .from("site_content")
+                .select(
+                    "id, section, content, created_at, updated_at"
+                )
+                .in(
+                    "section",
+                    [
+                        "news",
+                        "contest"
+                    ]
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
 
 
         if(result.error){
@@ -742,13 +852,15 @@ async function loadHistory(){
 
 
         const posts =
-        result.data || [];
+            result.data || [];
 
 
         if(posts.length === 0){
 
             historyBlock.innerHTML =
-            '<div class="status">Публикаций пока нет.</div>';
+                '<div class="empty">' +
+                "Публикаций пока нет." +
+                "</div>";
 
             return;
 
@@ -756,116 +868,124 @@ async function loadHistory(){
 
 
         historyBlock.innerHTML =
-        "";
+            "";
 
 
         posts.forEach(
             function(post){
 
                 const item =
-                document.createElement(
-                    "div"
-                );
+                    document.createElement(
+                        "div"
+                    );
 
                 item.className =
-                "item";
+                    "item";
 
 
                 const type =
-                document.createElement(
-                    "div"
-                );
+                    document.createElement(
+                        "div"
+                    );
 
                 type.className =
-                "item-type";
+                    "item-type";
 
                 type.textContent =
-                post.section === "contest"
-                ? "КОНКУРС"
-                : "НОВОСТЬ";
+                    post.section === "contest"
+                    ? "КОНКУРС"
+                    : "НОВОСТЬ";
 
 
                 const date =
-                document.createElement(
-                    "div"
-                );
+                    document.createElement(
+                        "div"
+                    );
 
                 date.className =
-                "item-date";
+                    "item-date";
 
                 date.textContent =
-                formatDate(
-                    post.updated_at ||
-                    post.created_at
-                );
+                    formatDate(
+                        post.updated_at ||
+                        post.created_at
+                    );
 
 
                 const text =
-                document.createElement(
-                    "div"
-                );
+                    document.createElement(
+                        "div"
+                    );
 
                 text.className =
-                "item-text";
+                    "item-text";
 
                 text.textContent =
-                post.content || "";
+                    post.content || "";
 
 
                 const actions =
-                document.createElement(
-                    "div"
-                );
-
-                actions.className =
-                "actions";
-
-
-                const edit =
-                document.createElement(
-                    "button"
-                );
-
-                edit.className =
-                "primary";
-
-                edit.textContent =
-                "Изменить";
-
-
-                edit.onclick =
-                function(){
-
-                    startEdit(post);
-
-                };
-
-
-                const remove =
-                document.createElement(
-                    "button"
-                );
-
-                remove.className =
-                "danger";
-
-                remove.textContent =
-                "Удалить";
-
-
-                remove.onclick =
-                function(){
-
-                    deletePost(
-                        post.id
+                    document.createElement(
+                        "div"
                     );
 
-                };
+                actions.className =
+                    "actions";
 
 
-                actions.appendChild(edit);
+                const editButton =
+                    document.createElement(
+                        "button"
+                    );
 
-                actions.appendChild(remove);
+                editButton.className =
+                    "primary";
+
+                editButton.textContent =
+                    "Изменить";
+
+
+                editButton.addEventListener(
+                    "click",
+                    function(){
+
+                        startEdit(post);
+
+                    }
+                );
+
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteButton.className =
+                    "danger";
+
+                deleteButton.textContent =
+                    "Удалить";
+
+
+                deleteButton.addEventListener(
+                    "click",
+                    function(){
+
+                        deletePost(
+                            post.id
+                        );
+
+                    }
+                );
+
+
+                actions.appendChild(
+                    editButton
+                );
+
+                actions.appendChild(
+                    deleteButton
+                );
 
 
                 item.appendChild(type);
@@ -877,7 +997,9 @@ async function loadHistory(){
                 item.appendChild(actions);
 
 
-                historyBlock.appendChild(item);
+                historyBlock.appendChild(
+                    item
+                );
 
             }
         );
@@ -886,21 +1008,21 @@ async function loadHistory(){
     }catch(error){
 
         historyBlock.innerHTML =
-        '<div class="status error">' +
-        "Ошибка: " +
-        escapeHtml(
-            error.message
-        ) +
-        "</div>";
+            '<div class="status error">' +
+            "Ошибка загрузки: " +
+            escapeHtml(
+                error.message
+            ) +
+            "</div>";
 
     }
 
 }
 
 
-/* =========================================
-   EDIT
-========================================= */
+/* =================================================
+   START EDIT
+================================================= */
 
 function startEdit(post){
 
@@ -910,7 +1032,7 @@ function startEdit(post){
     ){
 
         alert(
-            "У публикации нет ID."
+            "У публикации отсутствует ID."
         );
 
         return;
@@ -919,21 +1041,30 @@ function startEdit(post){
 
 
     editIdInput.value =
-    String(post.id);
+        String(post.id);
 
     typeInput.value =
-    post.section;
+        post.section;
 
     contentInput.value =
-    post.content || "";
+        post.content || "";
 
 
     editorTitle.textContent =
-    "Редактирование публикации";
+        "Редактирование публикации";
 
 
     saveButton.textContent =
-    "Сохранить изменения";
+        "Сохранить изменения";
+
+
+    editorPanel.classList.add(
+        "editing"
+    );
+
+
+    saveStatus.textContent =
+        "";
 
 
     window.scrollTo({
@@ -947,18 +1078,20 @@ function startEdit(post){
 }
 
 
-/* =========================================
+/* =================================================
    DELETE
-========================================= */
+================================================= */
 
 async function deletePost(id){
 
     const numericId =
-    Number(id);
+        Number(id);
 
 
     if(
-        !Number.isInteger(numericId)
+        !Number.isInteger(
+            numericId
+        )
     ){
 
         alert(
@@ -970,11 +1103,13 @@ async function deletePost(id){
     }
 
 
-    if(
-        !confirm(
-            "Удалить публикацию?"
-        )
-    ){
+    const confirmed =
+        confirm(
+            "Удалить эту публикацию?"
+        );
+
+
+    if(!confirmed){
 
         return;
 
@@ -984,31 +1119,18 @@ async function deletePost(id){
     try{
 
         const result =
-        await client
-        .from("site_content")
-        .delete()
-        .eq(
-            "id",
-            numericId
-        )
-        .select("id");
+            await supabaseClient
+                .from("site_content")
+                .delete()
+                .eq(
+                    "id",
+                    numericId
+                );
 
 
         if(result.error){
 
             throw result.error;
-
-        }
-
-
-        if(
-            !result.data ||
-            result.data.length === 0
-        ){
-
-            throw new Error(
-                "Supabase не разрешил удаление. Проверь DELETE policy."
-            );
 
         }
 
@@ -1023,7 +1145,14 @@ async function deletePost(id){
         }
 
 
-        loadHistory();
+        await loadHistory();
+
+
+        saveStatus.className =
+            "status success";
+
+        saveStatus.textContent =
+            "Публикация удалена!";
 
 
     }catch(error){
@@ -1038,122 +1167,80 @@ async function deletePost(id){
 }
 
 
-/* =========================================
+/* =================================================
    CLEAR
-========================================= */
+================================================= */
 
-clearButton.onclick =
-function(){
-
-    clearEditor();
-
-};
+clearButton.addEventListener(
+    "click",
+    clearEditor
+);
 
 
 function clearEditor(){
 
     typeInput.value =
-    "news";
+        "news";
 
     contentInput.value =
-    "";
+        "";
 
     editIdInput.value =
-    "";
+        "";
+
 
     editorTitle.textContent =
-    "Новая публикация";
+        "Новая публикация";
+
 
     saveButton.textContent =
-    "Опубликовать";
+        "Опубликовать";
+
+
+    editorPanel.classList.remove(
+        "editing"
+    );
 
 }
 
 
-/* =========================================
+/* =================================================
    LOGOUT
-========================================= */
+================================================= */
 
-document
-.getElementById("logoutButton")
-.onclick =
-async function(){
+logoutButton.addEventListener(
+    "click",
+    async function(){
 
-    await client.auth.signOut();
+        try{
 
-    location.reload();
+            await supabaseClient.auth.signOut();
 
-};
+        }finally{
 
-
-/* =========================================
-   SESSION
-========================================= */
-
-async function checkSession(){
-
-    if(!client){
-        return;
-    }
-
-
-    try{
-
-        const result =
-        await client.auth.getSession();
-
-
-        if(
-            result.data &&
-            result.data.session
-        ){
-
-            loginBlock.style.display =
-            "none";
-
-            appBlock.style.display =
-            "block";
-
-
-            if(
-                result.data.session.user
-            ){
-
-                userInfo.textContent =
-                "Выполнен вход: " +
-                result.data.session.user.email;
-
-            }
-
-
-            loadHistory();
+            location.reload();
 
         }
 
-    }catch(error){
-
-        console.error(
-            error
-        );
-
     }
+);
 
-}
 
-
-/* =========================================
+/* =================================================
    DATE
-========================================= */
+================================================= */
 
 function formatDate(date){
 
     if(!date){
+
         return "";
+
     }
 
 
     const d =
-    new Date(date);
+        new Date(date);
 
 
     if(
@@ -1163,52 +1250,9 @@ function formatDate(date){
     ){
 
         return "";
+
     }
 
 
     return d.toLocaleString(
-        "ru-RU"
-    );
-
-}
-
-
-/* =========================================
-   ESCAPE
-========================================= */
-
-function escapeHtml(text){
-
-    return String(text || "")
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-/* =========================================
-   START
-========================================= */
-
-checkSession();
-
-</script></body>
-</html>2
+        "ru-RU2
