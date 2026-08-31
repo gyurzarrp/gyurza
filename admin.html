@@ -80,12 +80,12 @@ button:disabled{
 
 .danger{
     background:#d9364f;
-    color:white;
+    color:#fff;
 }
 
 .secondary{
     background:#17232e;
-    color:white;
+    color:#fff;
 }
 
 .status{
@@ -142,7 +142,12 @@ button:disabled{
 .editing{
     border-color:#25baff;
 }
-</style></head><body><div class="wrap"><!-- LOGIN --><div id="login"><h1>Админ-панель</h1>
+
+.empty{
+    color:#81909d;
+    padding:10px 0;
+}
+</style></head><body><div class="wrap"><!-- ================= LOGIN ================= --><div id="login"><h1>Админ-панель</h1>
 
 <div class="sub">
     GYURZA Official Website
@@ -176,7 +181,7 @@ button:disabled{
 
 </div>
 
-</div><!-- ADMIN --><div id="app"><h1>Админ-панель</h1>
+</div><!-- ================= ADMIN ================= --><div id="app"><h1>Админ-панель</h1>
 
 <div class="sub">
     Управление новостями и конкурсами
@@ -206,18 +211,15 @@ button:disabled{
 
     </select>
 
-
     <textarea
         id="content"
         placeholder="Введите текст публикации..."
     ></textarea>
 
-
     <input
         id="editId"
         type="hidden"
     >
-
 
     <div class="actions">
 
@@ -236,7 +238,6 @@ button:disabled{
         </button>
 
     </div>
-
 
     <div
         id="saveStatus"
@@ -280,6 +281,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -291,16 +293,16 @@ const supabaseClient =
    ELEMENTS
 ================================================== */
 
-const login =
+const loginBlock =
     document.getElementById("login");
 
-const app =
+const appBlock =
     document.getElementById("app");
 
-const email =
+const emailInput =
     document.getElementById("email");
 
-const password =
+const passwordInput =
     document.getElementById("password");
 
 const loginButton =
@@ -309,13 +311,13 @@ const loginButton =
 const loginStatus =
     document.getElementById("loginStatus");
 
-const type =
+const typeInput =
     document.getElementById("type");
 
-const content =
+const contentInput =
     document.getElementById("content");
 
-const editId =
+const editIdInput =
     document.getElementById("editId");
 
 const saveButton =
@@ -327,7 +329,7 @@ const clearButton =
 const saveStatus =
     document.getElementById("saveStatus");
 
-const history =
+const historyBlock =
     document.getElementById("history");
 
 const editorTitle =
@@ -344,69 +346,68 @@ const logoutButton =
    LOGIN
 ================================================== */
 
-loginButton.onclick =
-    async function(){
+loginButton.onclick = async function(){
 
-        const userEmail =
-            email.value.trim();
+    const email =
+        emailInput.value.trim();
 
-        const userPassword =
-            password.value;
-
-
-        if(!userEmail || !userPassword){
-
-            setStatus(
-                loginStatus,
-                "Введите email и пароль.",
-                "error"
-            );
-
-            return;
-        }
+    const password =
+        passwordInput.value;
 
 
-        loginButton.disabled = true;
+    if(!email || !password){
 
-        loginButton.textContent =
-            "Вход...";
+        setStatus(
+            loginStatus,
+            "Введите email и пароль.",
+            "error"
+        );
 
-
-        const result =
-            await supabaseClient.auth
-                .signInWithPassword({
-
-                    email:userEmail,
-                    password:userPassword
-
-                });
+        return;
+    }
 
 
-        loginButton.disabled = false;
+    loginButton.disabled = true;
 
-        loginButton.textContent =
-            "Войти";
-
-
-        if(result.error){
-
-            setStatus(
-                loginStatus,
-                "Ошибка: " +
-                result.error.message,
-                "error"
-            );
-
-            return;
-        }
+    loginButton.textContent =
+        "Вход...";
 
 
-        await showApp();
+    const result =
+        await supabaseClient.auth
+            .signInWithPassword({
 
-    };
+                email:email,
+                password:password
+
+            });
 
 
-password.addEventListener(
+    loginButton.disabled = false;
+
+    loginButton.textContent =
+        "Войти";
+
+
+    if(result.error){
+
+        setStatus(
+            loginStatus,
+            "Ошибка: " +
+            result.error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    await showApp();
+
+};
+
+
+passwordInput.addEventListener(
     "keydown",
     function(event){
 
@@ -442,10 +443,10 @@ async function checkSession(){
 
 async function showApp(){
 
-    login.style.display =
+    loginBlock.style.display =
         "none";
 
-    app.style.display =
+    appBlock.style.display =
         "block";
 
     await loadHistory();
@@ -457,114 +458,113 @@ async function showApp(){
    SAVE
 ================================================== */
 
-saveButton.onclick =
-    async function(){
+saveButton.onclick = async function(){
 
-        const postType =
-            type.value;
+    const postType =
+        typeInput.value;
 
-        const postContent =
-            content.value.trim();
+    const postContent =
+        contentInput.value.trim();
 
-        const id =
-            editId.value;
-
-
-        if(!postContent){
-
-            setStatus(
-                saveStatus,
-                "Введите текст публикации.",
-                "error"
-            );
-
-            return;
-        }
+    const id =
+        editIdInput.value;
 
 
-        saveButton.disabled = true;
+    if(!postContent){
+
+        setStatus(
+            saveStatus,
+            "Введите текст публикации.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    saveButton.disabled = true;
+
+    saveButton.textContent =
+        id
+        ? "Сохранение..."
+        : "Публикация...";
+
+
+    let result;
+
+
+    if(id){
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .update({
+
+                    selection:postType,
+
+                    content:postContent,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+    }else{
+
+        result =
+            await supabaseClient
+                .from("site_content")
+                .insert({
+
+                    selection:postType,
+
+                    content:postContent
+
+                });
+
+    }
+
+
+    saveButton.disabled = false;
+
+
+    if(result.error){
 
         saveButton.textContent =
             id
-            ? "Сохранение..."
-            : "Публикация...";
-
-
-        let result;
-
-
-        if(id){
-
-            result =
-                await supabaseClient
-                    .from("site_content")
-                    .update({
-
-                        selection:postType,
-
-                        content:postContent,
-
-                        updated_at:
-                            new Date().toISOString()
-
-                    })
-                    .eq(
-                        "id",
-                        id
-                    );
-
-        }else{
-
-            result =
-                await supabaseClient
-                    .from("site_content")
-                    .insert({
-
-                        selection:postType,
-
-                        content:postContent
-
-                    });
-
-        }
-
-
-        saveButton.disabled = false;
-
-
-        if(result.error){
-
-            saveButton.textContent =
-                id
-                ? "Сохранить изменения"
-                : "Опубликовать";
-
-
-            setStatus(
-                saveStatus,
-                "Ошибка: " +
-                result.error.message,
-                "error"
-            );
-
-            return;
-        }
+            ? "Сохранить изменения"
+            : "Опубликовать";
 
 
         setStatus(
             saveStatus,
-            id
-            ? "Изменения сохранены!"
-            : "Публикация добавлена!",
-            "success"
+            "Ошибка: " +
+            result.error.message,
+            "error"
         );
 
+        return;
+    }
 
-        clearEditor();
 
-        await loadHistory();
+    setStatus(
+        saveStatus,
+        id
+        ? "Изменения сохранены!"
+        : "Публикация добавлена!",
+        "success"
+    );
 
-    };
+
+    clearEditor();
+
+    await loadHistory();
+
+};
 
 
 /* ==================================================
@@ -573,7 +573,7 @@ saveButton.onclick =
 
 async function loadHistory(){
 
-    history.innerHTML =
+    historyBlock.innerHTML =
         '<div class="status">Загрузка...</div>';
 
 
@@ -600,7 +600,7 @@ async function loadHistory(){
 
     if(result.error){
 
-        history.innerHTML =
+        historyBlock.innerHTML =
             '<div class="error">' +
             'Ошибка: ' +
             escapeHtml(
@@ -613,16 +613,13 @@ async function loadHistory(){
 
 
     const data =
-        result.data;
+        result.data || [];
 
 
-    if(
-        !data ||
-        data.length === 0
-    ){
+    if(data.length === 0){
 
-        history.innerHTML =
-            '<div class="status">' +
+        historyBlock.innerHTML =
+            '<div class="empty">' +
             'Публикаций пока нет.' +
             '</div>';
 
@@ -630,7 +627,7 @@ async function loadHistory(){
     }
 
 
-    history.innerHTML =
+    historyBlock.innerHTML =
         data.map(
             function(item){
 
@@ -719,13 +716,13 @@ async function editPost(id){
     }
 
 
-    type.value =
+    typeInput.value =
         result.data.selection;
 
-    content.value =
+    contentInput.value =
         result.data.content;
 
-    editId.value =
+    editIdInput.value =
         result.data.id;
 
 
@@ -792,7 +789,7 @@ async function deletePost(id){
 
 
     if(
-        editId.value === String(id)
+        editIdInput.value === String(id)
     ){
 
         clearEditor();
@@ -815,13 +812,13 @@ clearButton.onclick =
 
 function clearEditor(){
 
-    type.value =
+    typeInput.value =
         "news";
 
-    content.value =
+    contentInput.value =
         "";
 
-    editId.value =
+    editIdInput.value =
         "";
 
 
