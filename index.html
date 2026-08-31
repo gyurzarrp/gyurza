@@ -1,1161 +1,1142 @@
 <!DOCTYPE html><html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GYURZA — Official</title><style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>GYURZA — МОПСОБОЙ</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
 
 html,body{
     width:100%;
-    min-height:100%;
-}
-
-body{
-    background:#05080c;
-    color:#f5f8fb;
+    height:100%;
+    overflow:hidden;
     font-family:Arial,sans-serif;
-    overflow-x:hidden;
+    background:#05080c;
+    touch-action:none;
 }
 
-body::before{
-    content:"";
+button{
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+}
+
+#game{
     position:fixed;
-    width:600px;
-    height:600px;
-    top:-300px;
-    left:-250px;
-    background:rgba(0,174,255,.15);
-    filter:blur(170px);
+    inset:0;
+    overflow:hidden;
+    background:#05080c;
+}
+
+#background{
+    position:absolute;
+    inset:-35px;
+    background-image:
+        linear-gradient(rgba(3,8,14,.25),rgba(3,8,14,.58)),
+        url("https://masterpiecer-images.s3.yandex.net/ee7fbde09b5411ee8d617a83974e0feb:upscaled");
+    background-size:cover;
+    background-position:center;
+    filter:blur(7px);
+    transform:scale(1.06);
+    z-index:0;
+}
+
+#dark{
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 40%,rgba(22,151,211,.12),transparent 45%),
+        rgba(2,6,11,.42);
+    z-index:1;
+}
+
+#playArea{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    z-index:10;
+}
+
+#hud{
+    position:absolute;
+    top:15px;
+    left:15px;
+    right:15px;
+    display:none;
+    justify-content:space-between;
+    z-index:100;
+}
+
+.hud{
+    padding:11px 15px;
+    border-radius:14px;
+    background:rgba(3,8,14,.82);
+    border:1px solid rgba(255,255,255,.13);
+    backdrop-filter:blur(12px);
+    color:white;
+    font-size:14px;
+    font-weight:800;
+}
+
+#score{color:#35c2ff}
+#lives{color:#ff5269;letter-spacing:3px}
+
+#player{
+    position:absolute;
+    width:76px;
+    height:76px;
+    object-fit:contain;
+    display:none;
+    z-index:30;
     pointer-events:none;
-    z-index:-1;
+    filter:drop-shadow(0 8px 15px rgba(0,0,0,.55));
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    width:500px;
-    height:500px;
-    right:-250px;
-    bottom:-250px;
-    background:rgba(0,100,255,.10);
-    filter:blur(160px);
+.mops{
+    position:absolute;
+    width:57px;
+    height:57px;
+    object-fit:contain;
+    z-index:20;
     pointer-events:none;
-    z-index:-1;
+    filter:drop-shadow(0 7px 10px rgba(0,0,0,.4));
 }
 
+/* МЕНЮ */
 
-/* =========================
-   HEADER
-========================= */
-
-header{
-    position:fixed;
-    top:18px;
-    left:50%;
-    transform:translateX(-50%);
-
-    width:min(1120px,92%);
-    min-height:66px;
-
+#menu{
+    position:absolute;
+    inset:0;
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:center;
+    padding:20px;
+    z-index:1000;
+}
 
-    padding:0 10px 0 24px;
+.menuCard{
+    position:relative;
+    width:min(850px,94vw);
+    min-height:480px;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    border-radius:32px;
+    background:
+        linear-gradient(135deg,
+        rgba(7,15,24,.91),
+        rgba(5,10,17,.78));
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 35px 100px rgba(0,0,0,.7);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+}
 
-    background:rgba(8,13,19,.78);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:18px;
+.menuCard::before{
+    content:"";
+    position:absolute;
+    width:380px;
+    height:380px;
+    right:-160px;
+    bottom:-170px;
+    background:#009fe8;
+    opacity:.12;
+    filter:blur(100px);
+    pointer-events:none;
+}
 
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
+.menuText{
+    position:relative;
+    z-index:10;
+    width:57%;
+    padding:55px;
+}
 
-    z-index:9999;
+.smallTitle{
+    color:#35c2ff;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:16px;
 }
 
 .logo{
     color:white;
-    text-decoration:none;
+    font-size:clamp(48px,7vw,76px);
+    line-height:.95;
+    font-weight:900;
+    letter-spacing:-4px;
+}
 
-    font-size:20px;
+.logo span{color:#35c2ff}
+
+.subtitle{
+    margin-top:13px;
+    color:#71818f;
+    font-size:12px;
     font-weight:800;
-    letter-spacing:2px;
+    letter-spacing:4px;
 }
 
-.logo span{
-    color:#25baff;
+.description{
+    margin-top:28px;
+    color:#aebbc6;
+    font-size:14px;
+    line-height:1.7;
+    max-width:390px;
 }
 
-nav{
-    display:flex;
-    gap:4px;
-}
+.description b{color:white}
 
-nav button{
-    border:0;
-    outline:none;
-
-    color:#8795a3;
-    background:transparent;
-
-    font-size:10px;
-    font-weight:800;
-
-    padding:11px 13px;
-
-    border-radius:10px;
-
-    cursor:pointer;
-    transition:.25s;
-}
-
-nav button:hover{
-    color:white;
-    background:rgba(37,186,255,.08);
-}
-
-nav button.active{
-    color:white;
-    background:rgba(37,186,255,.12);
-}
-
-
-/* =========================
-   CONTAINER
-========================= */
-
-.container{
-    width:min(1120px,92%);
-    margin:auto;
-    padding-top:105px;
-}
-
-
-/* =========================
-   PAGES
-========================= */
-
-.page{
-    display:none;
-
-    min-height:calc(100vh - 145px);
-
-    animation:pageIn .35s ease;
-}
-
-.page.active{
-    display:flex;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-
-/* =========================
-   HOME
-========================= */
-
-.home{
-    position:relative;
-
-    align-items:center;
-
-    overflow:hidden;
-
-    padding:70px;
-
-    border-radius:30px;
-}
-
-.home-content{
-    position:relative;
-    z-index:2;
-
-    width:65%;
-}
-
-.badge{
+.record{
     display:inline-flex;
     align-items:center;
-    gap:8px;
-
-    padding:9px 14px;
-    margin-bottom:25px;
-
-    border-radius:50px;
-
-    background:rgba(37,186,255,.07);
-    border:1px solid rgba(37,186,255,.20);
-
-    color:#69ceff;
-
-    font-size:10px;
+    gap:10px;
+    margin-top:24px;
+    padding:10px 14px;
+    border-radius:12px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+    color:#8c9aa6;
+    font-size:11px;
     font-weight:800;
-
-    letter-spacing:1.5px;
 }
 
-.badge-dot{
-    width:6px;
-    height:6px;
-
-    border-radius:50%;
-
-    background:#25baff;
-
-    box-shadow:0 0 12px #25baff;
-}
-
-h1{
-    font-size:clamp(48px,7vw,82px);
-
-    line-height:1;
-    letter-spacing:-4px;
-
-    margin-bottom:28px;
-}
-
-.blue{
-    color:#25baff;
-}
-
-.home-text{
-    max-width:700px;
-
-    color:#aebbc6;
-
+.record strong{
+    color:#35c2ff;
     font-size:16px;
-    line-height:1.85;
 }
 
-.home-text p{
-    margin-bottom:17px;
+#startButton{
+    position:relative;
+    z-index:100;
+    display:block;
+    margin-top:24px;
+    width:220px;
+    min-height:56px;
+    border:0;
+    border-radius:15px;
+    background:#35c2ff;
+    color:#001018;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    pointer-events:auto;
+    box-shadow:0 10px 35px rgba(53,194,255,.25);
 }
 
-.home-text a{
-    color:#54c7ff;
-    font-weight:700;
-    text-decoration:none;
+#startButton:active{
+    transform:scale(.96);
 }
 
-.home-text a:hover{
-    text-decoration:underline;
-}
-
-.character{
+.menuCharacter{
     position:absolute;
-
-    right:-40px;
-    bottom:0;
-
-    width:53%;
-    height:100%;
-
-    object-fit:cover;
-    object-position:center;
-
-    opacity:.85;
-
-    mask-image:linear-gradient(
-        to right,
-        transparent 0%,
-        black 38%,
-        black 100%
-    );
-
-    -webkit-mask-image:linear-gradient(
-        to right,
-        transparent 0%,
-        black 38%,
-        black 100%
-    );
+    right:-25px;
+    bottom:-15px;
+    width:52%;
+    height:105%;
+    object-fit:contain;
+    object-position:center bottom;
+    z-index:3;
+    pointer-events:none;
+    filter:drop-shadow(0 20px 35px rgba(0,0,0,.55));
 }
 
-.home::after{
-    content:"";
-
+.menuGradient{
     position:absolute;
     inset:0;
-
-    background:linear-gradient(
-        90deg,
-        #05080c 0%,
-        rgba(5,8,12,.93) 35%,
-        rgba(5,8,12,.30) 75%,
-        rgba(5,8,12,.10)
-    );
-
+    z-index:4;
     pointer-events:none;
-    z-index:1;
+    background:
+        linear-gradient(90deg,
+        rgba(5,10,17,.96) 0%,
+        rgba(5,10,17,.88) 40%,
+        rgba(5,10,17,.18) 78%,
+        rgba(5,10,17,.05) 100%);
 }
 
+/* GAME OVER */
 
-/* =========================
-   CONTENT
-========================= */
-
-.content{
-    width:100%;
-    padding:70px 0;
-}
-
-.label{
-    color:#25baff;
-
-    font-size:10px;
-    font-weight:800;
-
-    letter-spacing:2px;
-
-    margin-bottom:10px;
-}
-
-h2{
-    font-size:clamp(40px,6vw,62px);
-
-    line-height:1.05;
-    letter-spacing:-3px;
-
-    margin-bottom:38px;
-}
-
-
-/* =========================
-   ABOUT
-========================= */
-
-.about-text{
-    max-width:900px;
-
-    color:#aebbc6;
-
-    font-size:16px;
-    line-height:1.9;
-}
-
-.about-text p{
-    margin-bottom:18px;
-}
-
-
-/* =========================
-   SOCIAL BUTTONS
-========================= */
-
-.socials{
-    display:grid;
-
-    max-width:800px;
-
-    gap:12px;
-
-    margin-top:38px;
-}
-
-.social{
-    display:flex;
-    align-items:center;
-
-    min-height:76px;
-
-    padding:12px 16px;
-
-    color:white;
-
-    text-decoration:none;
-
-    background:#0b1118;
-
-    border:1px solid rgba(255,255,255,.07);
-
-    border-radius:17px;
-
-    transition:.25s;
-}
-
-.social:hover{
-    transform:translateY(-3px);
-
-    background:#0e1924;
-
-    border-color:rgba(37,186,255,.4);
-
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.social-icon{
-    width:50px;
-    height:50px;
-
-    flex-shrink:0;
-
-    display:flex;
+#gameOver{
+    position:absolute;
+    inset:0;
+    display:none;
     align-items:center;
     justify-content:center;
-
-    border-radius:14px;
-
-    background:#121e29;
+    padding:20px;
+    z-index:2000;
+    background:rgba(2,6,10,.65);
+    backdrop-filter:blur(12px);
 }
 
-.social-icon svg{
-    width:28px;
-    height:28px;
+.overCard{
+    width:min(400px,92vw);
+    padding:35px 25px;
+    text-align:center;
+    border-radius:25px;
+    background:rgba(7,14,22,.96);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 30px 80px rgba(0,0,0,.7);
 }
 
-.social-info{
-    margin-left:15px;
+.overTitle{
+    color:white;
+    font-size:36px;
+    font-weight:900;
 }
 
-.social-title{
-    font-size:15px;
-    font-weight:800;
+.overSub{
+    margin-top:8px;
+    color:#73818d;
+    font-size:11px;
+    letter-spacing:2px;
 }
 
-.social-name{
-    color:#82919f;
-
-    font-size:12px;
-
-    margin-top:4px;
+.finalScore{
+    margin:25px 0;
+    color:#35c2ff;
+    font-size:55px;
+    font-weight:900;
 }
 
-.arrow{
-    margin-left:auto;
+.overButton{
+    width:100%;
+    min-height:52px;
+    border:0;
+    border-radius:13px;
+    background:#35c2ff;
+    color:#001018;
+    font-weight:900;
+    cursor:pointer;
+}
 
-    color:#566777;
+.overButton.second{
+    margin-top:9px;
+    background:#16232e;
+    color:white;
+}
 
-    font-size:26px;
+/* РАУНД */
 
+#round{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    opacity:0;
+    color:white;
+    font-size:45px;
+    font-weight:900;
+    z-index:80;
+    pointer-events:none;
     transition:.2s;
 }
 
-.social:hover .arrow{
-    color:#25baff;
-    transform:translateX(4px);
+#round.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
 }
 
+/* МОБИЛЬНАЯ ВЕРСИЯ */
 
-/* =========================
-   CARDS
-========================= */
+@media(max-width:700px){
 
-.card{
-    max-width:850px;
-
-    padding:55px 30px;
-
-    border-radius:24px;
-
-    background:linear-gradient(
-        145deg,
-        rgba(16,26,36,.95),
-        rgba(8,14,21,.95)
-    );
-
-    border:1px solid rgba(255,255,255,.07);
-}
-
-.card-icon{
-    width:58px;
-    height:58px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    margin-bottom:18px;
-
-    border-radius:17px;
-
-    background:rgba(37,186,255,.08);
-
-    color:#25baff;
-
-    font-size:24px;
-}
-
-.card strong{
-    display:block;
-
-    margin-bottom:8px;
-
-    font-size:19px;
-}
-
-.card p{
-    color:#8795a3;
-
-    line-height:1.8;
-
-    white-space:pre-line;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-footer{
-    text-align:center;
-
-    color:#536270;
-
-    font-size:11px;
-
-    padding:25px 0 35px;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:720px){
-
-    header{
-        top:9px;
-
-        width:95%;
-
-        min-height:60px;
-
-        padding:8px 9px 8px 16px;
-    }
-
-    .logo{
-        font-size:16px;
-    }
-
-    nav{
-        gap:1px;
-    }
-
-    nav button{
-        padding:7px 6px;
-        font-size:8px;
-    }
-
-    .container{
-        width:92%;
-        padding-top:88px;
-    }
-
-    .home{
-        padding:35px 25px;
-        border-radius:22px;
-
+    .menuCard{
+        min-height:570px;
         align-items:flex-start;
+        border-radius:26px;
     }
 
-    .home-content{
+    .menuText{
         width:100%;
+        padding:34px 25px;
+        z-index:10;
     }
 
-    .character{
-        right:-100px;
-        width:90%;
-        opacity:.35;
+    .logo{font-size:52px}
+
+    .subtitle{font-size:9px}
+
+    .description{
+        max-width:270px;
+        font-size:13px;
     }
 
-    .home::after{
-        background:linear-gradient(
-            90deg,
-            #05080c 5%,
-            rgba(5,8,12,.90) 65%,
-            rgba(5,8,12,.30)
-        );
+    .menuCharacter{
+        width:82%;
+        height:65%;
+        right:-55px;
+        bottom:0;
+        opacity:.72;
     }
 
-    h1{
-        font-size:48px;
-        letter-spacing:-2px;
+    .menuGradient{
+        background:
+            linear-gradient(180deg,
+            rgba(5,10,17,.98) 0%,
+            rgba(5,10,17,.93) 45%,
+            rgba(5,10,17,.25) 100%);
     }
 
-    .home-text{
-        font-size:14px;
-        line-height:1.75;
+    #startButton{
+        width:100%;
+        max-width:300px;
     }
 
-    .content{
-        padding:45px 0;
+    #player{
+        width:68px;
+        height:68px;
     }
 
-    h2{
-        font-size:43px;
-    }
-
-    .about-text{
-        font-size:14px;
-        line-height:1.8;
-    }
-
-    .social{
-        min-height:70px;
-        padding:11px;
-    }
-
-    .social-icon{
-        width:45px;
-        height:45px;
+    .mops{
+        width:52px;
+        height:52px;
     }
 }
-
-
-/* =========================
-   MODERN SOCIAL LOGOS
-========================= */
-
-.tiktok-logo{
-    fill:white;
-}
-
-.youtube-logo{
-    fill:#ff0033;
-}
-
-.telegram-circle{
-    fill:#229ED9;
-}
-
-.telegram-plane{
-    fill:white;
-}
-
-</style></head><body><!-- =========================
-     HEADER
-========================= --><header><a
-    class="logo"
-    href="#"
-    onclick="showPage('home'); return false;"
->
-    GYURZA<span>.</span>
-</a>
-
-
-<nav>
-
-    <button
-        id="btn-home"
-        class="active"
-        onclick="showPage('home')"
-    >
-        ГЛАВНАЯ
-    </button>
-
-    <button
-        id="btn-news"
-        onclick="showPage('news')"
-    >
-        НОВОСТИ
-    </button>
-
-    <button
-        id="btn-about"
-        onclick="showPage('about')"
-    >
-        ОБО МНЕ
-    </button>
-
-    <button
-        id="btn-contests"
-        onclick="showPage('contests')"
-    >
-        КОНКУРСЫ
-    </button>
-
-</nav>
-
-</header><div class="container"><!-- =========================
-     ГЛАВНАЯ
-========================= --><section
-    id="home"
-    class="page active home"
-><img
-    class="character"
-    src="https://i.imgur.com/W5Lg2SX.jpeg"
-    alt="GYURZA"
->
-
-
-<div class="home-content">
-
-    <div class="badge">
-
-        <span class="badge-dot"></span>
-
-        OFFICIAL WEBSITE
-
+</style></head><body><div id="game"><div id="background"></div>
+<div id="dark"></div><div id="playArea"><div id="hud">
+    <div class="hud">
+        ❤️ <span id="lives">♥♥♥</span>
     </div>
 
-
-    <h1>
-
-        Привет! Я
-        <span class="blue">Гюрза</span>
-
-    </h1>
-
-
-    <div class="home-text">
-
-        <p>
-            Всем привет 👋
-        </p>
-
-
-        <p>
-            Я Гюрза - меня знают как контент мейкера плейса
-            «Армия Роблокса РП», также я являюсь основателем
-            и бывшим лидером клана «Русская сила!», который я
-            к сожалению уже давно закрыл.
-        </p>
-
-
-        <p>
-            Сейчас я активно снимаю в TikTok, YouTube
-            и публикую посты в свой
-            <a
-                href="https://t.me/ArmyRobloxRPnewss"
-                target="_blank"
-                rel="noopener"
-            >
-                Telegram канал
-            </a>.
-        </p>
-
-
-        <p>
-            Мой TikTok:
-            <a
-                href="https://www.tiktok.com/@gyurza_arrp"
-                target="_blank"
-                rel="noopener"
-            >
-                @gyurza_arrp
-            </a>
-        </p>
-
-
-        <p>
-            Мой YouTube:
-            <a
-                href="https://www.youtube.com/@Gyurza_YT"
-                target="_blank"
-                rel="noopener"
-            >
-                @Gyurza_YT
-            </a>
-        </p>
-
-
-        <p>
-            Рад что ты заглянул сюда, удачи 😄
-        </p>
-
+    <div class="hud">
+        ⭐ <span id="score">0</span>
     </div>
-
 </div>
 
-</section><!-- =========================
-     НОВОСТИ
-========================= --><section
-    id="news"
-    class="page"
-><div class="content">
+<img id="player"
+     src="https://i.imgur.com/W3JkRuj.png"
+     alt="Гюрза">
 
-    <div class="label">
-        01 / NEWS
-    </div>
+<div id="round">РАУНД 1</div>
 
+</div><!-- ГЛАВНОЕ МЕНЮ --><div id="menu"><div class="menuCard">
 
-    <h2>
-        Новости
-    </h2>
+    <div class="menuText">
 
-
-    <div class="card">
-
-        <div class="card-icon">
-            ✦
+        <div class="smallTitle">
+            OFFICIAL GAME
         </div>
 
-
-        <strong>
-            Новости
-        </strong>
-
-
-        <p>
-            Здесь будут появляться новые новости.
-        </p>
-
-    </div>
-
-</div>
-
-</section><!-- =========================
-     ОБО МНЕ
-========================= --><section
-    id="about"
-    class="page"
-><div class="content">
-
-    <div class="label">
-        02 / ABOUT
-    </div>
-
-
-    <h2>
-        Обо мне
-    </h2>
-
-
-    <div class="about-text">
-
-        <p>
-            Я — Гюрза, медийная личность в сфере
-            «Армия Roblox RP». Меня знают благодаря моей
-            активности в сообществе и созданию контента.
-        </p>
-
-
-        <p>
-            В определённый период я возглавлял клан
-            «Русская Сила!», который некоторое время
-            занимал 1-е место по балансу среди кланов.
-            Этот период стал важной частью моей истории
-            в сообществе.
-        </p>
-
-
-        <p>
-            Сейчас я состою в клане «Obsidian» и продолжаю
-            развивать свою медийную деятельность.
-        </p>
-
-
-        <p>
-            В основном я создаю контент для TikTok —
-            @gyurza_arrp. Также у меня есть YouTube-канал
-            @Gyurza_YT, где я публикую видео и другие материалы,
-            связанные с моей деятельностью.
-        </p>
-
-
-        <p>
-            Спасибо, что посетили мой сайт. Здесь вы сможете
-            следить за моей деятельностью, новостями
-            и будущими проектами.
-        </p>
-
-    </div>
-
-
-    <!-- TIKTOK -->
-
-    <div class="socials">
-
-        <a
-            class="social"
-            href="https://www.tiktok.com/@gyurza_arrp"
-            target="_blank"
-            rel="noopener"
-        >
-
-            <div class="social-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path
-                        class="tiktok-logo"
-                        d="M15.2 3c.3 2.4 1.7 3.8 4 4v3.1c-1.5.1-2.9-.4-4-1.2v7.3c0 4-3.1 5.8-6 5.8-3.1 0-5.4-2.1-5.4-5 0-3.2 2.6-5.3 5.8-5.1v3.1c-1.7-.2-2.7.6-2.7 2 0 1.1.9 1.9 2.1 1.9 1.2 0 2.8-.7 2.8-3V3h3.4Z"
-                    />
-
-                </svg>
-
-            </div>
-
-
-            <div class="social-info">
-
-                <div class="social-title">
-                    Мой TikTok
-                </div>
-
-                <div class="social-name">
-                    @gyurza_arrp
-                </div>
-
-            </div>
-
-
-            <div class="arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <!-- YOUTUBE -->
-
-        <a
-            class="social"
-            href="https://www.youtube.com/@Gyurza_YT"
-            target="_blank"
-            rel="noopener"
-        >
-
-            <div class="social-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <path
-                        class="youtube-logo"
-                        d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8Z"
-                    />
-
-                    <path
-                        fill="white"
-                        d="m9.7 15.8 5.9-3.8-5.9-3.8v7.6Z"
-                    />
-
-                </svg>
-
-            </div>
-
-
-            <div class="social-info">
-
-                <div class="social-title">
-                    Мой YouTube
-                </div>
-
-                <div class="social-name">
-                    @Gyurza_YT
-                </div>
-
-            </div>
-
-
-            <div class="arrow">
-                →
-            </div>
-
-        </a>
-
-
-        <!-- TELEGRAM -->
-
-        <a
-            class="social"
-            href="https://t.me/ArmyRobloxRPnewss"
-            target="_blank"
-            rel="noopener"
-        >
-
-            <div class="social-icon">
-
-                <svg viewBox="0 0 24 24">
-
-                    <circle
-                        class="telegram-circle"
-                        cx="12"
-                        cy="12"
-                        r="11"
-                    />
-
-                    <path
-                        class="telegram-plane"
-                        d="M17.8 7.1 15.5 17c-.2.7-.6.9-1.2.5l-3.4-2.5-1.7 1.7c-.2.2-.4.4-.8.4l.2-3.5 6.4-5.8c.3-.3-.1-.4-.5-.1L6.7 13 3.3 12c-.7-.2-.7-.7.2-1l13.2-5.1c.6-.2 1.2.1 1.1 1.2Z"
-                    />
-
-                </svg>
-
-            </div>
-
-
-            <div class="social-info">
-
-                <div class="social-title">
-                    Мой Telegram канал
-                </div>
-
-                <div class="social-name">
-                    @ArmyRobloxRPnewss
-                </div>
-
-            </div>
-
-
-            <div class="arrow">
-                →
-            </div>
-
-        </a>
-
-    </div>
-
-</div>
-
-</section><!-- =========================
-     КОНКУРСЫ
-========================= --><section
-    id="contests"
-    class="page"
-><div class="content">
-
-    <div class="label">
-        03 / CONTESTS
-    </div>
-
-
-    <h2>
-        Конкурсы
-    </h2>
-
-
-    <div class="card">
-
-        <div class="card-icon">
-            🎁
+        <div class="logo">
+            GYURZA<span>.</span>
         </div>
 
+        <div class="subtitle">
+            МОПСОБОЙ
+        </div>
 
-        <strong>
-            Конкурсы
-        </strong>
+        <div class="description">
+            <b>Уворачивайся от мопсов.</b>
+            <br>
+            Двигай Гюрзу влево и вправо,
+            избегай столкновений и набирай
+            как можно больше очков.
+            <br><br>
+            Чем выше счёт — тем больше
+            мопсов появляется.
+        </div>
 
+        <div class="record">
+            🏆 РЕКОРД:
+            <strong id="record">0</strong>
+        </div>
 
-        <p>
-            Здесь будут появляться новые конкурсы.
-        </p>
+        <!-- НИКАКИХ КНОПОК СВАЙПА ЗДЕСЬ НЕТ -->
+
+        <button id="startButton"
+                type="button"
+                onclick="startGame()">
+            ▶ НАЧАТЬ ИГРУ
+        </button>
 
     </div>
 
+    <img class="menuCharacter"
+         src="https://i.imgur.com/W3JkRuj.png"
+         alt="GYURZA">
+
+    <div class="menuGradient"></div>
+
 </div>
 
-</section><footer>
-    © 2026 GYURZA · Official Website
-</footer></div><script>
+</div><!-- GAME OVER --><div id="gameOver"><div class="overCard">
 
-function showPage(pageName){
+    <div class="overTitle">
+        ИГРА ОКОНЧЕНА
+    </div>
 
-    document
-        .querySelectorAll(".page")
-        .forEach(function(page){
+    <div class="overSub">
+        МОПСЫ ДОБРАЛИСЬ ДО ГЮРЗЫ
+    </div>
 
-            page.classList.remove("active");
+    <div class="finalScore"
+         id="finalScore">
+        0
+    </div>
 
-        });
+    <div id="newRecord"
+         style="display:none;color:#50df92;font-weight:900;margin-bottom:18px">
+        🏆 НОВЫЙ РЕКОРД!
+    </div>
+
+    <button class="overButton"
+            type="button"
+            onclick="startGame()">
+        ИГРАТЬ СНОВА
+    </button>
+
+    <button class="overButton second"
+            type="button"
+            onclick="showMenu()">
+        В МЕНЮ
+    </button>
+
+</div>
+
+</div></div><script>
+"use strict";
+
+/* КАРТИНКИ */
+
+const PLAYER_IMAGE =
+    "https://i.imgur.com/W3JkRuj.png";
+
+const MOP_IMAGE =
+    "https://i.imgur.com/URTeVWx.png";
 
 
-    const page =
-        document.getElementById(pageName);
+/* СОСТОЯНИЕ */
+
+let playing = false;
+let score = 0;
+let lives = 3;
+let round = 1;
+let playerX = 0;
+let enemies = [];
+let lastTime = 0;
+let spawnTimer = 0;
+let hitCooldown = 0;
+let animationId = null;
 
 
-    if(page){
-        page.classList.add("active");
+/* ЭЛЕМЕНТЫ */
+
+const player = document.getElementById("player");
+const hud = document.getElementById("hud");
+const scoreEl = document.getElementById("score");
+const livesEl = document.getElementById("lives");
+const menu = document.getElementById("menu");
+const gameOver = document.getElementById("gameOver");
+const recordEl = document.getElementById("record");
+const finalScore = document.getElementById("finalScore");
+const newRecord = document.getElementById("newRecord");
+const roundEl = document.getElementById("round");
+
+
+/* РЕКОРД */
+
+function getRecord(){
+    return Number(localStorage.getItem("gyurza_mops_record") || 0);
+}
+
+function saveRecord(value){
+    localStorage.setItem("gyurza_mops_record", String(value));
+}
+
+function updateRecord(){
+    recordEl.textContent = getRecord();
+}
+
+updateRecord();
+
+
+/* ЗАПУСК ИГРЫ */
+
+function startGame(){
+
+    /* если старая игра ещё работает — останавливаем */
+
+    playing = false;
+
+    if(animationId){
+        cancelAnimationFrame(animationId);
+        animationId = null;
     }
 
+    /* удаляем всех старых мопсов */
 
-    document
-        .querySelectorAll("nav button")
-        .forEach(function(button){
+    for(const enemy of enemies){
+        if(enemy.el){
+            enemy.el.remove();
+        }
+    }
 
-            button.classList.remove("active");
+    enemies = [];
 
-        });
+    /* сбрасываем игру */
+
+    score = 0;
+    lives = 3;
+    round = 1;
+    spawnTimer = 0;
+    hitCooldown = 0;
+
+    /* скрываем меню */
+
+    menu.style.display = "none";
+    gameOver.style.display = "none";
+
+    /* показываем игру */
+
+    hud.style.display = "flex";
+    player.style.display = "block";
+    player.src = PLAYER_IMAGE;
+
+    /* позиция Гюрзы */
+
+    const playerWidth = player.offsetWidth || 76;
+
+    playerX =
+        (window.innerWidth - playerWidth) / 2;
+
+    player.style.left =
+        playerX + "px";
+
+    player.style.bottom =
+        "95px";
+
+    player.style.top =
+        "auto";
+
+    updateHUD();
+
+    showRound();
+
+    /* запускаем */
+
+    playing = true;
+    lastTime = performance.now();
+
+    animationId =
+        requestAnimationFrame(gameLoop);
+}
 
 
-    const activeButton =
-        document.getElementById(
-            "btn-" + pageName
+/* ИГРОВОЙ ЦИКЛ */
+
+function gameLoop(time){
+
+    if(!playing){
+        return;
+    }
+
+    let delta =
+        (time - lastTime) / 1000;
+
+    lastTime = time;
+
+    if(delta > 0.05){
+        delta = 0.05;
+    }
+
+    if(hitCooldown > 0){
+        hitCooldown -= delta;
+    }
+
+    movePlayer(delta);
+    moveEnemies(delta);
+
+    spawnTimer += delta;
+
+    /* постепенно появляется больше мопсов */
+
+    const spawnDelay =
+        Math.max(
+            0.38,
+            1.05 - round * 0.045
         );
 
+    if(spawnTimer >= spawnDelay){
 
-    if(activeButton){
-        activeButton.classList.add("active");
+        spawnTimer = 0;
+
+        spawnEnemy();
+
+        /* после определённого счёта иногда второй */
+
+        if(score >= 35 && Math.random() < 0.20){
+            spawnEnemy();
+        }
+
+        if(score >= 80 && Math.random() < 0.18){
+            spawnEnemy();
+        }
     }
 
+    const newRound =
+        Math.floor(score / 20) + 1;
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
+    if(newRound > round){
+
+        round = newRound;
+        showRound();
+    }
+
+    animationId =
+        requestAnimationFrame(gameLoop);
+}
+
+
+/* ДВИЖЕНИЕ ГЮРЗЫ */
+
+function movePlayer(delta){
+
+    /* управление свайпом задаёт targetX */
+
+    if(typeof window.targetX === "number"){
+
+        playerX +=
+            (window.targetX - playerX) *
+            Math.min(1, delta * 12);
+    }
+
+    /* клавиатура */
+
+    if(window.leftKey){
+        playerX -= 430 * delta;
+    }
+
+    if(window.rightKey){
+        playerX += 430 * delta;
+    }
+
+    const width =
+        player.offsetWidth || 76;
+
+    const max =
+        window.innerWidth - width - 5;
+
+    playerX =
+        Math.max(
+            5,
+            Math.min(max, playerX)
+        );
+
+    player.style.left =
+        playerX + "px";
+}
+
+
+/* СОЗДАНИЕ МОПСА */
+
+function spawnEnemy(){
+
+    if(!playing){
+        return;
+    }
+
+    const mop =
+        document.createElement("img");
+
+    mop.className = "mops";
+    mop.src = MOP_IMAGE;
+    mop.draggable = false;
+
+    const size =
+        window.innerWidth < 700 ? 52 : 57;
+
+    mop.style.width = size + "px";
+    mop.style.height = size + "px";
+
+    const maxX =
+        Math.max(
+            5,
+            window.innerWidth - size - 5
+        );
+
+    const x =
+        5 + Math.random() * maxX;
+
+    const y = -75;
+
+    mop.style.left = x + "px";
+    mop.style.top = y + "px";
+
+    document.getElementById("playArea")
+        .appendChild(mop);
+
+    enemies.push({
+
+        el: mop,
+        x: x,
+        y: y,
+        size: size,
+
+        speed:
+            145 +
+            round * 6 +
+            Math.random() * 35
     });
+}
 
 
-    history.replaceState(
-        null,
-        "",
-        "#" + pageName
+/* ДВИЖЕНИЕ МОПСОВ */
+
+function moveEnemies(delta){
+
+    const playerRect =
+        player.getBoundingClientRect();
+
+    for(
+        let i = enemies.length - 1;
+        i >= 0;
+        i--
+    ){
+
+        const enemy =
+            enemies[i];
+
+        enemy.y +=
+            enemy.speed * delta;
+
+        enemy.el.style.top =
+            enemy.y + "px";
+
+        const enemyRect =
+            enemy.el.getBoundingClientRect();
+
+        /* столкновение */
+
+        if(
+            hitCooldown <= 0 &&
+            isColliding(playerRect, enemyRect)
+        ){
+
+            enemy.el.remove();
+            enemies.splice(i,1);
+
+            loseLife();
+
+            continue;
+        }
+
+        /* мопс улетел вниз — считаем очко */
+
+        if(enemy.y > window.innerHeight + 80){
+
+            enemy.el.remove();
+            enemies.splice(i,1);
+
+            score++;
+
+            updateHUD();
+        }
+    }
+}
+
+
+/* ПРОВЕРКА СТОЛКНОВЕНИЯ */
+
+function isColliding(a,b){
+
+    const padding = 13;
+
+    return !(
+        a.right - padding < b.left + padding ||
+        a.left + padding > b.right - padding ||
+        a.bottom - padding < b.top + padding ||
+        a.top + padding > b.bottom - padding
     );
 }
 
 
-window.addEventListener(
-    "load",
+/* ПОТЕРЯ ЖИЗНИ */
+
+function loseLife(){
+
+    if(hitCooldown > 0){
+        return;
+    }
+
+    hitCooldown = 1.0;
+
+    lives--;
+
+    updateHUD();
+
+    /* небольшой визуальный эффект */
+
+    player.style.transform =
+        "scale(1.18)";
+
+    setTimeout(function(){
+
+        player.style.transform =
+            "scale(1)";
+
+    },180);
+
+    if(lives <= 0){
+
+        endGame();
+    }
+}
+
+
+/* HUD */
+
+function updateHUD(){
+
+    scoreEl.textContent =
+        score;
+
+    livesEl.textContent =
+        "♥".repeat(Math.max(0,lives)) +
+        "♡".repeat(Math.max(0,3-lives));
+}
+
+
+/* РАУНД */
+
+function showRound(){
+
+    roundEl.textContent =
+        "РАУНД " + round;
+
+    roundEl.classList.add("show");
+
+    setTimeout(function(){
+
+        roundEl.classList.remove("show");
+
+    },700);
+}
+
+
+/* GAME OVER */
+
+function endGame(){
+
+    playing = false;
+
+    if(animationId){
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+
+    for(const enemy of enemies){
+
+        if(enemy.el){
+            enemy.el.remove();
+        }
+    }
+
+    enemies = [];
+
+    finalScore.textContent =
+        score;
+
+    const oldRecord =
+        getRecord();
+
+    if(score > oldRecord){
+
+        saveRecord(score);
+
+        newRecord.style.display =
+            "block";
+
+    }else{
+
+        newRecord.style.display =
+            "none";
+    }
+
+    updateRecord();
+
+    hud.style.display =
+        "none";
+
+    player.style.display =
+        "none";
+
+    gameOver.style.display =
+        "flex";
+}
+
+
+/* В МЕНЮ */
+
+function showMenu(){
+
+    playing = false;
+
+    if(animationId){
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+
+    for(const enemy of enemies){
+
+        if(enemy.el){
+            enemy.el.remove();
+        }
+    }
+
+    enemies = [];
+
+    gameOver.style.display =
+        "none";
+
+    hud.style.display =
+        "none";
+
+    player.style.display =
+        "none";
+
+    menu.style.display =
+        "flex";
+
+    updateRecord();
+}
+
+
+/* КЛАВИАТУРА */
+
+window.leftKey = false;
+window.rightKey = false;
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "ArrowLeft"){
+            window.leftKey = true;
+            event.preventDefault();
+        }
+
+        if(event.key === "ArrowRight"){
+            window.rightKey = true;
+            event.preventDefault();
+        }
+    }
+);
+
+document.addEventListener(
+    "keyup",
+    function(event){
+
+        if(event.key === "ArrowLeft"){
+            window.leftKey = false;
+        }
+
+        if(event.key === "ArrowRight"){
+            window.rightKey = false;
+        }
+    }
+);
+
+
+/* СВАЙП ПО ЭКРАНУ */
+
+let touchActive = false;
+
+document.addEventListener(
+    "touchstart",
+    function(event){
+
+        if(!playing){
+            return;
+        }
+
+        touchActive = true;
+
+        const touch =
+            event.touches[0];
+
+        window.targetX =
+            touch.clientX -
+            (player.offsetWidth / 2);
+
+    },
+    {passive:false}
+);
+
+document.addEventListener(
+    "touchmove",
+    function(event){
+
+        if(!playing || !touchActive){
+            return;
+        }
+
+        const touch =
+            event.touches[0];
+
+        window.targetX =
+            touch.clientX -
+            (player.offsetWidth / 2);
+
+        event.preventDefault();
+
+    },
+    {passive:false}
+);
+
+document.addEventListener(
+    "touchend",
     function(){
 
-        const page =
-            location.hash.replace("#","");
-
-        if(
-            page === "home" ||
-            page === "news" ||
-            page === "about" ||
-            page === "contests"
-        ){
-
-            showPage(page);
-
-        }else{
-
-            showPage("home");
-
-        }
+        touchActive = false;
 
     }
 );
 
 
-window.addEventListener(
-    "popstate",
-    function(){
+/* МЫШЬ */
 
-        const page =
-            location.hash.replace("#","");
+document.addEventListener(
+    "mousemove",
+    function(event){
 
-        if(
-            page === "home" ||
-            page === "news" ||
-            page === "about" ||
-            page === "contests"
-        ){
-
-            showPage(page);
-
-        }else{
-
-            showPage("home");
-
+        if(!playing){
+            return;
         }
 
+        window.targetX =
+            event.clientX -
+            (player.offsetWidth / 2);
     }
 );
+
+
+/* ПРИ ПОВОРОТЕ ЭКРАНА */
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        if(!playing){
+            return;
+        }
+
+        const width =
+            player.offsetWidth || 76;
+
+        playerX =
+            Math.max(
+                5,
+                Math.min(
+                    window.innerWidth-width-5,
+                    playerX
+                )
+            );
+    }
+);
+
+
+/* НАЧАЛЬНОЕ СОСТОЯНИЕ */
+
+updateRecord();
 
 </script></body>
 </html>
