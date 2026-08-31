@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>GYURZA — Admin</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GYURZA — Admin</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -147,8 +147,16 @@ button:disabled{
     color:#81909d;
     padding:10px 0;
 }
+
+.user{
+    color:#61717f;
+    font-size:12px;
+    margin-bottom:15px;
+    word-break:break-all;
+}
+
 </style></head><body><div class="wrap"><!-- =========================
-     ВХОД
+     LOGIN
 ========================= --><div id="login"><h1>Админ-панель</h1>
 
 <div class="sub">
@@ -161,7 +169,7 @@ button:disabled{
         id="email"
         type="email"
         placeholder="Email"
-        autocomplete="email"
+        autocomplete="username"
     >
 
     <input
@@ -174,6 +182,7 @@ button:disabled{
     <button
         id="loginButton"
         class="primary"
+        type="button"
     >
         Войти
     </button>
@@ -186,15 +195,22 @@ button:disabled{
 </div>
 
 </div><!-- =========================
-     ПАНЕЛЬ
+     APP
 ========================= --><div id="app"><h1>Админ-панель</h1>
 
 <div class="sub">
     Управление новостями и конкурсами
 </div>
 
+<div
+    id="userEmail"
+    class="user"
+></div>
 
-<!-- НОВАЯ ПУБЛИКАЦИЯ -->
+
+<!-- =====================
+     EDITOR
+====================== -->
 
 <div
     class="panel"
@@ -204,6 +220,7 @@ button:disabled{
     <h2 id="editorTitle">
         Новая публикация
     </h2>
+
 
     <select id="type">
 
@@ -217,21 +234,25 @@ button:disabled{
 
     </select>
 
+
     <textarea
         id="content"
         placeholder="Текст публикации..."
     ></textarea>
+
 
     <input
         id="editId"
         type="hidden"
     >
 
+
     <div class="actions">
 
         <button
             id="saveButton"
             class="primary"
+            type="button"
         >
             Опубликовать
         </button>
@@ -239,11 +260,13 @@ button:disabled{
         <button
             id="clearButton"
             class="secondary"
+            type="button"
         >
             Очистить
         </button>
 
     </div>
+
 
     <div
         id="saveStatus"
@@ -253,7 +276,10 @@ button:disabled{
 </div>
 
 
-<!-- ИСТОРИЯ -->
+
+<!-- =====================
+     HISTORY
+====================== -->
 
 <div class="panel">
 
@@ -268,11 +294,10 @@ button:disabled{
 </div>
 
 
-<!-- ВЫХОД -->
-
 <button
     id="logoutButton"
     class="secondary"
+    type="button"
 >
     Выйти
 </button>
@@ -289,6 +314,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_Y-QSCei2FKGVHaoI3TG7ng_ldK08d0w";
 
+
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -296,8 +322,9 @@ const supabaseClient =
     );
 
 
+
 /* =================================================
-   ЭЛЕМЕНТЫ
+   ELEMENTS
 ================================================= */
 
 const loginBlock =
@@ -317,6 +344,9 @@ const loginButton =
 
 const loginStatus =
     document.getElementById("loginStatus");
+
+const userEmail =
+    document.getElementById("userEmail");
 
 const typeInput =
     document.getElementById("type");
@@ -349,62 +379,15 @@ const logoutButton =
     document.getElementById("logoutButton");
 
 
+
 /* =================================================
-   ВХОД
+   LOGIN
 ================================================= */
 
-loginButton.onclick = async function(){
-
-    const email =
-        emailInput.value.trim();
-
-    const password =
-        passwordInput.value;
-
-    if(!email || !password){
-
-        setStatus(
-            loginStatus,
-            "Введите email и пароль.",
-            "error"
-        );
-
-        return;
-    }
-
-    loginButton.disabled = true;
-    loginButton.textContent = "Вход...";
-
-    const result =
-        await supabaseClient.auth
-            .signInWithPassword({
-                email: email,
-                password: password
-            });
-
-    loginButton.disabled = false;
-    loginButton.textContent = "Войти";
-
-    if(result.error){
-
-        setStatus(
-            loginStatus,
-            "Ошибка: " + result.error.message,
-            "error"
-        );
-
-        return;
-    }
-
-    setStatus(
-        loginStatus,
-        "Успешный вход!",
-        "success"
-    );
-
-    await showApp();
-
-};
+loginButton.addEventListener(
+    "click",
+    login
+);
 
 
 passwordInput.addEventListener(
@@ -412,25 +395,131 @@ passwordInput.addEventListener(
     function(event){
 
         if(event.key === "Enter"){
-            loginButton.click();
+
+            login();
+
         }
 
     }
 );
 
 
+async function login(){
+
+    const email =
+        emailInput.value.trim();
+
+    const password =
+        passwordInput.value;
+
+
+    if(!email){
+
+        setStatus(
+            loginStatus,
+            "Введите email.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(!password){
+
+        setStatus(
+            loginStatus,
+            "Введите пароль.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+        "Вход...";
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth
+            .signInWithPassword({
+
+                email:email,
+
+                password:password
+
+            });
+
+
+    loginButton.disabled = false;
+
+    loginButton.textContent =
+        "Войти";
+
+
+    if(error){
+
+        setStatus(
+            loginStatus,
+            "Ошибка входа: " +
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(!data || !data.session){
+
+        setStatus(
+            loginStatus,
+            "Не удалось создать сессию.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    await showApp();
+
+}
+
+
+
 /* =================================================
-   СЕССИЯ
+   SESSION
 ================================================= */
 
 async function checkSession(){
 
-    const result =
-        await supabaseClient.auth.getSession();
+    const {
+        data,
+        error
+    } =
+        await supabaseClient.auth
+            .getSession();
+
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
 
     if(
-        result.data &&
-        result.data.session
+        data &&
+        data.session
     ){
 
         await showApp();
@@ -442,31 +531,61 @@ async function checkSession(){
 
 async function showApp(){
 
-    loginBlock.style.display = "none";
-    appBlock.style.display = "block";
+    loginBlock.style.display =
+        "none";
+
+    appBlock.style.display =
+        "block";
+
+
+    const {
+        data
+    } =
+        await supabaseClient.auth
+            .getUser();
+
+
+    if(
+        data &&
+        data.user
+    ){
+
+        userEmail.textContent =
+            "Вы вошли как: " +
+            data.user.email;
+
+    }
+
 
     await loadHistory();
 
 }
 
 
+
 /* =================================================
-   СОХРАНЕНИЕ
+   SAVE / UPDATE
 ================================================= */
 
-saveButton.onclick = async function(){
+saveButton.addEventListener(
+    "click",
+    savePost
+);
 
-    const postType =
+
+async function savePost(){
+
+    const section =
         typeInput.value;
 
-    const postContent =
+    const content =
         contentInput.value.trim();
 
     const id =
         editIdInput.value.trim();
 
 
-    if(!postContent){
+    if(!content){
 
         setStatus(
             saveStatus,
@@ -478,127 +597,186 @@ saveButton.onclick = async function(){
     }
 
 
-    if(id === "null" || id === "undefined"){
-
-        setStatus(
-            saveStatus,
-            "Ошибка: у публикации отсутствует ID.",
-            "error"
-        );
-
-        return;
-    }
-
-
     saveButton.disabled = true;
 
-    saveButton.textContent =
-        id
-        ? "Сохранение..."
-        : "Публикация...";
+
+    if(id){
+
+        saveButton.textContent =
+            "Сохранение...";
+
+    }else{
+
+        saveButton.textContent =
+            "Публикация...";
+
+    }
 
 
     let result;
 
 
     /* =========================
-       РЕДАКТИРОВАНИЕ
+       UPDATE
     ========================= */
 
     if(id){
+
+        const numericId =
+            Number(id);
+
+
+        if(
+            !Number.isInteger(numericId)
+        ){
+
+            setStatus(
+                saveStatus,
+                "Ошибка: неправильный ID публикации.",
+                "error"
+            );
+
+            resetSaveButton();
+
+            return;
+        }
+
 
         result =
             await supabaseClient
                 .from("site_content")
                 .update({
-                    section: postType,
-                    content: postContent,
+
+                    section:section,
+
+                    content:content,
+
                     updated_at:
                         new Date().toISOString()
+
                 })
                 .eq(
                     "id",
-                    id
+                    numericId
                 )
-                .select("id");
+                .select(
+                    "id, section, content, created_at, updated_at"
+                );
+
+
+        if(result.error){
+
+            setStatus(
+                saveStatus,
+                "Ошибка изменения: " +
+                result.error.message,
+                "error"
+            );
+
+            resetSaveButton();
+
+            return;
+        }
+
+
+        if(
+            !result.data ||
+            result.data.length === 0
+        ){
+
+            setStatus(
+                saveStatus,
+                "Изменение не выполнено. Supabase не разрешил UPDATE или запись не найдена.",
+                "error"
+            );
+
+            resetSaveButton();
+
+            return;
+        }
+
+
+        setStatus(
+            saveStatus,
+            "Публикация успешно изменена!",
+            "success"
+        );
+
+    }
 
 
     /* =========================
-       НОВАЯ ПУБЛИКАЦИЯ
+       INSERT
     ========================= */
 
-    }else{
+    else{
 
         result =
             await supabaseClient
                 .from("site_content")
                 .insert({
-                    section: postType,
-                    content: postContent
+
+                    section:section,
+
+                    content:content
+
                 })
-                .select("id");
-
-    }
-
-
-    saveButton.disabled = false;
+                .select(
+                    "id, section, content, created_at, updated_at"
+                );
 
 
-    if(result.error){
+        if(result.error){
 
-        saveButton.textContent =
-            id
-            ? "Сохранить изменения"
-            : "Опубликовать";
+            setStatus(
+                saveStatus,
+                "Ошибка публикации: " +
+                result.error.message,
+                "error"
+            );
+
+            resetSaveButton();
+
+            return;
+        }
+
+
+        if(
+            !result.data ||
+            result.data.length === 0
+        ){
+
+            setStatus(
+                saveStatus,
+                "Публикация не была добавлена.",
+                "error"
+            );
+
+            resetSaveButton();
+
+            return;
+        }
+
 
         setStatus(
             saveStatus,
-            "Ошибка: " + result.error.message,
-            "error"
+            "Публикация успешно добавлена!",
+            "success"
         );
 
-        return;
     }
-
-
-    /* UPDATE ничего не изменил */
-
-    if(
-        id &&
-        (!result.data || result.data.length === 0)
-    ){
-
-        saveButton.textContent =
-            "Сохранить изменения";
-
-        setStatus(
-            saveStatus,
-            "Запись не изменена. Supabase не вернул изменённую строку.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    setStatus(
-        saveStatus,
-        id
-        ? "Изменения сохранены!"
-        : "Публикация добавлена!",
-        "success"
-    );
 
 
     clearEditor();
 
     await loadHistory();
 
-};
+}
+
 
 
 /* =================================================
-   ЗАГРУЗКА ИСТОРИИ
+   HISTORY
 ================================================= */
 
 async function loadHistory(){
@@ -632,7 +810,7 @@ async function loadHistory(){
 
         historyBlock.innerHTML =
             '<div class="error">' +
-            "Ошибка: " +
+            "Ошибка загрузки: " +
             escapeHtml(
                 result.error.message
             ) +
@@ -642,11 +820,11 @@ async function loadHistory(){
     }
 
 
-    const data =
+    const posts =
         result.data || [];
 
 
-    if(data.length === 0){
+    if(posts.length === 0){
 
         historyBlock.innerHTML =
             '<div class="empty">' +
@@ -658,255 +836,161 @@ async function loadHistory(){
 
 
     historyBlock.innerHTML =
-        data.map(
-            function(item){
-
-                const itemType =
-                    item.section === "contest"
-                    ? "КОНКУРС"
-                    : "НОВОСТЬ";
+        "";
 
 
-                const date =
-                    item.updated_at ||
-                    item.created_at;
+    posts.forEach(
+        function(post){
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "item";
 
 
-                /*
-                 * ID специально сохраняем
-                 * в data-id.
-                 *
-                 * Никаких onclick с item.id.
-                 */
+            const type =
+                document.createElement("div");
 
-                const safeId =
-                    item.id !== null &&
-                    item.id !== undefined
-                    ? String(item.id)
-                    : "";
+            type.className =
+                "item-type";
+
+            type.textContent =
+                post.section === "contest"
+                ? "КОНКУРС"
+                : "НОВОСТЬ";
 
 
-                return `
+            const date =
+                document.createElement("div");
 
-                    <div
-                        class="item"
-                        data-id="${escapeHtml(safeId)}"
-                    >
+            date.className =
+                "item-date";
 
-                        <div class="item-type">
-                            ${itemType}
-                        </div>
-
-                        <div class="item-date">
-                            ${formatDate(date)}
-                        </div>
-
-                        <div class="item-text">
-                            ${escapeHtml(item.content)}
-                        </div>
-
-                        <div class="actions">
-
-                            <button
-                                class="primary edit-button"
-                                type="button"
-                            >
-                                Изменить
-                            </button>
-
-                            <button
-                                class="danger delete-button"
-                                type="button"
-                            >
-                                Удалить
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-        ).join("");
-
-
-    /* =========================
-       КНОПКИ ИЗМЕНЕНИЯ
-    ========================= */
-
-    historyBlock
-        .querySelectorAll(".edit-button")
-        .forEach(
-            function(button){
-
-                button.addEventListener(
-                    "click",
-                    function(){
-
-                        const item =
-                            button.closest(".item");
-
-                        if(!item){
-
-                            alert(
-                                "Не удалось найти публикацию."
-                            );
-
-                            return;
-                        }
-
-
-                        const id =
-                            item.dataset.id;
-
-
-                        if(
-                            !id ||
-                            id === "null" ||
-                            id === "undefined"
-                        ){
-
-                            alert(
-                                "Ошибка: у этой публикации нет ID."
-                            );
-
-                            return;
-                        }
-
-
-                        editPost(id);
-
-                    }
+            date.textContent =
+                formatDate(
+                    post.updated_at ||
+                    post.created_at
                 );
 
-            }
-        );
+
+            const text =
+                document.createElement("div");
+
+            text.className =
+                "item-text";
+
+            text.textContent =
+                post.content || "";
 
 
-    /* =========================
-       КНОПКИ УДАЛЕНИЯ
-    ========================= */
+            const actions =
+                document.createElement("div");
 
-    historyBlock
-        .querySelectorAll(".delete-button")
-        .forEach(
-            function(button){
-
-                button.addEventListener(
-                    "click",
-                    function(){
-
-                        const item =
-                            button.closest(".item");
-
-                        if(!item){
-
-                            alert(
-                                "Не удалось найти публикацию."
-                            );
-
-                            return;
-                        }
+            actions.className =
+                "actions";
 
 
-                        const id =
-                            item.dataset.id;
+            const editButton =
+                document.createElement("button");
+
+            editButton.className =
+                "primary";
+
+            editButton.type =
+                "button";
+
+            editButton.textContent =
+                "Изменить";
 
 
-                        if(
-                            !id ||
-                            id === "null" ||
-                            id === "undefined"
-                        ){
+            editButton.addEventListener(
+                "click",
+                function(){
 
-                            alert(
-                                "Ошибка: у этой публикации нет ID."
-                            );
+                    editPost(post);
 
-                            return;
-                        }
+                }
+            );
 
 
-                        deletePost(id);
+            const deleteButton =
+                document.createElement("button");
 
-                    }
-                );
+            deleteButton.className =
+                "danger";
 
-            }
-        );
+            deleteButton.type =
+                "button";
+
+            deleteButton.textContent =
+                "Удалить";
+
+
+            deleteButton.addEventListener(
+                "click",
+                function(){
+
+                    deletePost(post.id);
+
+                }
+            );
+
+
+            actions.appendChild(
+                editButton
+            );
+
+            actions.appendChild(
+                deleteButton
+            );
+
+
+            item.appendChild(type);
+
+            item.appendChild(date);
+
+            item.appendChild(text);
+
+            item.appendChild(actions);
+
+
+            historyBlock.appendChild(item);
+
+        }
+    );
 
 }
 
 
+
 /* =================================================
-   РЕДАКТИРОВАНИЕ
+   EDIT
 ================================================= */
 
-async function editPost(id){
+function editPost(post){
 
     if(
-        id === null ||
-        id === undefined ||
-        id === "" ||
-        id === "null" ||
-        id === "undefined"
+        post.id === null ||
+        post.id === undefined
     ){
 
         alert(
-            "Ошибка: отсутствует ID публикации."
+            "Ошибка: у публикации отсутствует ID."
         );
 
         return;
     }
 
-
-    const result =
-        await supabaseClient
-            .from("site_content")
-            .select(
-                "id, section, content"
-            )
-            .eq(
-                "id",
-                id
-            )
-            .single();
-
-
-    if(result.error){
-
-        alert(
-            "Ошибка загрузки публикации: " +
-            result.error.message
-        );
-
-        return;
-    }
-
-
-    if(
-        !result.data ||
-        result.data.id === null ||
-        result.data.id === undefined
-    ){
-
-        alert(
-            "Ошибка: Supabase не вернул ID публикации."
-        );
-
-        return;
-    }
-
-
-    typeInput.value =
-        result.data.section;
-
-    contentInput.value =
-        result.data.content;
 
     editIdInput.value =
-        String(result.data.id);
+        String(post.id);
+
+    typeInput.value =
+        post.section;
+
+    contentInput.value =
+        post.content || "";
 
 
     editorTitle.textContent =
@@ -922,16 +1006,24 @@ async function editPost(id){
     );
 
 
+    saveStatus.textContent =
+        "";
+
+
     window.scrollTo({
+
         top:0,
+
         behavior:"smooth"
+
     });
 
 }
 
 
+
 /* =================================================
-   УДАЛЕНИЕ
+   DELETE
 ================================================= */
 
 async function deletePost(id){
@@ -939,13 +1031,27 @@ async function deletePost(id){
     if(
         id === null ||
         id === undefined ||
-        id === "" ||
-        id === "null" ||
-        id === "undefined"
+        id === ""
     ){
 
         alert(
             "Ошибка: отсутствует ID публикации."
+        );
+
+        return;
+    }
+
+
+    const numericId =
+        Number(id);
+
+
+    if(
+        !Number.isInteger(numericId)
+    ){
+
+        alert(
+            "Ошибка: неправильный ID публикации."
         );
 
         return;
@@ -963,47 +1069,23 @@ async function deletePost(id){
     }
 
 
+    const deleteButton =
+        event &&
+        event.target;
+
+
+    if(deleteButton){
+
+        deleteButton.disabled =
+            true;
+
+    }
+
+
     /*
-     * Сначала получаем запись,
-     * чтобы убедиться, что ID существует.
+     * Удаляем именно строку
+     * с указанным bigint ID.
      */
-
-    const check =
-        await supabaseClient
-            .from("site_content")
-            .select("id")
-            .eq("id", id)
-            .maybeSingle();
-
-
-    if(check.error){
-
-        alert(
-            "Ошибка проверки публикации: " +
-            check.error.message
-        );
-
-        return;
-    }
-
-
-    if(!check.data){
-
-        alert(
-            "Публикация с ID " +
-            id +
-            " не найдена."
-        );
-
-        await loadHistory();
-
-        return;
-    }
-
-
-    /* =========================
-       УДАЛЕНИЕ
-    ========================= */
 
     const result =
         await supabaseClient
@@ -1011,7 +1093,7 @@ async function deletePost(id){
             .delete()
             .eq(
                 "id",
-                id
+                numericId
             )
             .select("id");
 
@@ -1022,6 +1104,8 @@ async function deletePost(id){
             "Ошибка удаления: " +
             result.error.message
         );
+
+        await loadHistory();
 
         return;
     }
@@ -1034,8 +1118,10 @@ async function deletePost(id){
 
         alert(
             "Supabase не удалил запись. " +
-            "Проверьте права DELETE для site_content."
+            "Проверьте DELETE policy для site_content."
         );
+
+        await loadHistory();
 
         return;
     }
@@ -1043,7 +1129,7 @@ async function deletePost(id){
 
     if(
         editIdInput.value ===
-        String(id)
+        String(numericId)
     ){
 
         clearEditor();
@@ -1056,12 +1142,15 @@ async function deletePost(id){
 }
 
 
+
 /* =================================================
-   ОЧИСТКА
+   CLEAR
 ================================================= */
 
-clearButton.onclick =
-    clearEditor;
+clearButton.addEventListener(
+    "click",
+    clearEditor
+);
 
 
 function clearEditor(){
@@ -1095,22 +1184,44 @@ function clearEditor(){
 }
 
 
+
 /* =================================================
-   ВЫХОД
+   RESET SAVE BUTTON
 ================================================= */
 
-logoutButton.onclick =
+function resetSaveButton(){
+
+    saveButton.disabled =
+        false;
+
+    saveButton.textContent =
+        editIdInput.value
+        ? "Сохранить изменения"
+        : "Опубликовать";
+
+}
+
+
+
+/* =================================================
+   LOGOUT
+================================================= */
+
+logoutButton.addEventListener(
+    "click",
     async function(){
 
         await supabaseClient.auth.signOut();
 
         location.reload();
 
-    };
+    }
+);
+
 
 
 /* =================================================
-   СТАТУС
+   STATUS
 ================================================= */
 
 function setStatus(
@@ -1137,8 +1248,9 @@ function setStatus(
 }
 
 
+
 /* =================================================
-   ДАТА
+   DATE
 ================================================= */
 
 function formatDate(date){
@@ -1152,8 +1264,14 @@ function formatDate(date){
         new Date(date);
 
 
-    if(isNaN(d.getTime())){
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+
         return "";
+
     }
 
 
@@ -1164,6 +1282,37 @@ function formatDate(date){
 }
 
 
+
 /* =================================================
-   БЕЗОПАСНЫЙ ТЕКСТ
-============================================
+   ESCAPE
+================================================= */
+
+function escapeHtml(text){
+
+    return String(text || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* 
