@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GYURZA — МОПСОБОЙ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#game{width:100%;height:100%;overflow:hidden}
+body{font-family:Arial,sans-serif;background:#05080c;color:white;touch-action:none}
+#game{position:fixed;inset:0;background:#05080c}
+#background{position:absolute;inset:-30px;background:url("https://masterpiecer-images.s3.yandex.net/ee7fbde09b5411ee8d617a83974e0feb:upscaled") center/cover;filter:blur(7px);transform:scale(1.06)}
+#dark{position:absolute;inset:0;background:rgba(2,6,11,.52);z-index:1}
+#particles{position:absolute;inset:0;z-index:2;pointer-events:none}
+.p{position:absolute;width:2px;height:15px;background:rgba(190,225,255,.35);border-radius:3px}
+#playArea{position:absolute;inset:0;z-index:10;overflow:hidden;touch-action:none}
+#hud{position:absolute;top:15px;left:15px;right:15px;display:none;justify-content:space-between;z-index:100;pointer-events:none}
+.hud{padding:10px 14px;border-radius:13px;background:rgba(3,8,14,.85);border:1px solid #ffffff22;font-weight:800}
+#score{color:#35c2ff}#lives{color:#ff5269;letter-spacing:3px}
+#player{position:absolute;width:76px;height:76px;object-fit:contain;display:none;z-index:30;pointer-events:none;filter:drop-shadow(0 8px 15px #0009)}
+.mops{position:absolute;object-fit:contain;z-index:20;pointer-events:none;filter:drop-shadow(0 7px 10px #0008)}
+.fast{filter:drop-shadow(0 0 12px #ff5a46)!important}.gold{filter:drop-shadow(0 0 10px #ffc42d)!important}
+#flash{position:absolute;inset:0;z-index:1500;pointer-events:none;opacity:0}
+.hit{animation:hflash .25s}.near{animation:nflash .18s}
+@keyframes hflash{25%{opacity:.35;background:#f23}100%{opacity:0}}
+@keyframes nflash{35%{opacity:.16;background:#35c2ff}100%{opacity:0}}
+.shake{animation:shake .28s}@keyframes shake{20%{transform:translate(-7px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-5px,-2px)}80%{transform:translate(4px,3px)}}
+#menu,#gameOver{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000}
+#gameOver{display:none;background:#02060aaa;backdrop-filter:blur(10px)}
+.card{position:relative;width:min(850px,94vw);min-height:480px;overflow:hidden;border-radius:30px;background:#07101def;border:1px solid #ffffff22;box-shadow:0 30px 90px #000b}
+.menuText{position:relative;z-index:10;width:58%;padding:50px}
+.small{color:#35c2ff;font-size:11px;font-weight:900;letter-spacing:3px;margin-bottom:15px}
+.logo{font-size:clamp(48px,7vw,76px);font-weight:900;letter-spacing:-4px}.logo span{color:#35c2ff}
+.sub{margin-top:12px;color:#71818f;font-size:12px;font-weight:800;letter-spacing:4px}
+.desc{margin-top:25px;color:#aebbc6;line-height:1.65;font-size:14px;max-width:390px}.desc b{color:white}
+.record{display:inline-block;margin-top:18px;padding:10px 14px;border-radius:12px;background:#ffffff0b;color:#9aa7b2;font-size:11px;font-weight:800}.record strong{color:#35c2ff;font-size:16px}
+button{border:0;cursor:pointer;font-weight:900;border-radius:14px;min-height:54px}
+#startButton{display:block;margin-top:22px;width:220px;background:#35c2ff;color:#001018;box-shadow:0 10px 35px #35c2ff44}
+.menuCharacter{position:absolute;right:-25px;bottom:-15px;width:52%;height:105%;object-fit:contain;object-position:center bottom;z-index:3;filter:drop-shadow(0 20px 35px #0009)}
+.menuGradient{position:absolute;inset:0;z-index:4;background:linear-gradient(90deg,#050a11f5 0%,#050a11dd 40%,#050a1122 78%);pointer-events:none}
+#round,#achievement,#finalMode{position:absolute;z-index:500;pointer-events:none;text-align:center}
+#round{top:50%;left:50%;width:100%;transform:translate(-50%,-50%) scale(.7);opacity:0;font-size:clamp(35px,8vw,65px);font-weight:900;text-shadow:0 8px 35px #000;transition:.25s}
+#round.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#round small{display:block;margin-top:10px;color:#35c2ff;font-size:13px;letter-spacing:3px}
+#achievement{left:50%;bottom:25px;transform:translate(-50%,80px);opacity:0;padding:13px 18px;border-radius:15px;background:#07101df5;border:1px solid #ffc44d55;transition:.35s;min-width:250px}
+#achievement.show{opacity:1;transform:translate(-50%,0)}#achievementTitle{color:#ffc44d;font-size:11px;font-weight:900;letter-spacing:2px}#achievementName{margin-top:5px;font-weight:900}
+#finalMode{inset:0;display:none;align-items:center;justify-content:center}
+.finalTitle{color:#ff5269;font-size:clamp(30px,8vw,62px);font-weight:900;animation:pulse 1s infinite alternate}.finalTitle small{display:block;color:white;font-size:13px;letter-spacing:3px;margin-top:10px}@keyframes pulse{to{transform:scale(1.05)}}
+.overCard{width:min(400px,92vw);padding:32px 24px;text-align:center;border-radius:24px;background:#07101df5;border:1px solid #ffffff22}.overTitle{font-size:34px;font-weight:900}.overSub{margin-top:8px;color:#73818d;font-size:11px;letter-spacing:2px}.finalScore{margin:22px 0;color:#35c2ff;font-size:55px;font-weight:900}.overButton{width:100%;background:#35c2ff;color:#001018}.second{margin-top:9px;background:#16232e;color:white}
+@media(max-width:700px){.card{min-height:570px}.menuText{width:100%;padding:32px 24px}.logo{font-size:52px}.desc{max-width:270px;font-size:13px}.menuCharacter{width:82%;height:65%;right:-55px;opacity:.72}.menuGradient{background:linear-gradient(180deg,#050a11fa 0%,#050a11ed 45%,#050a1140 100%)}#startButton{width:100%;max-width:300px}.mops{width:52px!important;height:52px!important}}
+</style>
+</head>
+<body>
+<div id="game">
+<div id="background"></div><div id="dark"></div><div id="particles"></div><div id="flash"></div>
+<div id="playArea">
+<div id="hud"><div class="hud">❤️ <span id="lives">♥♥♥</span></div><div class="hud">⭐ <span id="score">0</span></div></div>
+<img id="player" src="https://i.imgur.com/W3JkRuj.png" alt="Гюрза">
+<div id="round">РАУНД 1<small></small></div>
+<div id="achievement"><div id="achievementTitle">ДОСТИЖЕНИЕ</div><div id="achievementName"></div></div>
+<div id="finalMode"><div class="finalTitle">ПОСЛЕДНИЙ РЫВОК<small>ОНИ СТАЛИ БЫСТРЕЕ</small></div></div>
+</div>
+
+<div id="menu"><div class="card"><div class="menuText">
+<div class="small">OFFICIAL GAME</div><div class="logo">GYURZA<span>.</span></div><div class="sub">МОПСОБОЙ</div>
+<div class="desc"><b>Уворачивайся от мопсов.</b><br>Двигай Гюрзу влево и вправо, избегай столкновений и набирай как можно больше очков.<br><br>Каждый раунд становится сложнее.</div>
+<div class="record">🏆 РЕКОРД: <strong id="record">0</strong></div>
+<button id="startButton" type="button">▶ НАЧАТЬ ИГРУ</button>
+</div><img class="menuCharacter" src="https://i.imgur.com/W3JkRuj.png" alt="GYURZA"><div class="menuGradient"></div></div></div>
+
+<div id="gameOver"><div class="overCard"><div class="overTitle">ИГРА ОКОНЧЕНА</div><div class="overSub">МОПСЫ ДОБРАЛИСЬ ДО ГЮРЗЫ</div><div class="finalScore" id="finalScore">0</div><div id="newRecord" style="display:none;color:#50df92;font-weight:900;margin-bottom:16px">🏆 НОВЫЙ РЕКОРД!</div><button class="overButton" id="againButton">ИГРАТЬ СНОВА</button><button class="overButton second" id="menuButton">В МЕНЮ</button></div></div>
+</div>
+
+<script>
+"use strict";
+const PLAYER="https://i.imgur.com/W3JkRuj.png",MOP="https://i.imgur.com/URTeVWx.png";
+let playing=false,score=0,lives=3,round=1,px=0,enemies=[],last=0,spawn=0,cool=0,startTime=0,final=false,audio=null,musicTimer=null;
+
+const $=id=>document.getElementById(id);
+const player=$("player"),hud=$("hud"),menu=$("menu"),over=$("gameOver"),flash=$("flash"),area=$("playArea");
+const scoreEl=$("score"),livesEl=$("lives"),recordEl=$("record"),roundEl=$("round"),achievement=$("achievement"),achievementName=$("achievementName"),finalMode=$("finalMode");
+
+function record(){try{return +localStorage.getItem("gyurza_record")||0}catch(e){return 0}}
+function setRecord(v){try{localStorage.setItem("gyurza_record",v)}catch(e){}}
+recordEl.textContent=record();
+
+function audioInit(){
+ if(audio)return;
+ try{audio=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}
+}
+function tone(f,d=.1,type="sine",v=.025){
+ if(!audio)return;
+ try{let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(v,audio.currentTime+.01);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+d);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+d+.02)}catch(e){}
+}
+function music(){
+ if(!audio)return;
+ clearTimeout(musicTimer);
+ const notes=playing?[220,277,330,294,247,294]:[196,247,294,247];
+ tone(notes[Date.now()%notes.length],.18,"triangle",playing?.025:.015);
+ musicTimer=setTimeout(music,playing?Math.max(170,360-round*13):500);
+}
+function sfxHit(){tone(75,.16,"sawtooth",.06)}
+function sfxDodge(){tone(520,.07,"sine",.025)}
+function sfxGold(){tone(700,.08);setTimeout(()=>tone(950,.12),70)}
+
+function update(){
+ scoreEl.textContent=score;livesEl.textContent="♥".repeat(lives)+"♡".repeat(3-lives);
+}
+function flashIt(type){
+ flash.className="";void flash.offsetWidth;flash.className=type;
+}
+function showRound(){
+ roundEl.innerHTML="РАУНД "+round+"<small>"+(round>=10?"ПОСЛЕДНИЙ РЫВОК":"ОНИ СТАЛИ БЫСТРЕЕ...")+"</small>";
+ roundEl.classList.add("show");setTimeout(()=>roundEl.classList.remove("show"),850);
+}
+function unlock(name,key){
+ try{if(localStorage.getItem("a_"+key))return;localStorage.setItem("a_"+key,"1")}catch(e){}
+ achievementName.textContent=name;achievement.classList.add("show");setTimeout(()=>achievement.classList.remove("show"),2400);
+ tone(760,.1,"triangle");setTimeout(()=>tone(980,.12,"triangle"),90);
+}
+function achievements(){
+ if(score>=10)unlock("ПЕРВЫЕ 10","10");
+ if(score>=100)unlock("МОПСОБОЙ","100");
+ if(score>=500)unlock("ЛЕГЕНДА","500");
+ if(Date.now()-startTime>=120000)unlock("УКЛОНИСТ","time");
+}
+function particles(){
+ const box=$("particles");
+ for(let i=0;i<40;i++){let p=document.createElement("div");p.className="p";p.style.left=Math.random()*100+"%";p.style.top=Math.random()*100+"%";box.appendChild(p);p.dataset.speed=50+Math.random()*100}
+}
+particles();
+
+function startGame(){
+ audioInit();if(audio&&audio.state==="suspended")audio.resume().catch(()=>{});
+ playing=false;cancelAnimationFrame(window._raf);clearTimeout(musicTimer);
+ enemies.forEach(e=>e.el.remove());enemies=[];score=0;lives=3;round=1;spawn=0;cool=0;startTime=Date.now();final=false;targetX=null;touch=false;
+ menu.style.display="none";over.style.display="none";hud.style.display="flex";player.style.display="block";finalMode.style.display="none";
+ px=(innerWidth-player.offsetWidth)/2;player.style.left=px+"px";player.style.bottom="95px";player.style.top="auto";update();showRound();
+ playing=true;music();last=performance.now();window._raf=requestAnimationFrame(loop);
+}
+function loop(t){
+ if(!playing)return;
+ let d=Math.min(.05,(t-last)/1000);last=t;cool=Math.max(0,cool-d);
+ movePlayer(d);moveEnemies(d);spawn+=d;
+ let delay=Math.max(.32,1.02-round*.045);
+ if(spawn>=delay){spawn=0;spawnEnemy();if(score>=35&&Math.random()<.2)spawnEnemy();if(score>=80&&Math.random()<.18)spawnEnemy();if(final&&Math.random()<.25)spawnEnemy()}
+ let nr=Math.floor(score/20)+1;if(nr>round){round=nr;if(round>=10&&!final){final=true;finalMode.style.display="flex";setTimeout(()=>finalMode.style.display="none",1200)}showRound();music()}
+ achievements();window._raf=requestAnimationFrame(loop);
+}
+function movePlayer(d){
+ if(typeof window.targetX==="number")px+=(window.targetX-px)*Math.min(1,d*12);
+ if(window.leftKey)px-=430*d;if(window.rightKey)px+=430*d;
+ px=Math.max(5,Math.min(innerWidth-player.offsetWidth-5,px));player.style.left=px+"px";
+}
+function spawnEnemy(){
+ let el=document.createElement("img"),r=Math.random(),type=r<.08?"gold":r<.2?"big":r<.4?"fast":"normal";
+ el.className="mops "+type;el.src=MOP;el.draggable=false;
+ let size=type==="big"?78:type==="gold"?58:52;el.style.width=size+"px";el.style.height=size+"px";
+ let x=5+Math.random()*Math.max(5,innerWidth-size-10),y=-80;el.style.left=x+"px";el.style.top=y+"px";area.appendChild(el);
+ enemies.push({el,x,y,size,type,speed:(type==="fast"?230:type==="big"?115:145)+round*6+Math.random()*35});
+}
+function collide(a,b,p=13){return !(a.right-p<b.left+p||a.left+p>b.right-p||a.bottom-p<b.top+p||a.top+p>b.bottom-p)}
+function moveEnemies(d){
+ let pr=player.getBoundingClientRect();
+ for(let i=enemies.length-1;i>=0;i--){let e=enemies[i];e.y+=e.speed*d;e.el.style.top=e.y+"px";let er=e.el.getBoundingClientRect();
+  if(cool<=0&&collide(pr,er)){e.el.remove();enemies.splice(i,1);lose();continue}
+  if(e.y>innerHeight+80){e.el.remove();enemies.splice(i,1);score+=e.type==="gold"?5:1;if(e.type==="gold")sfxGold();update()}
+ }
+}
+function lose(){
+ cool=1; lives--;update();flashIt("hit");playAreaShake();sfxHit();if(navigator.vibrate)navigator.vibrate(80);player.style.transform="scale(1.15)";setTimeout(()=>player.style.transform="",150);if(lives<=0)end();
+}
+function playAreaShake(){area.classList.remove("shake");void area.offsetWidth;area.classList.add("shake")}
+function end(){
+ playing=false;clearTimeout(musicTimer);cancelAnimationFrame(window._raf);enemies.forEach(e=>e.el.remove());enemies=[];
+ $("finalScore").textContent=score;let old=record();if(score>old){setRecord(score);$("newRecord").style.display="block"}else $("newRecord").style.display="none";
+ recordEl.textContent=record();hud.style.display="none";player.style.display="none";over.style.display="flex";
+}
+function showMenu(){playing=false;clearTimeout(musicTimer);cancelAnimationFrame(window._raf);enemies.forEach(e=>e.el.remove());enemies=[];over.style.display="none";hud.style.display="none";player.style.display="none";menu.style.display="flex";recordEl.textContent=record();audioInit();music()}
+$("startButton").addEventListener("click",startGame);$("againButton").addEventListener("click",startGame);$("menuButton").addEventListener("click",showMenu);
+window.leftKey=false;window.rightKey=false;
+addEventListener("keydown",e=>{if(e.key==="ArrowLeft"){leftKey=true;e.preventDefault()}if(e.key==="ArrowRight"){rightKey=true;e.preventDefault()}});
+addEventListener("keyup",e=>{if(e.key==="ArrowLeft")leftKey=false;if(e.key==="ArrowRight")rightKey=false});
+let touch=false;
+let targetX=null;
+let activePointerId=null;
+
+function setPlayerTarget(clientX){
+    if(!playing)return;
+    const w=player.offsetWidth||76;
+    const max=innerWidth-w-5;
+    targetX=Math.max(5,Math.min(max,clientX-w/2));
+    // Сразу ставим персонажа под палец — без задержки.
+    px=targetX;
+    player.style.left=px+"px";
+}
+
+/* Сенсорное управление: ведёшь пальцем — Гюрза сразу следует за пальцем. */
+area.addEventListener("pointerdown",function(e){
+    if(!playing)return;
+    touch=true;
+    activePointerId=e.pointerId;
+    setPlayerTarget(e.clientX);
+    if(area.setPointerCapture){try{area.setPointerCapture(e.pointerId)}catch(err){}}
+    e.preventDefault();
+},{passive:false});
+
+area.addEventListener("pointermove",function(e){
+    if(!playing || !touch)return;
+    if(activePointerId!==null && e.pointerId!==activePointerId)return;
+    setPlayerTarget(e.clientX);
+    e.preventDefault();
+},{passive:false});
+
+function stopPointer(){touch=false;activePointerId=null}
+area.addEventListener("pointerup",stopPointer);
+area.addEventListener("pointercancel",stopPointer);
+area.addEventListener("pointerleave",function(e){
+    if(e.pointerType==="mouse")stopPointer();
+});
+
+/* Запасной вариант для браузеров, где Pointer Events работают нестабильно. */
+area.addEventListener("touchstart",function(e){
+    if(!playing)return;
+    touch=true;
+    setPlayerTarget(e.touches[0].clientX);
+    e.preventDefault();
+},{passive:false});
+area.addEventListener("touchmove",function(e){
+    if(!playing)return;
+    setPlayerTarget(e.touches[0].clientX);
+    e.preventDefault();
+},{passive:false});
+area.addEventListener("touchend",stopPointer,{passive:true});
+area.addEventListener("touchcancel",stopPointer,{passive:true});
+
+/* Мышь на ПК */
+area.addEventListener("mousemove",function(e){
+    if(playing && !touch)setPlayerTarget(e.clientX);
+});
+
+addEventListener("resize",()=>{if(playing)px=Math.max(5,Math.min(innerWidth-player.offsetWidth-5,px))});
+
+/* КНОПКИ */
+if(startButton){
+    startButton.addEventListener("click", function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        startGame();
+    });
+}
+if(againButton){
+    againButton.addEventListener("click", function(event){
+        event.preventDefault();
+        startGame();
+    });
+}
+if(menuButton){
+    menuButton.addEventListener("click", function(event){
+        event.preventDefault();
+        showMenu();
+    });
+}
+
+</script>
+</body>
+</html>
